@@ -7,8 +7,7 @@ turistautak.LINES = new google.maps.ImageMapType({
   },
   tileSize: new google.maps.Size(256, 256),
   maxZoom: 21,
-  minZoom: 0,
-	name: 'turistautak.hu vonalak és pontok'
+  minZoom: 8
 });
 
 turistautak.DEFAULT = new google.maps.ImageMapType({
@@ -18,9 +17,9 @@ turistautak.DEFAULT = new google.maps.ImageMapType({
 			'/' + coord.x + '/' + coord.y + '.png';
   },
   tileSize: new google.maps.Size(256, 256),
-  maxZoom: 22,
-  minZoom: 0,
-	name: 'turistautak.hu'
+  maxZoom: 21,
+  minZoom: 8,
+	name: 'Turista'
 });
 
 var locate = document.getElementById('locate');
@@ -37,8 +36,14 @@ var mapOptions = {
 	zoom: 8,
 	mapTypeId: 'turistautak',
 	mapTypeControlOptions: {
-		mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'turistautak']		
-	}	
+		mapTypeIds: [
+			google.maps.MapTypeId.ROADMAP,
+			google.maps.MapTypeId.SATELLITE,
+			google.maps.MapTypeId.TERRAIN,
+			'turistautak'],
+		style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+	},
+	streetViewControl: false
 };
 
 function showPosition(position) {
@@ -51,4 +56,11 @@ function showPosition(position) {
 
 var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 map.mapTypes.set('turistautak', turistautak.DEFAULT);
-map.mapTypes.set('turistautak_lines', turistautak.LINES);
+
+google.maps.event.addListener(map, 'maptypeid_changed', function() {
+	if(map.getMapTypeId() === google.maps.MapTypeId.SATELLITE) {
+		map.overlayMapTypes.push(turistautak.LINES);
+	} else {
+		map.overlayMapTypes.clear();
+	}
+});
