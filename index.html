@@ -5,52 +5,11 @@
   	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<title>turistautak.hu over Google Maps</title>
-		<style>
-			html,
-			body {
-				margin: 0;
-				padding: 0;
-				font-family: sans-serif;
-			}
-			#map {
-				position: absolute;
-				left: 0;
-				top:0;
-				width: 100%;
-				height: 100%;
-			}
-			#controls {
-				position: fixed;
-				bottom: 50px;
-				width: 100%;
-				height: 0;
-				text-align: center;
-				z-index: 1;
-			}
-			#controls > div {
-				display: inline-block;
-				text-align: left;
-			}
-			#controls button {
-				font-size: 14px;
-				background-color: #5BB75B;
-				color: #fff;
-				padding: .7em;
-				border-radius: 4px;
-				border: 1px solid #CCC;
-				box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-				background-image: -webkit-linear-gradient(top, #62C462, #51A351);
-			}
-		</style>
+		<link rel="stylesheet" href="app.css">
+		<link rel="shortcut icon" href="http://turistautak.hu/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="http://turistautak.hu/favicon.ico" type="image/x-icon">
 	</head>
 	<body>
-		<div id="controls">
-			<div>
-				<button type="button" id="locate">
-					Show my location!
-				</button>
-			</div>
-		</div>
 		<div id="map"></div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script src="turistautak.js"></script>

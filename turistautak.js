@@ -22,15 +22,6 @@ turistautak.DEFAULT = new google.maps.ImageMapType({
 	name: 'Turista'
 });
 
-var locate = document.getElementById('locate');
-if(navigator.geolocation) {
-	locate.onclick = function() {
-		navigator.geolocation.getCurrentPosition(showPosition);
-	};
-} else {
-	locate.style.display = 'none';
-}
-
 var mapOptions = {
 	center: new google.maps.LatLng(47.3, 19.5),
 	zoom: 8,
@@ -43,7 +34,13 @@ var mapOptions = {
 			'turistautak'],
 		style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
 	},
-	streetViewControl: false
+	mapTypeControl: true,
+	scaleControl: true,
+	panControl: false,
+	streetViewControl: false,
+	zoomControlOptions: {
+		position: google.maps.ControlPosition.LEFT_TOP
+	}
 };
 
 function showPosition(position) {
@@ -64,3 +61,14 @@ google.maps.event.addListener(map, 'maptypeid_changed', function() {
 		map.overlayMapTypes.clear();
 	}
 });
+
+if(navigator.geolocation) {
+	var locate = document.createElement('button');
+	locate.className = 'locate';
+	locate.type = 'button';
+	locate.onclick = function() {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	};
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(locate);
+}
+
