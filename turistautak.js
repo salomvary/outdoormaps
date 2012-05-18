@@ -1,26 +1,33 @@
 var turistautak = {};
 
-turistautak.LINES = new google.maps.ImageMapType({
-	getTileUrl: function(coord, zoom) {
-		return 'http://map.turistautak.hu/tiles/lines/' + zoom +
-			'/' + coord.x + '/' + coord.y + '.png';
-  },
-  tileSize: new google.maps.Size(256, 256),
-  maxZoom: 21,
-  minZoom: 8
-});
+turistautak.getTileUrl = function(type, coord, zoom) {
+	// a-b-c-d subdomain sharding
+	var subdomain = String.fromCharCode(97 /* 'a' */ + (zoom + coord.x + coord.y) % 4);
+	return 'http://' + subdomain + '.map.turistautak.hu/tiles/' + type + '/' + zoom +
+		'/' + coord.x + '/' + coord.y + '.png';
+};
 
-turistautak.DEFAULT = new google.maps.ImageMapType({
+turistautak.defaultOptions = function() {};
+turistautak.defaultOptions.prototype = {
 	getTileUrl: function(coord, zoom) {
-		// TODO rotate a/b/c/d
-		return 'http://a.map.turistautak.hu/tiles/turistautak/' + zoom +
-			'/' + coord.x + '/' + coord.y + '.png';
+		return turistautak.getTileUrl('turistautak', coord, zoom);
   },
   tileSize: new google.maps.Size(256, 256),
   maxZoom: 21,
   minZoom: 8,
 	name: 'Turista'
-});
+};
+
+turistautak.linesOptions = function(){};
+turistautak.linesOptions.prototype = new turistautak.defaultOptions();
+
+turistautak.linesOptions.prototype.getTileUrl = function(coord, zoom) {
+		return turistautak.getTileUrl('lines', coord, zoom);
+};
+
+turistautak.DEFAULT = new google.maps.ImageMapType(new turistautak.defaultOptions());
+turistautak.LINES = new google.maps.ImageMapType(new turistautak.linesOptions());
+
 
 var mapOptions = {
 	center: new google.maps.LatLng(47.3, 19.5),
