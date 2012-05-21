@@ -30,8 +30,6 @@ turistautak.LINES = new google.maps.ImageMapType(new turistautak.linesOptions())
 
 
 var mapOptions = {
-	center: new google.maps.LatLng(47.3, 19.5),
-	zoom: 8,
 	mapTypeId: 'turistautak',
 	mapTypeControlOptions: {
 		mapTypeIds: [
@@ -58,6 +56,33 @@ function showPosition(position) {
 	}
 }
 
+// saved state
+if(window.localStorage) {
+	if(window.localStorage.turistautak) {
+		var lastState = JSON.parse(window.localStorage.turistautak);
+	}
+	if(lastState) {
+		mapOptions.center = new google.maps.LatLng(lastState.lat, lastState.lng);
+		mapOptions.zoom = lastState.zoom;
+	}
+	window.addEventListener('unload', saveState, false);
+}
+
+function saveState() {
+	var state = {
+		zoom: map.getZoom(),
+		lat: map.getCenter().lat(),
+		lng: map.getCenter().lng()
+	};
+	window.localStorage.turistautak = JSON.stringify(state);
+}
+
+// defaults
+if(! mapOptions.center) {
+	mapOptions.center = new google.maps.LatLng(47.3, 19.5);
+	mapOptions.zoom = 8;
+}
+
 var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 map.mapTypes.set('turistautak', turistautak.DEFAULT);
 
@@ -78,4 +103,3 @@ if(navigator.geolocation) {
 	};
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(locate);
 }
-
