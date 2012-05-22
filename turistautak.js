@@ -74,7 +74,9 @@
 		locate.className = 'locate';
 		locate.type = 'button';
 		maps.event.addDomListener(locate, 'click', function() {
-			navigator.geolocation.getCurrentPosition(showPosition);
+			navigator.geolocation.getCurrentPosition(showPosition, function(error) {
+				alert('Could not get your position:'+error.message);
+			});
 		});
 		map.controls[maps.ControlPosition.TOP_LEFT].push(locate);
 	}
