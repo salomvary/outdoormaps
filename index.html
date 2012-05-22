@@ -14,6 +14,7 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
 		<title>Turistautak</title>
 		<link rel="stylesheet" href="app.css">
+		<link rel="stylesheet" href="add2home.css">
 		<link rel="shortcut icon" href="http://turistautak.hu/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="http://turistautak.hu/favicon.ico" type="image/x-icon">
 	</head>
@@ -22,6 +23,12 @@
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script src="turistautak-gmaps.js"></script>
 		<script src="turistautak.js"></script>
+		<script>
+			var addToHomeConfig = {
+				returningVisitor: true
+			};
+		</script>
+		<script src="add2home.js"></script>
 		<script>
 			var _gaq=[['_setAccount','UA-31870955-1'],['_trackPageview']];
 			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
