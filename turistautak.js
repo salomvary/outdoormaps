@@ -1,105 +1,154 @@
-var turistautak = {};
+(function(maps) {
 
-turistautak.getTileUrl = function(type, coord, zoom) {
-	// a-b-c-d subdomain sharding
-	var subdomain = String.fromCharCode(97 /* 'a' */ + (zoom + coord.x + coord.y) % 4);
-	return 'http://' + subdomain + '.map.turistautak.hu/tiles/' + type + '/' + zoom +
-		'/' + coord.x + '/' + coord.y + '.png';
-};
+	var marker,
+		map;
 
-turistautak.defaultOptions = function() {};
-turistautak.defaultOptions.prototype = {
-	getTileUrl: function(coord, zoom) {
-		return turistautak.getTileUrl('turistautak', coord, zoom);
-  },
-  tileSize: new google.maps.Size(256, 256),
-  maxZoom: 21,
-  minZoom: 8,
-	name: 'Turista'
-};
-
-turistautak.linesOptions = function(){};
-turistautak.linesOptions.prototype = new turistautak.defaultOptions();
-
-turistautak.linesOptions.prototype.getTileUrl = function(coord, zoom) {
-		return turistautak.getTileUrl('lines', coord, zoom);
-};
-
-turistautak.DEFAULT = new google.maps.ImageMapType(new turistautak.defaultOptions());
-turistautak.LINES = new google.maps.ImageMapType(new turistautak.linesOptions());
-
-
-var mapOptions = {
-	mapTypeId: 'turistautak',
-	mapTypeControlOptions: {
-		mapTypeIds: [
-			google.maps.MapTypeId.ROADMAP,
-			google.maps.MapTypeId.SATELLITE,
-			google.maps.MapTypeId.TERRAIN,
-			'turistautak'],
-		style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-	},
-	mapTypeControl: true,
-	scaleControl: true,
-	panControl: false,
-	streetViewControl: false,
-	zoomControlOptions: {
-		position: google.maps.ControlPosition.LEFT_TOP
-	}
-};
-
-function showPosition(position) {
-	if(position && ! ('code' in position)) {
-		map.setCenter(new google.maps.LatLng(position.coords.latitude, 
-			position.coords.longitude));
-		map.setZoom(18);
-	}
-}
-
-// saved state
-if(window.localStorage) {
-	if(window.localStorage.turistautak) {
-		var lastState = JSON.parse(window.localStorage.turistautak);
-	}
-	if(lastState) {
-		mapOptions.center = new google.maps.LatLng(lastState.lat, lastState.lng);
-		mapOptions.zoom = lastState.zoom;
-	}
-	window.addEventListener('unload', saveState, false);
-}
-
-function saveState() {
-	var state = {
-		zoom: map.getZoom(),
-		lat: map.getCenter().lat(),
-		lng: map.getCenter().lng()
+	var mapDefaults = {
+		center: new maps.LatLng(47.3, 19.5),
+		zoom: 8,
+		mapTypeId: 'turistautak',
+		mapTypeControlOptions: {
+			mapTypeIds: [
+				maps.MapTypeId.ROADMAP,
+				maps.MapTypeId.SATELLITE,
+				maps.MapTypeId.TERRAIN,
+				'turistautak'],
+			style: maps.MapTypeControlStyle.DROPDOWN_MENU
+		},
+		mapTypeControl: true,
+		scaleControl: true,
+		panControl: false,
+		streetViewControl: false,
+		zoomControlOptions: {
+			position: maps.ControlPosition.LEFT_TOP
+		}
 	};
-	window.localStorage.turistautak = JSON.stringify(state);
-}
 
-// defaults
-if(! mapOptions.center) {
-	mapOptions.center = new google.maps.LatLng(47.3, 19.5);
-	mapOptions.zoom = 8;
-}
+	initialize();
 
-var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-map.mapTypes.set('turistautak', turistautak.DEFAULT);
+	function initialize() {
 
-google.maps.event.addListener(map, 'maptypeid_changed', function() {
-	if(map.getMapTypeId() === google.maps.MapTypeId.SATELLITE) {
-		map.overlayMapTypes.push(turistautak.LINES);
-	} else {
-		map.overlayMapTypes.clear();
+		var state = {},
+			mapOptions = {};
+
+		// manage saved state
+		if(window.localStorage) {
+			if(localStorage.turistautak) {
+				state = loadState();
+			}
+			//nice try but nothing like this for standalone iOS apps
+			//maps.event.addDomListener(window,'unload', saveState);
+		}
+
+		// add options to defaults from state
+		for(var key in mapDefaults) {
+			if(mapDefaults.hasOwnProperty(key)) {
+				if(key in state) {
+					mapOptions[key] = state[key];
+					delete state[key]; // so we won't set it again
+				} else {
+					mapOptions[key] = mapDefaults[key];
+				}
+			}
+		}
+
+		map = new maps.Map(document.getElementById('map'), mapOptions);
+		map.mapTypes.set('turistautak', turistautak.DEFAULT);
+		updateOverlays();
+
+		// set the rest of the state
+		setState(state);
+
+		maps.event.addListener(map, 'maptypeid_changed', updateOverlays);
+		maps.event.addListener(map, 'maptypeid_changed', saveState);
+		maps.event.addListener(map, 'idle', saveState);
+
+		if(navigator.geolocation) {
+			createLocateButton();
+		}
+
 	}
-});
 
-if(navigator.geolocation) {
-	var locate = document.createElement('button');
-	locate.className = 'locate';
-	locate.type = 'button';
-	locate.onclick = function() {
-		navigator.geolocation.getCurrentPosition(showPosition);
-	};
-	map.controls[google.maps.ControlPosition.TOP_LEFT].push(locate);
-}
+	function createLocateButton() {
+		var locate = document.createElement('button');
+		locate.className = 'locate';
+		locate.type = 'button';
+		maps.event.addDomListener(locate, 'click', function() {
+			navigator.geolocation.getCurrentPosition(showPosition);
+		});
+		map.controls[maps.ControlPosition.TOP_LEFT].push(locate);
+	}
+
+	function showPosition(position) {
+		if(position && ! ('code' in position)) {
+			var center = new maps.LatLng(position.coords.latitude, 
+				position.coords.longitude);
+			map.setCenter(center);
+			map.setZoom(18);
+			setMarker(center);
+			saveState();
+		}
+	}
+
+	function setMarker(position) {
+		if(! marker) {
+			marker = new maps.Marker({
+				map: map
+			});
+		}
+		marker.setPosition(position);
+	}
+
+	function updateOverlays() {
+		if(map.getMapTypeId() === maps.MapTypeId.SATELLITE) {
+			map.overlayMapTypes.push(turistautak.LINES);
+		} else {
+			map.overlayMapTypes.clear();
+		}
+	}
+
+	function setState(state) {
+		if(state.position) {
+			setMarker(state.position);
+		}
+	}
+
+	function deserialize(state) {
+		if(state.center) {
+			state.center = new maps.LatLng(state.center.lat, state.center.lng);
+		}
+		if(state.position) {
+			state.position = new maps.LatLng(state.position.lat, state.position.lng);
+		}
+		return state;
+	}
+
+	function serialize() {
+		var state = {
+			zoom: map.getZoom(),
+			center: {
+				lat: map.getCenter().lat(),
+				lng: map.getCenter().lng()
+			},
+			mapTypeId: map.getMapTypeId()
+		};
+		if(marker) {
+			state.position = {
+				lat: marker.getPosition().lat(),
+				lng: marker.getPosition().lng()
+			};
+		}
+		return state;
+	}
+
+	function loadState() {
+		return deserialize(JSON.parse(localStorage.turistautak));
+	}
+
+	function saveState() {
+		if(window.localStorage) {
+			localStorage.turistautak = JSON.stringify(serialize());
+		}
+	}
+
+})(google.maps);
