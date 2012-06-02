@@ -28,17 +28,16 @@
 
 	function initialize() {
 
-		var state = {},
+		var state,
 			mapOptions = {};
 
-		// manage saved state
-		if(window.localStorage) {
-			if(localStorage.turistautak) {
-				state = loadState();
-			}
-			//nice try but nothing like this for standalone iOS apps
-			//maps.event.addDomListener(window,'unload', saveState);
-		}
+		// get state from storage
+		state = loadStorageState();
+
+		// override with state from url
+		loadHashState(state);
+
+		deserialize(state);
 
 		// add options to defaults from state
 		for(var key in mapDefaults) {
@@ -122,7 +121,6 @@
 		if(state.position) {
 			state.position = new maps.LatLng(state.position.lat, state.position.lng);
 		}
-		return state;
 	}
 
 	function serialize() {
@@ -143,14 +141,34 @@
 		return state;
 	}
 
-	function loadState() {
-		return deserialize(JSON.parse(localStorage.turistautak));
-	}
-
 	function saveState() {
 		if(window.localStorage) {
 			localStorage.turistautak = JSON.stringify(serialize());
 		}
+	}
+
+	function loadStorageState() {
+		var state;
+		if(window.localStorage && localStorage.turistautak) {
+			try {
+				state = JSON.parse(localStorage.turistautak);
+			} catch(e) { /* parse error, ignore it */ }
+		}
+		return state || {};
+	}
+
+	function loadHashState(state) {
+		if(window.location.hash.length > 1) {
+			var parts = window.location.hash.substring(1).split('/');
+			try {
+				state.center = {
+					lat: parseFloat(parts[0]),
+					lng: parseFloat(parts[1])
+				};
+				state.zoom = parseInt(parts[2], 10);
+			} catch(e) { /* invalid hash, ignore it */ }
+		}
+		return state;
 	}
 
 })(google.maps);
