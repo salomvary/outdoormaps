@@ -89,8 +89,10 @@
 		var center = new maps.LatLng(position.coords.latitude, 
 			position.coords.longitude);
 		map.setCenter(center);
-		map.setZoom(18);
 		setMarker(center);
+		if(map.getZoom() < 15) {
+			map.setZoom(15);
+		}
 		saveState();
 	}
 
