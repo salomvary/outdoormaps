@@ -72,23 +72,26 @@
 		var locate = document.createElement('button');
 		locate.className = 'locate';
 		locate.type = 'button';
-		maps.event.addDomListener(locate, 'click', function() {
-			navigator.geolocation.getCurrentPosition(showPosition, function(error) {
-				alert('Could not get your position:'+error.message);
-			});
-		});
+		maps.event.addDomListener(locate, 'click', getCurrentPosition);
 		map.controls[maps.ControlPosition.TOP_LEFT].push(locate);
 	}
 
+	function getCurrentPosition() {
+		navigator.geolocation.getCurrentPosition(showPosition, positionError,
+			{ enableHighAccuracy:true, timeout:10000, maximumAge:10000, requireCoords: true });
+	}
+
+	function positionError(error) {
+		alert('Could not get your position: '+error.message);
+	}
+
 	function showPosition(position) {
-		if(position && ! ('code' in position)) {
-			var center = new maps.LatLng(position.coords.latitude, 
-				position.coords.longitude);
-			map.setCenter(center);
-			map.setZoom(18);
-			setMarker(center);
-			saveState();
-		}
+		var center = new maps.LatLng(position.coords.latitude, 
+			position.coords.longitude);
+		map.setCenter(center);
+		map.setZoom(18);
+		setMarker(center);
+		saveState();
 	}
 
 	function setMarker(position) {
