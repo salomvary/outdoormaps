@@ -61,6 +61,7 @@
 		maps.event.addListener(map, 'maptypeid_changed', updateOverlays);
 		maps.event.addListener(map, 'maptypeid_changed', saveState);
 		maps.event.addListener(map, 'idle', saveState);
+		maps.event.addListener(map, 'rightclick', dropMarker);
 
 		if(navigator.geolocation) {
 			createLocateButton();
@@ -96,13 +97,28 @@
 		saveState();
 	}
 
-	function setMarker(position) {
+	function dropMarker(event) {
+		marker.setMap(null);
+		marker = null;
+		setMarker(event.latLng, true);
+		marker.setAnimation(maps.Animation.DROP);
+		saveHashState();
+	}
+
+	function dragMarker(event) {
+		setMarker(event.latLng, true);
+		saveHashState();
+	}
+
+	function setMarker(position, draggable) {
 		if(! marker) {
 			marker = new maps.Marker({
 				map: map
 			});
+			maps.event.addListener(marker, 'dragend', dragMarker);
 		}
 		marker.setPosition(position);
+		marker.setDraggable(draggable);
 	}
 
 	function updateOverlays() {
@@ -164,7 +180,7 @@
 
 	function loadHashState(state) {
 		if(window.location.hash.length > 1) {
-			var parts = window.location.hash.substring(1).split('/');
+			var parts = window.location.hash.substring(1).split(',');
 			try {
 				state.center = {
 					lat: parseFloat(parts[0]),
@@ -172,8 +188,21 @@
 				};
 				state.zoom = parseInt(parts[2], 10);
 			} catch(e) { /* invalid hash, ignore it */ }
+			state.position = state.center;
 		}
 		return state;
+	}
+
+	function saveHashState() {
+		var position = marker.getPosition();
+		window.location.hash =
+			roundCoordinate(position.lat()) + ',' +
+			roundCoordinate(position.lng()) + ',' +
+			map.getZoom();
+	}
+
+	function roundCoordinate(coordinate) {
+		return Math.round(coordinate * 100000) / 100000;
 	}
 
 })(google.maps);
