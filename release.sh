@@ -1,7 +1,7 @@
 #!/bin/sh
 git checkout gh-pages
 git merge master
-sed -i ""  -e "s/VERSION.*/VERSION `git rev-parse --short HEAD`/"  manifest.appcache
-git add manifest.appcache
+node ./build.js
+git add -A
 git commit -m "version bump"
 git checkout master
