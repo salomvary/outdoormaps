@@ -98,14 +98,16 @@
 	}
 
 	function dropMarker(event) {
-		marker.setMap(null);
-		marker = null;
+		if(marker) {
+			marker.setMap(null);
+			marker = null;
+		}
 		setMarker(event.latLng, true);
 		marker.setAnimation(maps.Animation.DROP);
 		saveHashState();
 	}
 
-	function dragMarker(event) {
+	function moveMarker(event) {
 		setMarker(event.latLng, true);
 		saveHashState();
 	}
@@ -115,7 +117,7 @@
 			marker = new maps.Marker({
 				map: map
 			});
-			maps.event.addListener(marker, 'dragend', dragMarker);
+			maps.event.addListener(marker, 'dragend', moveMarker);
 		}
 		marker.setPosition(position);
 		marker.setDraggable(draggable);
