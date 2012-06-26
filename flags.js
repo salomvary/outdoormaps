@@ -1,4 +1,4 @@
-var flags = ['offlineEnabled', 'doNotTrack'],
+var flags = ['offlineEnabled', 'doNotTrackEnabled'],
 	form = document.forms[0];
 
 flags.forEach(function(flag) {

@@ -64,17 +64,21 @@
 		maps.event.addListener(map, 'rightclick', dropMarker);
 
 		if(navigator.geolocation) {
-			createLocateButton();
+			createButton('locate', maps.ControlPosition.TOP_LEFT, getCurrentPosition);
+		}
+
+		if(isEnabled('offline')) {
+			createButton('settings', maps.ControlPosition.TOP_RIGHT, toggleSettings);
 		}
 
 	}
 
-	function createLocateButton() {
-		var locate = document.createElement('button');
-		locate.className = 'locate';
-		locate.type = 'button';
-		maps.event.addDomListener(locate, 'click', getCurrentPosition);
-		map.controls[maps.ControlPosition.TOP_LEFT].push(locate);
+	function createButton(className, position, handler) {
+		var button = document.createElement('button');
+		button.className = className + '-button';
+		button.type = 'button';
+		maps.event.addDomListener(button, 'click', handler);
+		map.controls[position].push(button);
 	}
 
 	function getCurrentPosition() {
@@ -205,6 +209,15 @@
 
 	function roundCoordinate(coordinate) {
 		return Math.round(coordinate * 100000) / 100000;
+	}
+
+	function toggleSettings() {
+		document.body.className = 
+			document.body.className === 'settings' ? '' : 'settings';
+	}
+
+	function isEnabled(flag) {
+		return window.localStorage && localStorage[flag + 'Enabled'];
 	}
 
 })(google.maps);
