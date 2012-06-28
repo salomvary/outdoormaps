@@ -1,16 +1,15 @@
 (function(exports) {
 
-var proxy = 'http://salomvary.no.de:12354?';
+var proxy = 'http://salomvary.no.de:12354?',
+	db,
+	tileBounds = {};
 
-var getDb = exports.getDb = function(name) {
-	return openDatabase(name, '', name, 50 * 1024 * 1024);
+exports.initialize = function(dbName) {
+	db = openDatabase(dbName, '', dbName, 50 * 1024 * 1024);
+	return getTileBounds();
 };
 
-exports.extend = function(database, mapType) {
-	var db = getDb(database),
-		bounds = {},
-		promise = new Promise();
-	
+exports.extend = function(mapType) {
 	// create a "patched" maptype based on the original
 	// with offline ability
 	var offlineType = {
@@ -26,7 +25,7 @@ exports.extend = function(database, mapType) {
 						if(data.rows.length === 1) {
 							var row = data.rows.item(0);
 							div.style.backgroundImage = 'url(data:' + row.type +
-								';base64,' + encodeBase64(row.data) + ')'; 
+								';base64,' + row.data + ')'; 
 						} else {
 							throw new Error('tile not found ' + coord + ' ' + zoom);
 						}
@@ -45,37 +44,20 @@ exports.extend = function(database, mapType) {
 	['tileSize', 'maxZoom', 'minZoom', 'name'].forEach(function(prop) {
 		offlineType[prop] = mapType[prop];
 	});
-
-	function isOffline(coord, zoom) {
-		return bounds[zoom] && 
-			coord.x <= bounds[zoom].maxX && coord.x >= bounds[zoom].minX &&
-			coord.y <= bounds[zoom].maxY && coord.y >= bounds[zoom].minY;
-	}
-
-	// build a zoom -> bounds structure to be able
-	// to quickly decide which tiles we have offline
-	readQuery(db, 'SELECT MIN(x) AS minX, MAX(x) AS maxX,' +
-			'MIN(y) AS minY, MAX(y) AS maxY, zoom ' +
-			'FROM tiles GROUP BY zoom')
-		.then(function(data) {
-			for(var i = 0; i < data.rows.length; i++) {
-				var item = data.rows.item(i);
-				bounds[item.zoom] = item;
-			}
-			promise.resolve(offlineType);
-		}, promise.reject.bind(promise));
-
-	return promise;
+	
+	return offlineType;
 };
 
-var getTiles = exports.getTiles = function(database, map, mapType, bounds, minZoom, maxZoom) {
+exports.getTiles = function(map, mapType, bounds, minZoom, maxZoom) {
 	var promise = Promise(),
 		tiles = listTiles(map, mapType, bounds, minZoom, maxZoom),
 		count = tiles.length, 
 		inProgress = 0, 
 		concurrency = 4 * 4, 
-		abort = false,
-		db = getDb(database);
+		abort = false;
+
+	tileBounds = {};
+	exports.hasTiles = false;
 
 	createTable(db)
 		.then(deleteAll)
@@ -94,6 +76,7 @@ var getTiles = exports.getTiles = function(database, map, mapType, bounds, minZo
 
 	function progress() {
 		inProgress--;
+		promise.progress(count - inProgress - tiles.length, count);
 		if(tiles.length) {
 			next();
 		} else if(! inProgress) {
@@ -102,7 +85,9 @@ var getTiles = exports.getTiles = function(database, map, mapType, bounds, minZo
 	}
 
 	function complete() {
-		promise.resolve(db);
+		getTileBounds().then(function() {
+			promise.resolve(db);
+		});
 	}
 
 	function error() {
@@ -110,7 +95,7 @@ var getTiles = exports.getTiles = function(database, map, mapType, bounds, minZo
 		promise.reject();
 	}
 
-}
+};
 
 var listTiles = exports.listTiles = function(map, mapType, bounds, minZoom, maxZoom) {
 	var ne = map.getProjection().fromLatLngToPoint(bounds.getNorthEast()),
@@ -122,7 +107,7 @@ var listTiles = exports.listTiles = function(map, mapType, bounds, minZoom, maxZ
 		var neTile = {
 			x: Math.floor(ne.x * resolution / mapType.tileSize.width),
 			y: Math.floor(ne.y * resolution / mapType.tileSize.height)
-		}
+		};
 		var swTile = {
 			x: Math.floor(sw.x * resolution / mapType.tileSize.width),
 			y: Math.floor(sw.y * resolution / mapType.tileSize.height)
@@ -137,6 +122,27 @@ var listTiles = exports.listTiles = function(map, mapType, bounds, minZoom, maxZ
 	return tiles;
 };
 
+function getTileBounds() {
+	// build a zoom -> bounds structure to be able
+	// to quickly decide which tiles we have offline
+	return readQuery(db, 'SELECT MIN(x) AS minX, MAX(x) AS maxX,' +
+			'MIN(y) AS minY, MAX(y) AS maxY, zoom ' +
+			'FROM tiles GROUP BY zoom')
+		.then(function(data) {
+			exports.hasTiles = !!data.rows.length;
+			for(var i = 0; i < data.rows.length; i++) {
+				var item = data.rows.item(i);
+				tileBounds[item.zoom] = item;
+			}
+		});
+}
+
+function isOffline(coord, zoom) {
+	return tileBounds[zoom] && 
+		coord.x <= tileBounds[zoom].maxX && coord.x >= tileBounds[zoom].minX &&
+		coord.y <= tileBounds[zoom].maxY && coord.y >= tileBounds[zoom].minY;
+}
+
 function get(mapType, tile) {
 	var promise = Promise(),
 		req = new XMLHttpRequest();
@@ -146,7 +152,7 @@ function get(mapType, tile) {
 		if(this.readyState === 4) {
 			if(req.status === 200) {
 				tile.type = req.getResponseHeader('Content-Type');
-				tile.data = req.responseText;
+				tile.data = encodeBase64(req.responseText);
 				//tile.data = decodeBase64(req.responseText);
 				promise.resolve(tile);
 			} else {
@@ -197,7 +203,7 @@ function readQuery(db, query, values) {
 		tr.executeSql(query, values || [], 
 			function(tr, data) { 
 				promise.resolve(data); 
-				},
+			},
 			function(tr, err) { promise.reject(err); } );
 	});
 	return promise;

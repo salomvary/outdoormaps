@@ -17,15 +17,23 @@ Promise.prototype = {
 	/**
 	 * @param {Function} [resolve]
 	 * @param {Function} [reject]
+	 * @param {Function} [progress]
 	 * @returns {Promise} for chaining then()
 	 */
-	then: function (resolve, reject) {
+	then: function (resolve, reject, progress) {
 		this.listener = {
 			resolve: resolve, 
 			reject: reject,
+			progress: progress,
 			promise: new Promise()
 		};
 		return this.listener.promise;
+	},
+
+	progress: function() {
+		if(this.listener.progress) {
+			this.listener.progress.apply(this, arguments);
+		}
 	},
 
 	resolve: function (val) { 

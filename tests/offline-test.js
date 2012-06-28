@@ -1,6 +1,9 @@
 module('Offline', {
 
 	setup: function() {
+		// offline database
+		offline.initialize('turistautak-test');
+
 		// map
 		var map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 9,
@@ -10,7 +13,7 @@ module('Offline', {
 		map.mapTypes.set('turistautak', turistautak.DEFAULT);
 		map.fitBounds(pilis);
 
-		// detech "map ready"
+		// detect "map ready"
 		var test = this;
 		google.maps.event.addListenerOnce(map, 'idle', function() {
 			if(test.onload) {
@@ -58,11 +61,13 @@ test('listTiles', function() {
 });
 
 asyncTest('getTiles', function() {
-	expect(level10to12Expected.length * 5 + 1);
+	var lastDone, progressCount = 0;
 	this.onload = function() { // on map loaded
 		
-		offline.getTiles('turistautak-test', this.map, turistautak.DEFAULT, pilis, 10, 12)
+		offline.getTiles(this.map, turistautak.DEFAULT, pilis, 10, 12)
 			.then(function(db) {
+				equal(progressCount, level10to12Expected.length, 'progress call count');
+				equal(lastDone, level10to12Expected.length, 'last progress done value');
 				// success
 				db.readTransaction(function(t) {
 					t.executeSql('SELECT * FROM tiles', [], function(t, data) {
@@ -85,6 +90,14 @@ asyncTest('getTiles', function() {
 			function() {
 				ok(false, 'getTiles error');
 				start();
+			},
+			function(done, count) {
+				if(typeof lastDone !== 'undefined') {
+					equal(done, lastDone + 1, 'progress done argument');	
+				}
+				equal(count, level10to12Expected.length, 'progress count argument');
+				progressCount++;
+				lastDone = done;
 			});
 	};
 });
@@ -95,7 +108,7 @@ asyncTest('getTiles proxy', function() {
 	expect(level10Expected.length * 6 + 1);
 	
 	this.onload = function() { // on map loaded
-		offline.getTiles('turistautak-test', this.map, turistautak.DEFAULT, pilis, 10, 10)
+		offline.getTiles(this.map, turistautak.DEFAULT, pilis, 10, 10)
 			.then(function(db) {
 				// success
 				db.readTransaction(function(t) {
@@ -128,7 +141,7 @@ asyncTest('getTiles fail', 1, function() {
 	this.failIndex = 2;
 	this.onload = function() { // on map loaded
 		
-		offline.getTiles('turistautak-test', this.map, turistautak.DEFAULT, pilis, 10, 10)
+		offline.getTiles(this.map, turistautak.DEFAULT, pilis, 10, 10)
 			.then(function(db) {
 				ok(false, 'getTiles success');
 				start();
@@ -143,11 +156,9 @@ asyncTest('getTiles fail', 1, function() {
 asyncTest('offline type', function() {
 	this.onload = function() { // on map loaded
 		var map = this.map;
-		offline.getTiles('turistautak-test', this.map, turistautak.DEFAULT, pilis, 10, 11)
+		offline.getTiles(this.map, turistautak.DEFAULT, pilis, 10, 11)
 			.then(function() {
-				return offline.extend('turistautak-test', turistautak.DEFAULT);
-			})
-			.then(function(offlineMapType) {
+				var offlineMapType = offline.extend(turistautak.DEFAULT);
 				// verify newly created offline map type
 				equal(typeof offlineMapType.getTile, 'function', 'getTile');
 				['tileSize', 'maxZoom', 'minZoom', 'name'].forEach(function(prop) {

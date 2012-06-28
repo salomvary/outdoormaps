@@ -23,14 +23,20 @@
 		<div id="settings">
 			<section class="offline">
 				<p>
-					<button>Save map for offline use</button>
+					<button id="save-button">Save map for offline use</button>
 				</p>
+				<p id="saving">
+					<progress></progress><!--a href="#" id="cancel-button">cancel</a-->
+				</p>
+				<p id="saved">Offline map has been saved.</p>
 			</section>
 		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script src="polyfills.js"></script>
 		<script src="turistautak-gmaps.js"></script>
+		<script src="promise.js"></script>
 		<script src="gmaps-offline.js"></script>
+		<script src="settings.js"></script>
 		<script src="turistautak.js"></script>
 		<script>
 			var addToHomeConfig = {

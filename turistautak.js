@@ -69,6 +69,15 @@
 
 		if(isEnabled('offline')) {
 			createButton('settings', maps.ControlPosition.TOP_RIGHT, toggleSettings);
+
+			offline.initialize('turistautak').then(function() {
+				// offline mode
+				if(offline.hasTiles) {
+					map.mapTypes.set('turistautak', offline.extend(turistautak.DEFAULT));
+				}
+				// settings view
+				settings.initialize(map, offline);
+			});
 		}
 
 	}
