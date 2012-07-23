@@ -88,7 +88,7 @@
 
 	function getCurrentPosition() {
 		navigator.geolocation.getCurrentPosition(showPosition, positionError,
-			{ enableHighAccuracy:true, timeout:10000, maximumAge:10000, requireCoords: true });
+			{ enableHighAccuracy:true, timeout:30000, maximumAge:10000, requireCoords: true });
 	}
 
 	function positionError(error) {
