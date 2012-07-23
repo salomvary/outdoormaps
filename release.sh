@@ -1,6 +1,6 @@
 #!/bin/sh
 git checkout gh-pages
-git merge master
+git reset --hard master
 node ./build.js
 git add -A
 git commit -m "version bump"
