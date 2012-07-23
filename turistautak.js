@@ -7,15 +7,7 @@
 		center: new maps.LatLng(47.3, 19.5),
 		zoom: 8,
 		mapTypeId: 'turistautak',
-		mapTypeControlOptions: {
-			mapTypeIds: [
-				maps.MapTypeId.ROADMAP,
-				maps.MapTypeId.SATELLITE,
-				maps.MapTypeId.TERRAIN,
-				'turistautak'],
-			style: maps.MapTypeControlStyle.DROPDOWN_MENU
-		},
-		mapTypeControl: true,
+		mapTypeControl: false,
 		scaleControl: true,
 		panControl: false,
 		streetViewControl: false,
@@ -67,19 +59,23 @@
 			createButton('locate', maps.ControlPosition.TOP_LEFT, getCurrentPosition);
 		}
 
-		if(isEnabled('offline')) {
-			createButton('settings', maps.ControlPosition.TOP_RIGHT, toggleSettings);
+		createButton('settings', maps.ControlPosition.TOP_RIGHT, toggleSettings);
 
+		// offline mode and settings view
+		if(isEnabled('offline')) {
 			offline.initialize('turistautak').then(function() {
 				// offline mode
 				if(offline.hasTiles) {
 					map.mapTypes.set('turistautak', offline.extend(turistautak.DEFAULT));
 				}
-				// settings view
 				settings.initialize(map, offline);
+			}, function(err) {
+				settings.initialize(map, offline);
+				throw err.message;
 			});
+		} else {
+			settings.initialize(map);
 		}
-
 	}
 
 	function createButton(className, position, handler) {

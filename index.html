@@ -21,14 +21,24 @@
 	<body>
 		<div id="map"></div>
 		<div id="settings">
-			<section class="offline">
-				<p>
-					<button id="save-button">Save map for offline use</button>
+			<header>
+				<button class="btn" id="close-button">Close</button>
+			</header>
+			<section>
+				<p class="map-type btn-group">
+					<button class="btn left active" name="turistautak">Turista</button>
+					<button class="btn middle" name="satellite">Satellite</button>
+					<button class="btn right" name="terrain">Map</button>
 				</p>
-				<p id="saving">
-					<progress></progress><!--a href="#" id="cancel-button">cancel</a-->
-				</p>
-				<p id="saved">Offline map has been saved.</p>
+				<div class="offline">
+					<p>
+						<button class="btn" id="save-button" disabled="disabled">Save map for offline use</button>
+					</p>
+					<p id="saving">
+						<progress></progress><!--a href="#" id="cancel-button">cancel</a-->
+					</p>
+					<p id="saved">Offline map has been saved.</p>
+				</div>
 			</section>
 		</div>
 		<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>

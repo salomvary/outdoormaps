@@ -2,11 +2,23 @@
 
 var proxy = 'http://salomvary.no.de:12354?',
 	db,
-	tileBounds = {};
+	tileBounds = {},
+	isSupported = exports.isSupported = !!window.openDatabase;
 
 exports.initialize = function(dbName) {
-	db = openDatabase(dbName, '', dbName, 50 * 1024 * 1024);
-	return getTileBounds();
+	if(isSupported) {
+		// TODO do not request 50Mb storage by default
+		db = openDatabase(dbName, '', dbName, 50 * 1024 * 1024);
+		// check if table exists first
+		return readQuery(db, 'SELECT name FROM sqlite_master WHERE type = "table" ' +
+			'AND name = "tiles"', []).then(function(data) {
+				return data.rows.length ? getTileBounds() : false;
+			});
+	} else {
+		var p = Promise();
+		p.resolve();
+		return p;
+	}
 };
 
 exports.extend = function(mapType) {
