@@ -9,6 +9,7 @@ new AssetGraph({root: './'})
 			console.error('error populating', err);
 		}})
 	.writeStatsToStderr()
+	.bundleRelations({type: ['HtmlStyle', 'HtmlScript']})
 	.moveAssetsInOrder({type: ['JavaScript', 'Css', 'Png']}, function (asset) {
 		return asset.url + '?' + asset.md5Hex.substr(0, 10);
 	})
