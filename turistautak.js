@@ -69,6 +69,11 @@
 
 		createButton('settings', 'topright', toggleSettings);
 
+		// add zoom-control for non-pinch-zoom devices
+		if(! /(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent)) {
+			map.addControl(L.control.zoom());
+		}
+
 		// offline mode and settings view
 		if(isEnabled('offline')) {
 			offline.initialize('turistautak').then(function() {
