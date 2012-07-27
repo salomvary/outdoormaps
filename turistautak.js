@@ -1,5 +1,7 @@
 (function(exports) {
 
+	L.Icon.Default.imagePath = 'leaflet/images';
+
 	var marker,
 		map,
 		mapType = 'turistautak';
