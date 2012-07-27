@@ -100,8 +100,8 @@
 	}
 
 	function getCurrentPosition() {
-		navigator.geolocation.getCurrentPosition(showPosition, positionError,
-			{ enableHighAccuracy:true, timeout:30000, maximumAge:10000, requireCoords: true });
+		navigator.geolocation.getAccurateCurrentPosition(showPosition, positionError,
+			showPosition, {desiredAccuracy:10, maxWait: 20000});
 	}
 
 	function positionError(error) {
