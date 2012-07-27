@@ -21,6 +21,10 @@ body {
 	height: 100%;
 }
 
+#settings {
+	z-index: 1000;
+}
+
 button {
 	height: 40px;
 	border-radius: 4px;

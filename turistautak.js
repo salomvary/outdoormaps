@@ -1,22 +1,24 @@
-(function(maps) {
+(function(exports) {
 
 	var marker,
-		map;
+		map,
+		mapType = 'turistautak';
 
 	var mapDefaults = {
-		center: new maps.LatLng(47.3, 19.5),
+		center: new L.LatLng(47.3, 19.5),
 		zoom: 8,
-		mapTypeId: 'turistautak',
-		mapTypeControl: false,
-		scaleControl: true,
-		panControl: false,
-		streetViewControl: false,
-		zoomControlOptions: {
-			position: maps.ControlPosition.LEFT_TOP
-		}
+		zoomControl: false
 	};
 
-	initialize();
+	var MapButton = L.Control.extend({
+		onAdd: function(map) {
+			var button = document.createElement('button');
+			button.className = this.options.className + '-button';
+			button.type = 'button';
+			button.addEventListener('click', this.options.handler, false);
+			return button;
+		}
+	});
 
 	function initialize() {
 
@@ -43,23 +45,27 @@
 			}
 		}
 
-		map = new maps.Map(document.getElementById('map'), mapOptions);
-		map.mapTypes.set('turistautak', turistautak.DEFAULT);
-		updateOverlays();
+		map = new L.Map('map', mapOptions);
+		map.addControl(L.control.scale({imperial: false}));
 
 		// set the rest of the state
 		setState(state);
 
+		/*
 		maps.event.addListener(map, 'maptypeid_changed', updateOverlays);
 		maps.event.addListener(map, 'maptypeid_changed', saveState);
 		maps.event.addListener(map, 'idle', saveState);
 		maps.event.addListener(map, 'rightclick', dropMarker);
+		*/
+		map.on('moveend', saveState);
+		map.on('zoomend', saveState);
+		map.on('contextmenu', dropMarker);
 
 		if(navigator.geolocation) {
-			createButton('locate', maps.ControlPosition.TOP_LEFT, getCurrentPosition);
+			createButton('locate', 'topleft', getCurrentPosition);
 		}
 
-		createButton('settings', maps.ControlPosition.TOP_RIGHT, toggleSettings);
+		createButton('settings', 'topright', toggleSettings);
 
 		// offline mode and settings view
 		if(isEnabled('offline')) {
@@ -79,11 +85,11 @@
 	}
 
 	function createButton(className, position, handler) {
-		var button = document.createElement('button');
-		button.className = className + '-button';
-		button.type = 'button';
-		maps.event.addDomListener(button, 'click', handler);
-		map.controls[position].push(button);
+		map.addControl(new MapButton({
+			className: className,
+			position: position,
+			handler: handler
+		}));
 	}
 
 	function getCurrentPosition() {
@@ -96,23 +102,24 @@
 	}
 
 	function showPosition(position) {
-		var center = new maps.LatLng(position.coords.latitude, 
+		var center = new L.LatLng(position.coords.latitude, 
 			position.coords.longitude);
-		map.setCenter(center);
 		setMarker(center);
 		if(map.getZoom() < 15) {
-			map.setZoom(15);
+			map.setView(center, 15);
+		} else {
+			map.panTo(center);
 		}
 		saveState();
 	}
 
 	function dropMarker(event) {
 		if(marker) {
-			marker.setMap(null);
+			map.removeLayer(marker);
 			marker = null;
 		}
-		setMarker(event.latLng, true);
-		marker.setAnimation(maps.Animation.DROP);
+		setMarker(event.latlng, true);
+		//marker.setAnimation(maps.Animation.DROP);
 		saveHashState();
 	}
 
@@ -123,35 +130,43 @@
 
 	function setMarker(position, draggable) {
 		if(! marker) {
-			marker = new maps.Marker({
-				map: map
-			});
-			maps.event.addListener(marker, 'dragend', moveMarker);
+			marker = new L.Marker(position);
+			marker.on('dragend', moveMarker);
+			map.addLayer(marker);
+		} else {
+			marker.setLatLng(position);
 		}
-		marker.setPosition(position);
-		marker.setDraggable(draggable);
+		//marker.setDraggable(draggable);
 	}
 
-	function updateOverlays() {
-		if(map.getMapTypeId() === maps.MapTypeId.SATELLITE) {
-			map.overlayMapTypes.push(turistautak.LINES);
-		} else {
-			map.overlayMapTypes.clear();
+	var setMapType = exports.setMapType = function(id) {
+		map.removeLayer(layers.get(mapType));
+		map.removeLayer(layers.get('lines'));
+		map.addLayer(layers.get(id));
+		if(id === 'satellite') {
+			map.addLayer(layers.get('lines'));
 		}
-	}
+		mapType = id;
+		saveState();
+	};
+
+	exports.getMapType = function(id) {
+		return mapType;	
+	};
 
 	function setState(state) {
 		if(state.position) {
 			setMarker(state.position);
 		}
+		setMapType(state.mapType || 'turistautak');
 	}
 
 	function deserialize(state) {
 		if(state.center) {
-			state.center = new maps.LatLng(state.center.lat, state.center.lng);
+			state.center = new L.LatLng(state.center.lat, state.center.lng);
 		}
 		if(state.position) {
-			state.position = new maps.LatLng(state.position.lat, state.position.lng);
+			state.position = new L.LatLng(state.position.lat, state.position.lng);
 		}
 	}
 
@@ -159,15 +174,15 @@
 		var state = {
 			zoom: map.getZoom(),
 			center: {
-				lat: map.getCenter().lat(),
-				lng: map.getCenter().lng()
+				lat: map.getCenter().lat,
+				lng: map.getCenter().lng
 			},
-			mapTypeId: map.getMapTypeId()
+			mapType: mapType
 		};
 		if(marker) {
 			state.position = {
-				lat: marker.getPosition().lat(),
-				lng: marker.getPosition().lng()
+				lat: marker.getLatLng().lat,
+				lng: marker.getLatLng().lng
 			};
 		}
 		return state;
@@ -205,10 +220,10 @@
 	}
 
 	function saveHashState() {
-		var position = marker.getPosition();
+		var position = marker.getLatLng();
 		window.location.hash =
-			roundCoordinate(position.lat()) + ',' +
-			roundCoordinate(position.lng()) + ',' +
+			roundCoordinate(position.lat) + ',' +
+			roundCoordinate(position.lng) + ',' +
 			map.getZoom();
 	}
 
@@ -225,4 +240,6 @@
 		return window.localStorage && localStorage[flag + 'Enabled'];
 	}
 
-})(google.maps);
+	initialize();
+
+})(window.app = {});

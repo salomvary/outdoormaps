@@ -1,4 +1,4 @@
-(function(exports, maps) {
+(function(exports) {
 
 var saving = document.getElementById('saving'),
 	saved = document.getElementById('saved'),
@@ -17,13 +17,12 @@ exports.initialize = function(mainMap, offlineModule) {
 	hide(saving);
 	hide(saved);
 	updateButtons();
-	maps.event.addDomListener(closeButton, 'click', close);
-	maps.event.addDomListener(saveButton, 'click', saveMap);
-	maps.event.addDomListener(cancelSave, 'click', cancelSave);
-	maps.event.addListener(map, 'maptypeid_changed', updateButtons);
+	closeButton.addEventListener('click', close, false);
+	saveButton.addEventListener('click', saveMap, false);
+	//cancelSave.addEventListener('click', cancelSave, false);
 	// no event delegation on iOS Safari :(
 	for(var i=0; i<mapTypeButtons.length; i++) {
-		maps.event.addDomListener(mapTypeButtons.item(i), 'click', setMapType);
+		mapTypeButtons.item(i).addEventListener('click', setMapType, false);
 	}
 	if(offline && offline.isSupported) {
 		if(offline.hasTiles) {
@@ -66,7 +65,7 @@ function setMapType(event) {
 	var button = event.target;
 	toggleClass(button.parentNode.querySelector('.active'), 'active', false);
 	toggleClass(button, 'active', true);
-	map.setMapTypeId(button.name);
+	app.setMapType(button.name);
 }
 
 function close() {
@@ -74,7 +73,7 @@ function close() {
 }
 
 function updateButtons() {
-	var mapType = map.getMapTypeId();
+	var mapType = app.getMapType();
 	// show map type
 	for(var i=0; i<mapTypeButtons.length; i++) {
 		var button = mapTypeButtons[i];
@@ -104,4 +103,4 @@ function toggleClass(el, className, enable) {
 	el.className = classes.join(' ');
 }
 
-})((window.settings = {}), google.maps);
+})((window.settings = {}));

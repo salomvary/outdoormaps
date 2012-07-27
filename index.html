@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="add2home.css">
 		<link rel="shortcut icon" href="http://turistautak.hu/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="http://turistautak.hu/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="leaflet/leaflet.css">
 	</head>
 	<body>
 		<div id="map"></div>
@@ -28,7 +29,7 @@
 				<p class="map-type btn-group">
 					<button class="btn left active" name="turistautak">Turista</button>
 					<button class="btn middle" name="satellite">Satellite</button>
-					<button class="btn right" name="terrain">Map</button>
+					<button class="btn right" name="map">Map</button>
 				</p>
 				<div class="offline">
 					<p>
@@ -41,9 +42,10 @@
 				</div>
 			</section>
 		</div>
-		<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script src="leaflet/leaflet-src.js"></script>
+		<script src="bing-layer.js"></script>
 		<script src="polyfills.js"></script>
-		<script src="turistautak-gmaps.js"></script>
+		<script src="turistautak-leaflet.js"></script>
 		<script src="promise.js"></script>
 		<script src="gmaps-offline.js"></script>
 		<script src="settings.js"></script>
