@@ -1,7 +1,6 @@
 (function(exports){
 
 var layers = {};
-	detectRetina: isEnabled('detectRetina')
 
 layers.map = new L.TileLayer(
 	'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
