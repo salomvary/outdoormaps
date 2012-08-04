@@ -21,7 +21,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4';
+L.version = '0.4.2';
 
 
 /*
@@ -146,7 +146,10 @@ L.Util = {
 
 	var cancelFn = window.cancelAnimationFrame ||
 			getPrefixed('CancelAnimationFrame') ||
-			getPrefixed('CancelRequestAnimationFrame') || window.clearTimeout;
+			getPrefixed('CancelRequestAnimationFrame') ||
+			function (id) {
+				window.clearTimeout(id);
+			};
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
@@ -379,6 +382,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		return supported;
 	}());
 
+	var retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) || ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
+
 	L.Browser = {
 		ua: ua,
 		ie: ie,
@@ -402,7 +407,9 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		mobileWebkit3d: mobile && webkit3d,
 		mobileOpera: mobile && opera,
 
-		touch: touch
+		touch: touch,
+
+		retina: retina
 	};
 }());
 
@@ -463,6 +470,16 @@ L.Point.prototype = {
 	_round: function () {
 		this.x = Math.round(this.x);
 		this.y = Math.round(this.y);
+		return this;
+	},
+
+	floor: function () {
+		return this.clone()._floor();
+	},
+
+	_floor: function () {
+		this.x = Math.floor(this.x);
+		this.y = Math.floor(this.y);
 		return this;
 	},
 
@@ -1256,7 +1273,7 @@ L.Map = L.Class.extend({
 		return this.panBy(new L.Point(dx, dy, true));
 	},
 
-	addLayer: function (layer, insertAtTheBottom) {
+	addLayer: function (layer) {
 		// TODO method is too big, refactor
 
 		var id = L.Util.stamp(layer);
@@ -1281,7 +1298,7 @@ L.Map = L.Class.extend({
 		}
 
 		var onMapLoad = function () {
-			layer.onAdd(this, insertAtTheBottom);
+			layer.onAdd(this);
 			this.fire('layeradd', {layer: layer});
 		};
 
@@ -1858,24 +1875,26 @@ L.TileLayer = L.Class.extend({
 		subdomains: 'abc',
 		errorTileUrl: '',
 		attribution: '',
+		zoomOffset: 0,
 		opacity: 1,
+		/* (undefined works too)
+		zIndex: null,
 		tms: false,
 		continuousWorld: false,
 		noWrap: false,
-		zoomOffset: 0,
 		zoomReverse: false,
 		detectRetina: false,
-
+		reuseTiles: false,
+		*/
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: false
+		updateWhenIdle: L.Browser.mobile
 	},
 
 	initialize: function (url, options) {
 		options = L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && window.devicePixelRatio > 1 && options.maxZoom > 0) {
+		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 			options.zoomOffset++;
@@ -1895,9 +1914,8 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	onAdd: function (map, insertAtTheBottom) {
+	onAdd: function (map) {
 		this._map = map;
-		this._insertAtTheBottom = insertAtTheBottom;
 
 		// create a container div for tiles
 		this._initContainer();
@@ -1942,17 +1960,24 @@ L.TileLayer = L.Class.extend({
 	},
 
 	bringToFront: function () {
+		var pane = this._map._panes.tilePane;
+
 		if (this._container) {
-			this._map._panes.tilePane.appendChild(this._container);
+			pane.appendChild(this._container);
+			this._setAutoZIndex(pane, Math.max);
 		}
+
 		return this;
 	},
 
 	bringToBack: function () {
 		var pane = this._map._panes.tilePane;
+
 		if (this._container) {
 			pane.insertBefore(this._container, pane.firstChild);
+			this._setAutoZIndex(pane, Math.min);
 		}
+
 		return this;
 	},
 
@@ -1966,6 +1991,13 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+
+		return this;
+	},
+
+	setZIndex: function (zIndex) {
+		this.options.zIndex = zIndex;
+		this._updateZIndex();
 
 		return this;
 	},
@@ -1989,6 +2021,32 @@ L.TileLayer = L.Class.extend({
 		return this;
 	},
 
+	_updateZIndex: function () {
+		if (this._container && this.options.zIndex !== undefined) {
+			this._container.style.zIndex = this.options.zIndex;
+		}
+	},
+
+	_setAutoZIndex: function (pane, compare) {
+
+		var layers = pane.getElementsByClassName('leaflet-layer'),
+			edgeZIndex = -compare(Infinity, -Infinity), // -Ifinity for max, Infinity for min
+			zIndex;
+
+		for (var i = 0, len = layers.length; i < len; i++) {
+
+			if (layers[i] !== this._container) {
+				zIndex = parseInt(layers[i].style.zIndex, 10);
+
+				if (!isNaN(zIndex)) {
+					edgeZIndex = compare(edgeZIndex, zIndex);
+				}
+			}
+		}
+
+		this._container.style.zIndex = isFinite(edgeZIndex) ? edgeZIndex + compare(1, -1) : '';
+	},
+
 	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
@@ -2006,17 +2064,14 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_initContainer: function () {
-		var tilePane = this._map._panes.tilePane,
-			first = tilePane.firstChild;
+		var tilePane = this._map._panes.tilePane;
 
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
 
-			if (this._insertAtTheBottom && first) {
-				tilePane.insertBefore(this._container, first);
-			} else {
-				tilePane.appendChild(this._container);
-			}
+			this._updateZIndex();
+
+			tilePane.appendChild(this._container);
 
 			if (this.options.opacity < 1) {
 				this._updateOpacity();
@@ -2330,7 +2385,7 @@ L.tileLayer = function (url, options) {
 
 
 L.TileLayer.WMS = L.TileLayer.extend({
-	
+
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -2347,7 +2402,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
 
-		if (options.detectRetina && window.devicePixelRatio > 1) {
+		if (options.detectRetina && L.Browser.retina) {
 			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
 		} else {
 			wmsParams.width = wmsParams.height = this.options.tileSize;
@@ -2365,20 +2420,20 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function (map, insertAtTheBottom) {
+	onAdd: function (map) {
 
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
-		L.TileLayer.prototype.onAdd.call(this, map, insertAtTheBottom);
+		L.TileLayer.prototype.onAdd.call(this, map);
 	},
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
-		
+
 		var map = this._map,
 			crs = map.options.crs,
 			tileSize = this.options.tileSize,
-			
+
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
@@ -2395,7 +2450,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	setParams: function (params, noRedraw) {
 
 		L.Util.extend(this.wmsParams, params);
-		
+
 		if (!noRedraw) {
 			this.redraw();
 		}
@@ -2405,8 +2460,9 @@ L.TileLayer.WMS = L.TileLayer.extend({
 });
 
 L.tileLayer.wms = function (url, options) {
-	return new L.TileLayer(url, options);
+	return new L.TileLayer.WMS(url, options);
 };
+
 
 L.TileLayer.Canvas = L.TileLayer.extend({
 	options: {
@@ -2849,7 +2905,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
-			needOpacityUpdate = true;
+			needOpacityUpdate = (this.options.opacity < 1);
 
 			L.DomUtil.addClass(this._icon, classToAdd);
 		}
@@ -2858,7 +2914,7 @@ L.Marker = L.Class.extend({
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = true;
+				needOpacityUpdate = (this.options.opacity < 1);
 			}
 		}
 
@@ -3457,7 +3513,11 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
-		return this.invoke('unbindPopup');
+		if (this._popupContent) {
+			return this.invoke('unbindPopup');
+		} else {
+			return this;
+		}
 	},
 
 	bindPopup: function (content) {
@@ -3536,7 +3596,9 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		this._map._pathRoot.appendChild(this._container);
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
 
 		map.on({
 			'viewreset': this.projectLatlngs,
@@ -4362,7 +4424,8 @@ L.LineUtil = {
 L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
-		this._latlngs = latlngs;
+
+		this._latlngs = this._convertLatLngs(latlngs);
 
 		// TODO refactor: move to Polyline.Edit.js
 		if (L.Handler.PolyEdit) {
@@ -4401,17 +4464,18 @@ L.Polyline = L.Path.extend({
 	},
 
 	setLatLngs: function (latlngs) {
-		this._latlngs = latlngs;
+		this._latlngs = this._convertLatLngs(latlngs);
 		return this.redraw();
 	},
 
 	addLatLng: function (latlng) {
-		this._latlngs.push(latlng);
+		this._latlngs.push(L.latLng(latlng));
 		return this.redraw();
 	},
 
 	spliceLatLngs: function (index, howMany) {
 		var removed = [].splice.apply(this._latlngs, arguments);
+		this._convertLatLngs(this._latlngs);
 		this.redraw();
 		return removed;
 	},
@@ -4461,6 +4525,17 @@ L.Polyline = L.Path.extend({
 		}
 
 		L.Path.prototype.onRemove.call(this, map);
+	},
+
+	_convertLatLngs: function (latlngs) {
+		var i, len;
+		for (i = 0, len = latlngs.length; i < len; i++) {
+			if (latlngs[i] instanceof Array && typeof latlngs[i][0] !== 'number') {
+				return;
+			}
+			latlngs[i] = L.latLng(latlngs[i]);
+		}
+		return latlngs;
 	},
 
 	_initEvents: function () {
@@ -4612,7 +4687,7 @@ L.Polygon = L.Polyline.extend({
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs && (latlngs[0] instanceof Array) && (typeof latlngs[0][0] !== 'number')) {
-			this._latlngs = latlngs[0];
+			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
 		}
 	},
@@ -5723,12 +5798,14 @@ L.Util.extend(L.DomEvent, {
 
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
+		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
 		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);
 		obj.removeEventListener(obj, obj[pre + 'touchend' + id], false);
+		return this;
 	}
 });
 
@@ -5947,6 +6024,139 @@ L.Map.BoxZoom = L.Handler.extend({
 });
 
 L.Map.addInitHook('addHandler', 'boxZoom', L.Map.BoxZoom);
+
+
+L.Map.mergeOptions({
+	keyboard: true,
+	keyboardPanOffset: 80,
+	keyboardZoomOffset: 1
+});
+
+L.Map.Keyboard = L.Handler.extend({
+
+	// list of e.keyCode values for particular actions
+	keyCodes: {
+		left:    [37],
+		right:   [39],
+		down:    [40],
+		up:      [38],
+		zoomIn:  [187, 61, 107],
+		zoomOut: [189, 109, 0]
+	},
+
+	initialize: function (map) {
+		this._map = map;
+
+		this._setPanOffset(map.options.keyboardPanOffset);
+		this._setZoomOffset(map.options.keyboardZoomOffset);
+	},
+
+	addHooks: function () {
+		var container = this._map._container;
+
+		// make the container focusable by tabbing
+		if (container.tabIndex === -1) {
+			container.tabIndex = "0";
+		}
+
+		L.DomEvent
+			.addListener(container, 'focus', this._onFocus, this)
+			.addListener(container, 'blur', this._onBlur, this)
+			.addListener(container, 'mousedown', this._onMouseDown, this);
+
+		this._map
+			.on('focus', this._addHooks, this)
+			.on('blur', this._removeHooks, this);
+	},
+
+	removeHooks: function () {
+		this._removeHooks();
+
+		var container = this._map._container;
+		L.DomEvent
+			.removeListener(container, 'focus', this._onFocus, this)
+			.removeListener(container, 'blur', this._onBlur, this)
+			.removeListener(container, 'mousedown', this._onMouseDown, this);
+
+		this._map
+			.off('focus', this._addHooks, this)
+			.off('blur', this._removeHooks, this);
+	},
+
+	_onMouseDown: function () {
+		if (!this._focused) {
+			this._map._container.focus();
+		}
+	},
+
+	_onFocus: function () {
+		this._focused = true;
+		this._map.fire('focus');
+	},
+
+	_onBlur: function () {
+		this._focused = false;
+		this._map.fire('blur');
+	},
+
+	_setPanOffset: function (pan) {
+		var keys = this._panKeys = {},
+		    codes = this.keyCodes,
+		    i, len;
+
+		for (i = 0, len = codes.left.length; i < len; i++) {
+			keys[codes.left[i]] = [-1 * pan, 0];
+		}
+		for (i = 0, len = codes.right.length; i < len; i++) {
+			keys[codes.right[i]] = [pan, 0];
+		}
+		for (i = 0, len = codes.down.length; i < len; i++) {
+			keys[codes.down[i]] = [0, pan];
+		}
+		for (i = 0, len = codes.up.length; i < len; i++) {
+			keys[codes.up[i]] = [0, -1 * pan];
+		}
+	},
+
+	_setZoomOffset: function (zoom) {
+		var keys = this._zoomKeys = {},
+			codes = this.keyCodes,
+		    i, len;
+
+		for (i = 0, len = codes.zoomIn.length; i < len; i++) {
+			keys[codes.zoomIn[i]] = zoom;
+		}
+		for (i = 0, len = codes.zoomOut.length; i < len; i++) {
+			keys[codes.zoomOut[i]] = -zoom;
+		}
+	},
+
+	_addHooks: function () {
+		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
+	},
+
+	_removeHooks: function () {
+		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
+	},
+
+	_onKeyDown: function (e) {
+		var key = e.keyCode;
+
+		if (this._panKeys.hasOwnProperty(key)) {
+			this._map.panBy(this._panKeys[key]);
+
+		} else if (this._zoomKeys.hasOwnProperty(key)) {
+			this._map.setZoom(this._map.getZoom() + this._zoomKeys[key]);
+
+		} else {
+			return;
+		}
+
+		L.DomEvent.stop(e);
+	}
+});
+
+L.Map.addInitHook('addHandler', 'keyboard', L.Map.Keyboard);
 
 
 /*
@@ -6341,7 +6551,8 @@ L.Control.Zoom = L.Control.extend({
 		L.DomEvent
 			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
-			.on(link, 'click', fn, context);
+			.on(link, 'click', fn, context)
+			.on(link, 'dblclick', L.DomEvent.stopPropagation);
 
 		return link;
 	}
@@ -6489,12 +6700,7 @@ L.Control.Scale = L.Control.extend({
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;
 
-		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className + '-line', container);
-		}
-		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className + '-line', container);
-		}
+		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		this._update();
@@ -6506,10 +6712,19 @@ L.Control.Scale = L.Control.extend({
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 	},
 
+	_addScales: function (options, className, container) {
+		if (options.metric) {
+			this._mScale = L.DomUtil.create('div', className + '-line', container);
+		}
+		if (options.imperial) {
+			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
+	},
+
 	_update: function () {
 		var bounds = this._map.getBounds(),
 		    centerLat = bounds.getCenter().lat,
-		    halfWorldMeters = new L.LatLng(centerLat, 0).distanceTo(new L.LatLng(centerLat, 180)),
+		    halfWorldMeters = 6378137 * Math.PI * Math.cos(centerLat * Math.PI / 180),
 		    dist = halfWorldMeters * (bounds.getNorthEast().lng - bounds.getSouthWest().lng) / 180,
 
 		    size = this._map.getSize(),
@@ -6520,6 +6735,10 @@ L.Control.Scale = L.Control.extend({
 			maxMeters = dist * (options.maxWidth / size.x);
 		}
 
+		this._updateScales(options, maxMeters);
+	},
+
+	_updateScales: function (options, maxMeters) {
 		if (options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
@@ -6575,16 +6794,19 @@ L.control.scale = function (options) {
 };
 
 
+
 L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
-		position: 'topright'
+		position: 'topright',
+		autoZIndex: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 
 		this._layers = {};
+		this._lastZIndex = 0;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -6671,11 +6893,17 @@ L.Control.Layers = L.Control.extend({
 
 	_addLayer: function (layer, name, overlay) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = {
 			layer: layer,
 			name: name,
 			overlay: overlay
 		};
+
+		if (this.options.autoZIndex && layer.setZIndex) {
+			this._lastZIndex++;
+			layer.setZIndex(this._lastZIndex);
+		}
 	},
 
 	_update: function () {
@@ -6701,16 +6929,35 @@ L.Control.Layers = L.Control.extend({
 		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
 	},
 
-	_addItem: function (obj, onclick) {
-		var label = document.createElement('label');
+	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
+	_createRadioElement: function (name, checked) {
 
-		var input = document.createElement('input');
-		if (!obj.overlay) {
-			input.name = 'leaflet-base-layers';
+		var radioHtml = '<input type="radio" name="' + name + '"';
+		if (checked) {
+			radioHtml += ' checked="checked"';
 		}
-		input.type = obj.overlay ? 'checkbox' : 'radio';
+		radioHtml += '/>';
+
+		var radioFragment = document.createElement('div');
+		radioFragment.innerHTML = radioHtml;
+
+		return radioFragment.firstChild;
+	},
+
+	_addItem: function (obj) {
+		var label = document.createElement('label'),
+		    input,
+		    checked = this._map.hasLayer(obj.layer);
+
+		if (obj.overlay) {
+			input = document.createElement('input');
+			input.type = 'checkbox';
+			input.defaultChecked = checked;
+		} else {
+			input = this._createRadioElement('leaflet-base-layers', checked);
+		}
+
 		input.layerId = L.Util.stamp(obj.layer);
-		input.defaultChecked = this._map.hasLayer(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -7042,6 +7289,8 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 
 	panBy: function (offset, options) {
+		offset = L.point(offset);
+
 		if (!(offset.x || offset.y)) {
 			return this;
 		}
@@ -7079,7 +7328,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 	_panByIfClose: function (center) {
 		// difference between the new and current centers in pixels
-		var offset = this._getCenterOffset(center);
+		var offset = this._getCenterOffset(center)._floor();
 
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);
