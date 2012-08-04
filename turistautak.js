@@ -243,10 +243,6 @@
 			document.body.className === 'settings' ? '' : 'settings';
 	}
 
-	function isEnabled(flag) {
-		return window.localStorage && localStorage[flag + 'Enabled'];
-	}
-
 	initialize();
 
 })(window.app = {});

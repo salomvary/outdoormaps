@@ -103,4 +103,8 @@ function toggleClass(el, className, enable) {
 	el.className = classes.join(' ');
 }
 
+window.isEnabled = function(flag) {
+	return window.localStorage && localStorage[flag + 'Enabled'];
+};
+
 })((window.settings = {}));

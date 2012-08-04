@@ -1,10 +1,12 @@
 (function(exports){
 
 var layers = {};
+	detectRetina: isEnabled('detectRetina')
 
 layers.map = new L.TileLayer(
 	'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	attribution: 'Map data © OpenStreetMap contributors'
+	attribution: 'Map data © OpenStreetMap contributors',
+	detectRetina: isEnabled('detectRetina')
 });	
 
 layers.turistautak = new L.TileLayer(
@@ -13,7 +15,8 @@ layers.turistautak = new L.TileLayer(
 	minZoom: 8,
 	maxZoom: 21,
 	subdomains: 'abcd',
-	attribution: '© Turistautak.hu'
+	attribution: '© Turistautak.hu',
+	detectRetina: isEnabled('detectRetina')
 });
 
 layers.lines = new L.TileLayer(
@@ -22,13 +25,16 @@ layers.lines = new L.TileLayer(
 	minZoom: 8,
 	maxZoom: 21,
 	subdomains: 'abcd',
-	attribution: '© Turistautak.hu'
+	attribution: '© Turistautak.hu',
+	detectRetina: isEnabled('detectRetina')
 });
 
 exports.get = function(id) {
 	if(id === 'satellite' && ! layers[id]) {
 		// lazy-load this to avoid initial metadata request if not used
-		layers.satellite = new L.BingLayer('AugCQhyydetxyavzoAQjcWuElUpYz2r49p15Kol7MUZEHnAW9umPiQWiki5CsUuz');
+		layers.satellite = new L.BingLayer(
+			'AugCQhyydetxyavzoAQjcWuElUpYz2r49p15Kol7MUZEHnAW9umPiQWiki5CsUuz',
+			{detectRetina: isEnabled('detectRetina')});
 	}
 	return layers[id];
 };

@@ -1,4 +1,4 @@
-var flags = ['offlineEnabled', 'doNotTrackEnabled'],
+var flags = ['offlineEnabled', 'doNotTrackEnabled', 'detectRetina'],
 	form = document.forms[0];
 
 flags.forEach(function(flag) {
