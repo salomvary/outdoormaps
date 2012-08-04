@@ -49,6 +49,7 @@
 
 		map = new L.Map('map', mapOptions);
 		map.addControl(L.control.scale({imperial: false}));
+		map.getContainer().focus();
 
 		// set the rest of the state
 		setState(state);
