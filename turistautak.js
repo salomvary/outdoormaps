@@ -4,7 +4,8 @@
 
 	var marker,
 		map,
-		mapType = 'turistautak';
+		mapType = 'turistautak',
+		hikingMapType = mapType;
 
 	var mapDefaults = {
 		center: new L.LatLng(47.3, 19.5),
@@ -151,7 +152,7 @@
 		map.removeLayer(layers.get(mapType));
 		map.removeLayer(layers.get('lines'));
 		map.addLayer(layers.get(id));
-		if(id === 'satellite') {
+		if(id === 'satellite' && hikingMapType === 'turistautak') {
 			map.addLayer(layers.get('lines'));
 		}
 		mapType = id;
@@ -162,11 +163,20 @@
 		return mapType;	
 	};
 
+	exports.getHikingMapType = function(id) {
+		return hikingMapType;
+	};
+
+	exports.setHikingMapType = function(id) {
+		hikingMapType = id;
+	};
+
 	function setState(state) {
 		if(state.position) {
 			setMarker(state.position);
 		}
 		setMapType(state.mapType || 'turistautak');
+		hikingMapType = state.hikingMapType;
 	}
 
 	function deserialize(state) {
@@ -185,7 +195,8 @@
 				lat: map.getCenter().lat,
 				lng: map.getCenter().lng
 			},
-			mapType: mapType
+			mapType: mapType,
+			hikingMapType: hikingMapType
 		};
 		if(marker) {
 			state.position = {

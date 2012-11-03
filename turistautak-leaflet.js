@@ -6,7 +6,7 @@ layers.map = new L.TileLayer(
 	'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	attribution: 'Map data © OpenStreetMap contributors',
 	detectRetina: isEnabled('detectRetina')
-});	
+});
 
 layers.turistautak = new L.TileLayer(
 	'http://{s}.map.turistautak.hu/tiles/{type}/{z}/{x}/{y}.png', {
@@ -25,6 +25,14 @@ layers.lines = new L.TileLayer(
 	maxZoom: 21,
 	subdomains: 'abcd',
 	attribution: '© Turistautak.hu',
+	detectRetina: isEnabled('detectRetina')
+});
+
+layers.wanderkarte = new L.TileLayer(
+	'http://wanderreitkarte.de/topo/{z}/{x}/{y}.png', {
+	minZoom: 5,
+	maxZoom: 18,
+	attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
 	detectRetina: isEnabled('detectRetina')
 });
 

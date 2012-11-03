@@ -7,6 +7,8 @@ var saving = document.getElementById('saving'),
 	cancelButton = document.getElementById('cancel-button'),
 	closeButton = document.getElementById('close-button'),
 	mapTypeButtons = document.querySelectorAll('.map-type button'),
+	hikingTypeGroup = document.querySelector('.hiking-map-type'),
+	hikingTypeButtons = hikingTypeGroup.querySelectorAll('button'),
 	offlineView = document.querySelector('.offline'),
 	map,
 	offline;
@@ -21,9 +23,12 @@ exports.initialize = function(mainMap, offlineModule) {
 	saveButton.addEventListener('click', saveMap, false);
 	//cancelSave.addEventListener('click', cancelSave, false);
 	// no event delegation on iOS Safari :(
-	for(var i=0; i<mapTypeButtons.length; i++) {
-		mapTypeButtons.item(i).addEventListener('click', setMapType, false);
-	}
+	eachNode(mapTypeButtons, function(button) {
+		button.addEventListener('click', setMapType, false);
+	});
+	eachNode(hikingTypeButtons, function(button) {
+		button.addEventListener('click', setMapType, false);
+	});
 	if(offline && offline.isSupported) {
 		if(offline.hasTiles) {
 			show(saved);
@@ -62,10 +67,18 @@ function cancelSave() {
 }
 
 function setMapType(event) {
-	var button = event.target;
-	toggleClass(button.parentNode.querySelector('.active'), 'active', false);
-	toggleClass(button, 'active', true);
-	app.setMapType(button.name);
+	var button = event.target,
+		type = button.name,
+		isHikingMap = type === 'turistautak' || type === 'wanderkarte';
+
+	if(type === 'hiking') {
+		type = app.getHikingMapType();
+	} else if(isHikingMap) {
+		app.setHikingMapType(type);
+	}
+
+	app.setMapType(type);
+	updateButtons();
 }
 
 function close() {
@@ -73,11 +86,25 @@ function close() {
 }
 
 function updateButtons() {
-	var mapType = app.getMapType();
-	// show map type
-	for(var i=0; i<mapTypeButtons.length; i++) {
-		var button = mapTypeButtons[i];
+	var mapType = app.getMapType(),
+		hikingMapType = app.getHikingMapType(),
+		isHikingMap = mapType === 'turistautak' || mapType === 'wanderkarte',
+		button, active;
+	// map type buttons
+	eachNode(mapTypeButtons, function(button) {
+		active = button.name === mapType
+			|| (button.name === 'hiking' && isHikingMap);
+		toggleClass(button, 'active', active);
+	});
+	// hiking map type buttons
+	eachNode(hikingTypeButtons, function(button) {
 		toggleClass(button, 'active', button.name === mapType);
+	});
+	// hiking map type group
+	if(isHikingMap) {
+		show(hikingTypeGroup);
+	} else {
+		hide(hikingTypeGroup);
 	}
 	// enable/disable save offline
 	saveButton.disabled = mapType !== 'turistautak';
@@ -89,6 +116,12 @@ function show(el) {
 
 function hide(el) {
 	el.style.display = 'none';
+}
+
+function eachNode(nodeList, fn) {
+	for(var i=0; i<nodeList.length; i++) {
+		fn.call(nodeList[i], nodeList[i]);
+	}
 }
 
 function toggleClass(el, className, enable) {

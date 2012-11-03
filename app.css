@@ -180,6 +180,10 @@ section {
 	width: 33.33%;
 }
 
+.hiking-map-type button {
+	width: 50%;
+}
+
 .offline button,
 .offline progress {
 	width: 100%;
