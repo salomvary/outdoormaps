@@ -1,3 +1,4 @@
+delete navigator.geolocation;
 (function(exports) {
 
 	L.Icon.Default.imagePath = 'leaflet/images';
@@ -5,7 +6,7 @@
 	var marker,
 		map,
 		mapType = 'turistautak',
-		hikingMapType = mapType;
+		hikingMapType;
 
 	var mapDefaults = {
 		center: new L.LatLng(47.3, 19.5),
@@ -24,7 +25,6 @@
 	});
 
 	function initialize() {
-
 		var state,
 			mapOptions = {};
 
@@ -67,6 +67,27 @@
 
 		if(navigator.geolocation) {
 			createButton('locate', 'topleft', getCurrentPosition);
+			// try to get current location
+			// if we don't have a saved location and/or don't know the
+			// default hiking map type
+			if(! hikingMapType || ! state.position) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					var pos = new L.LatLng(position.coords.latitude, position.coords.longitude);
+					if(! hikingMapType) {
+						var mapType = isHungary(pos) ? 'turistautak' : 'wanderkarte';
+						setHikingMapType(mapType);
+						setMapType(mapType);
+					}
+					if(! state.position) {
+						showPosition(position);
+					}
+				}, function() {
+					// error falback
+					setHikingMapType('turistautak');
+				});
+			}
+		} else {
+			setHikingMapType('turistautak');
 		}
 
 		createButton('settings', 'topright', toggleSettings);
@@ -99,6 +120,14 @@
 			position: position,
 			handler: handler
 		}));
+	}
+
+	function isHungary(latLng) {
+		// approximate bounding box of hungary
+		return new L.LatLngBounds(
+			new L.LatLng(48.6, 16), // sw
+			new L.LatLng(45.6, 23.2) // ne
+		).contains(latLng);
 	}
 
 	function getCurrentPosition() {
@@ -167,16 +196,17 @@
 		return hikingMapType;
 	};
 
-	exports.setHikingMapType = function(id) {
+	var setHikingMapType = exports.setHikingMapType = function(id) {
 		hikingMapType = id;
+		saveState();
 	};
 
 	function setState(state) {
 		if(state.position) {
 			setMarker(state.position);
 		}
-		setMapType(state.mapType || 'turistautak');
 		hikingMapType = state.hikingMapType;
+		setMapType(state.mapType || 'turistautak');
 	}
 
 	function deserialize(state) {
