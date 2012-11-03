@@ -14,7 +14,7 @@ layers.turistautak = new L.TileLayer(
 	minZoom: 8,
 	maxZoom: 21,
 	subdomains: 'abcd',
-	attribution: '© Turistautak.hu',
+	attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
 	detectRetina: isEnabled('detectRetina')
 });
 
@@ -24,7 +24,7 @@ layers.lines = new L.TileLayer(
 	minZoom: 8,
 	maxZoom: 21,
 	subdomains: 'abcd',
-	attribution: '© Turistautak.hu',
+	attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
 	detectRetina: isEnabled('detectRetina')
 });
 
