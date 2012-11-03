@@ -1,4 +1,3 @@
-delete navigator.geolocation;
 (function(exports) {
 
 	L.Icon.Default.imagePath = 'leaflet/images';
