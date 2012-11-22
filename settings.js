@@ -79,6 +79,9 @@ function setMapType(event) {
 
 	app.setMapType(type);
 	updateButtons();
+	// XXX fix a strange Chrome issue that settings doesn't repaint
+	var settings = document.getElementById('settings')
+		.style.opacity = 1;
 }
 
 function close() {
