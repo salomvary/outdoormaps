@@ -29,7 +29,7 @@ layers.lines = new L.TileLayer(
 });
 
 layers.wanderkarte = new L.TileLayer(
-	'http://wanderreitkarte.de/topo/{z}/{x}/{y}.png', {
+	'http://www.wanderreitkarte.de/topo/{z}/{x}/{y}.png', {
 	minZoom: 5,
 	maxZoom: 18,
 	attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
