@@ -1,6 +1,6 @@
 (function(exports) {
 
-	L.Icon.Default.imagePath = 'leaflet/images';
+	L.Icon.Default.imagePath = 'vendor/leaflet.js/images';
 
 	var marker,
 		map,
