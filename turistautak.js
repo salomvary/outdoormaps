@@ -18,10 +18,10 @@ require.config({
 define(function(require, exports, module) {
 
   var L = require('vendor/leaflet'),
-      layers = require('turistautak-leaflet'),
+      layers = require('layers'),
       settings = require('settings'),
       flags = require('flags'),
-      offline = require('gmaps-offline');
+      offline = require('offline');
 
   L.Icon.Default.imagePath = 'vendor/leaflet.js/images';
 
