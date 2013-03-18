@@ -1,4 +1,27 @@
-(function(exports) {
+window.addToHomeConfig = {
+	returningVisitor: true
+};
+
+require.config({
+	deps: ['polyfills', 'vendor/add-to-homescreen/src/add2home'],
+	paths: {
+		'vendor/leaflet': 'vendor/leaflet.js/leaflet-src'
+	},
+	shim: {
+		'vendor/leaflet': {
+			exports: 'L'
+		},
+		'vendor/bing-layer': ['vendor/leaflet']
+	}
+});
+
+define(function(require, exports, module) {
+
+	var L	= require('vendor/leaflet'),
+			layers = require('turistautak-leaflet'),
+			settings = require('settings'),
+			flags = require('flags'),
+			offline = require('gmaps-offline');
 
 	L.Icon.Default.imagePath = 'vendor/leaflet.js/images';
 
@@ -97,7 +120,7 @@
 		}
 
 		// offline mode and settings view
-		if(isEnabled('offline')) {
+		if(flags.isEnabled('offline')) {
 			offline.initialize('turistautak').then(function() {
 				// offline mode
 				if(offline.hasTiles) {
@@ -286,4 +309,4 @@
 
 	initialize();
 
-})(window.app = {});
+});

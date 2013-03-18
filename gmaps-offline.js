@@ -1,4 +1,6 @@
-(function(exports) {
+define(function(require, exports) {
+
+var Promise = require('promise');
 
 var proxy = 'http://salomvary.no.de:12354?',
 	db,
@@ -228,4 +230,4 @@ function encodeBase64(data) {
 	return btoa(binary);
 }
 
-})((window.offline = {}));
+});

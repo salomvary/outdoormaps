@@ -1,16 +1,7 @@
-var flags = ['offlineEnabled', 'doNotTrackEnabled', 'detectRetinaEnabled'],
-	form = document.forms[0];
+define(function(require, exports, module) {
 
-flags.forEach(function(flag) {
-	form.innerHTML += '<p><label><input type="checkbox" name="'+flag+'"' + 
-		(localStorage[flag] ? ' checked="checked"' : '') + '>' +
-		flag + '</label></p>';
+	module.exports.isEnabled = function(flag) {
+		return window.localStorage && localStorage[flag + 'Enabled'];
+	};
+
 });
-
-form.addEventListener('change', function(e) {
-	if(e.target.checked) {
-		localStorage[e.target.name] = true;
-	} else {
-		delete localStorage[e.target.name];
-	}
-}, false);

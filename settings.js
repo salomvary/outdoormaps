@@ -1,4 +1,6 @@
-(function(exports) {
+define(function(require, exports, module) {
+
+var app = require('turistautak');
 
 var saving = document.getElementById('saving'),
 	saved = document.getElementById('saved'),
@@ -139,8 +141,4 @@ function toggleClass(el, className, enable) {
 	el.className = classes.join(' ');
 }
 
-window.isEnabled = function(flag) {
-	return window.localStorage && localStorage[flag + 'Enabled'];
-};
-
-})((window.settings = {}));
+});

@@ -2,11 +2,10 @@
 	"browser": true,
   "undef": true,
 	"laxbreak": true,
+	"unused": true,
 	"globals": {
-		"L": true,
-		"turistautak": true,
-		"app": true,
-		"alert": true,
-		"layers": true
+		"define": true,
+		"require": true,
+		"alert": true
 	}
 }

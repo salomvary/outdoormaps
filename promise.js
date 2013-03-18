@@ -7,11 +7,13 @@
  * - single argument to resove/reject
  */
 
-function Promise () {
+define(function(require, exports, module) {
+
+var Promise = module.exports = function() {
 	if(! (this instanceof Promise)) {
 		return new Promise();
 	}
-}
+};
 
 Promise.prototype = {
 	/**
@@ -74,3 +76,5 @@ Promise.prototype = {
 	}
 	
 };
+
+});
