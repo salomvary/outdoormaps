@@ -15,20 +15,20 @@ require.config({
   }
 });
 
-define(function(require, exports, module) {
+define(function(require, exports) {
 
-  var L = require('vendor/leaflet'),
-      layers = require('layers'),
+  var L        = require('vendor/leaflet'),
+      layers   = require('layers'),
       settings = require('settings'),
-      flags = require('flags'),
-      offline = require('offline');
+      flags    = require('flags'),
+      offline  = require('offline');
 
   L.Icon.Default.imagePath = 'vendor/leaflet.js/images';
 
   var marker,
-    map,
-    mapType = 'turistautak',
-    hikingMapType;
+      map,
+      mapType = 'turistautak',
+      hikingMapType;
 
   var mapDefaults = {
     center: new L.LatLng(47.3, 19.5),
@@ -37,7 +37,7 @@ define(function(require, exports, module) {
   };
 
   var MapButton = L.Control.extend({
-    onAdd: function(map) {
+    onAdd: function() {
       var button = document.createElement('button');
       button.className = this.options.className + '-button';
       button.type = 'button';
@@ -124,7 +124,7 @@ define(function(require, exports, module) {
       offline.initialize('turistautak').then(function() {
         // offline mode
         if(offline.hasTiles) {
-          map.mapTypes.set('turistautak', offline.extend(turistautak.DEFAULT));
+          map.mapTypes.set('turistautak', offline.extend(layers.turistautak));
         }
         settings.initialize(map, offline);
       }, function(err) {
@@ -162,7 +162,7 @@ define(function(require, exports, module) {
   }
 
   function showPosition(position) {
-    var center = new L.LatLng(position.coords.latitude, 
+    var center = new L.LatLng(position.coords.latitude,
       position.coords.longitude);
     setMarker(center);
     if(map.getZoom() < 15) {
@@ -188,7 +188,7 @@ define(function(require, exports, module) {
     saveHashState();
   }
 
-  function setMarker(position, draggable) {
+  function setMarker(position) {
     if(! marker) {
       marker = new L.Marker(position);
       marker.on('dragend', moveMarker);
@@ -210,11 +210,11 @@ define(function(require, exports, module) {
     saveState();
   };
 
-  exports.getMapType = function(id) {
-    return mapType; 
+  exports.getMapType = function() {
+    return mapType;
   };
 
-  exports.getHikingMapType = function(id) {
+  exports.getHikingMapType = function() {
     return hikingMapType;
   };
 
@@ -303,7 +303,7 @@ define(function(require, exports, module) {
   }
 
   function toggleSettings() {
-    document.body.className = 
+    document.body.className =
       document.body.className === 'settings' ? '' : 'settings';
   }
 

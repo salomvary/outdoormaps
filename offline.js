@@ -39,12 +39,12 @@ exports.extend = function(mapType) {
 						if(data.rows.length === 1) {
 							var row = data.rows.item(0);
 							div.style.backgroundImage = 'url(data:' + row.type +
-								';base64,' + row.data + ')'; 
+								';base64,' + row.data + ')';
 						} else {
 							throw new Error('tile not found ' + coord + ' ' + zoom);
 						}
 					},
-					function(err) {
+					function() {
 						div.innerHTML = 'Read error';
 						throw new Error('SQL read error ' + coord + ' ' + zoom);
 					});
@@ -152,7 +152,7 @@ function getTileBounds() {
 }
 
 function isOffline(coord, zoom) {
-	return tileBounds[zoom] && 
+	return tileBounds[zoom] &&
 		coord.x <= tileBounds[zoom].maxX && coord.x >= tileBounds[zoom].minX &&
 		coord.y <= tileBounds[zoom].maxY && coord.y >= tileBounds[zoom].minY;
 }
