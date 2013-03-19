@@ -6,7 +6,8 @@
       "bing-layer": "github:shramov/leaflet-plugins/master#layer/tile/Bing.js",
       "geo": "github:gwilson/getAccurateCurrentPosition/master#geo.js",
       "add-to-homescreen": "github:cubiq/add-to-homescreen/master",
-      "require": "github:jrburke/requirejs/2.1.4"
+      "require": "github:jrburke/requirejs/2.1.4",
+      "r": "github:jrburke/r.js/2.1.5"
     }
   }
 }
