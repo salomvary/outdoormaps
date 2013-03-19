@@ -5,4 +5,5 @@ node ./build.js
 git add -A
 git add -f vendor
 git commit -m "version bump"
+git rm -r --cached vendor
 git checkout master
