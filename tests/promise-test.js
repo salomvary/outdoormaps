@@ -1,3 +1,7 @@
+define(function(require) {
+
+var Promise = require('../promise');
+
 module('Promise');
 
 asyncTest('async', function() {
@@ -101,3 +105,4 @@ function bazSync(data) {
 	return p;
 }
 
+});
