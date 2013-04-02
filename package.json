@@ -1,4 +1,7 @@
 {
+  "name": "Turistautak",
+  "version": "0.0.1",
+  "description": "Hiking maps optimized for mobile and desktop",
   "volo": {
     "baseDir": "vendor",
     "dependencies": {
@@ -7,7 +10,14 @@
       "geo": "github:gwilson/getAccurateCurrentPosition/master#geo.js",
       "add-to-homescreen": "github:cubiq/add-to-homescreen/master",
       "require": "github:jrburke/requirejs/2.1.4",
-      "r": "github:jrburke/r.js/2.1.5"
+      "almond": "github:jrburke/almond/0.2.5"
     }
+  },
+  "devDependencies": {
+    "grunt-contrib-requirejs": "~0.4.0",
+    "grunt": "~0.4.1",
+    "assetgraph": "~1.6.0beta2",
+    "volo": "~0.2.9",
+    "grunt-volo": "0.0.2"
   }
 }
