@@ -1,11 +1,10 @@
 #!/bin/sh
 set -e
-git checkout gh-pages
-git reset --hard master
+cd gh-pages
+git rm -rf *
+cd ..
 grunt compile
+cd gh-pages
 git add -A
-git add -f vendor
-git commit -m "version bump"
-git rm -r --cached vendor
-git commit -m "rm vendor"
-git checkout master
+git commit -m "update"
+cd ..
