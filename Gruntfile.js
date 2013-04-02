@@ -75,7 +75,7 @@ module.exports = function(grunt) {
           }).attach(manifest, 'last');
         });
       })
-      .writeAssetsToDisc()
+      .writeAssetsToDisc({}, 'file://gh-pages/')
       .run(function(err) {
         if(err) {
           grunt.log.error('error running asset graph ' + err);
