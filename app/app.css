@@ -1,3 +1,6 @@
+@import url("vendor/add-to-homescreen/style/add2home.css");
+@import url("vendor/leaflet.js/leaflet.css");
+
 * { 
 	-moz-box-sizing: border-box; 
 	-webkit-box-sizing: border-box; 
