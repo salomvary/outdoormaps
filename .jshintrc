@@ -1,11 +1,12 @@
 {
-	"browser": true,
+  "browser": true,
+  "node": true,
   "undef": true,
-	"laxbreak": true,
-	"unused": true,
-	"globals": {
-		"define": true,
-		"require": true,
-		"alert": true
-	}
+  "laxbreak": true,
+  "unused": true,
+  "globals": {
+    "define": true,
+    "require": true,
+    "alert": true
+  }
 }
