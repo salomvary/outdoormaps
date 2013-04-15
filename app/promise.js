@@ -6,9 +6,6 @@
  * - Only one then() call per promise
  * - single argument to resove/reject
  */
-
-define(function(require, exports, module) {
-
 var Promise = module.exports = function() {
 	if(! (this instanceof Promise)) {
 		return new Promise();
@@ -76,5 +73,3 @@ Promise.prototype = {
 	}
 	
 };
-
-});

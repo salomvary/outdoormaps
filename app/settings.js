@@ -1,5 +1,3 @@
-define(function(require, exports) {
-
 var app    = require('turistautak'),
     layers = require('layers');
 
@@ -138,5 +136,3 @@ function toggleClass(el, className, enable) {
   }
   el.className = classes.join(' ');
 }
-
-});

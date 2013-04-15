@@ -1,5 +1,3 @@
-define(function(require, exports) {
-
 var L = require('vendor/leaflet'),
 		flags = require('flags');
 		require('vendor/bing-layer');
@@ -49,5 +47,3 @@ exports.get = function(id) {
 	}
 	return layers[id];
 };
-
-});
