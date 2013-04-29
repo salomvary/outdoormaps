@@ -1,5 +1,4 @@
-var app    = require('turistautak'),
-    layers = require('layers');
+var layers = require('layers');
 
 var saving = document.getElementById('saving'),
   saved = document.getElementById('saved'),
@@ -11,10 +10,12 @@ var saving = document.getElementById('saving'),
   hikingTypeGroup = document.querySelector('.hiking-map-type'),
   hikingTypeButtons = hikingTypeGroup.querySelectorAll('button'),
   offlineView = document.querySelector('.offline'),
+  app,
   map,
   offline;
 
-exports.initialize = function(mainMap, offlineModule) {
+exports.initialize = function(appModule, mainMap, offlineModule) {
+  app = appModule;
   map = mainMap;
   offline = offlineModule;
   hide(saving);
