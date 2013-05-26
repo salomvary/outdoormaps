@@ -19,6 +19,6 @@ require.config({
   }
 });
 
-require(['turistautak'], function(Controller) {
-  new Controller();
+require(['map'], function(Map) {
+  new Map();
 });

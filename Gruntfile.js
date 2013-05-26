@@ -34,12 +34,18 @@ module.exports = function (grunt) {
           cwd: 'app/',
           // all except app.js
           src: [
+            'map.js',
             'settings.js',
             'flags.js',
             'layers.js',
             'offline.js',
             'promise.js',
-            'turistautak.js'
+            'state-store.js',
+            'drop-marker.js',
+            'show-position.js',
+            'initial-location.js',
+            'recommend-layers.js',
+            'util.js'
           ],
           dest: '.tmp/'
         }]

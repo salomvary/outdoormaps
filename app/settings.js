@@ -1,139 +1,125 @@
-var layers = require('layers');
+var Layers = require('layers'),
+    klass = require('vendor/klass'),
+    $ = require('util');
 
-var saving = document.getElementById('saving'),
-  saved = document.getElementById('saved'),
-  progress = saving.querySelector('progress'),
-  saveButton = document.getElementById('save-button'),
-  //cancelButton = document.getElementById('cancel-button'),
-  closeButton = document.getElementById('close-button'),
-  mapTypeButtons = document.querySelectorAll('.map-type button'),
-  hikingTypeGroup = document.querySelector('.hiking-map-type'),
-  hikingTypeButtons = hikingTypeGroup.querySelectorAll('button'),
-  offlineView = document.querySelector('.offline'),
-  app,
-  map,
-  offline;
+module.exports = klass({
+  initialize: function(controller, options) {
+    this.controller = controller;
+    this.options = options;
 
-exports.initialize = function(appModule, mainMap, offlineModule) {
-  app = appModule;
-  map = mainMap;
-  offline = offlineModule;
-  hide(saving);
-  hide(saved);
-  updateButtons();
-  closeButton.addEventListener('click', closeSettings, false);
-  saveButton.addEventListener('click', saveMap, false);
-  //cancelSave.addEventListener('click', cancelSave, false);
-  // no event delegation on iOS Safari :(
-  eachNode(mapTypeButtons, function(button) {
-    button.addEventListener('click', setMapType, false);
-  });
-  eachNode(hikingTypeButtons, function(button) {
-    button.addEventListener('click', setMapType, false);
-  });
-  if(offline && offline.isSupported) {
-    if(offline.hasTiles) {
-      show(saved);
+    // event handlers
+    var closeButton = document.getElementById('close-button');
+    $.on(closeButton, 'click', this.closeSettings, this);
+
+    // initial state
+    this.mapLayer = (options.get('layers') || controller.defaults.layers)[0];
+    this.mapType = Layers.get(this.mapLayer).options.mapType;
+    this.defaultLayers = options.get('defaultLayers');
+    if(! this.defaultLayers) {
+      this.defaultLayers = {};
+      this.defaultLayers[this.mapType] = this.mapLayer;
     }
-  } else {
-    hide(offlineView);
+
+    this.createButtons();
+    this.updateButtons();
+  },
+
+  setMap: function() {
+    this.controller.createButton('settings', 'topright',
+      this.toggleSettings, this);
+  },
+
+  toggleSettings: function() {
+    $.toggleClass(document.body, 'settings',
+      document.body.className !== 'settings');
+  },
+
+  closeSettings: function() {
+    $.toggleClass(document.body, 'settings', false);
+  },
+
+  setMapType: function(event) {
+    var type = event.target.name;
+    var layerId = this.defaultLayers[type] || Layers.keys(type)[0].id;
+    this.mapType = type;
+    this.setLayers([layerId]);
+  },
+
+  setMapLayer: function(event) {
+    var id = event.target.name;
+    this.defaultLayers[Layers.get(id).options.mapType] = id;
+    this.setLayers([id]);
+  },
+
+  setLayers: function(layerIds) {
+    this.mapLayer = layerIds[0];
+    this.controller.setLayers(layerIds);
+    this.options.set({defaultLayers: this.defaultLayers});
+    this.updateButtons();
+  },
+
+  createButtons: function() {
+    var mapTypes = document.querySelector('.map-types');
+    this.mapTypeButtons = mapTypes.querySelectorAll('.map-type button');
+
+    // handle click on map types
+    // XXX no event delegation on iOS Safari :(
+    $.eachNode(this.mapTypeButtons, function(button) {
+      $.on(button, 'click', this.setMapType, this);
+    }, this);
+
+
+    // create layer type selection for map types with multiple
+    // layers
+    this.mapLayerGroups = ['hiking', 'satellite', 'map']
+      .map(function(type) { return Layers.keys(type); })
+      .filter(function(layers) { return layers.length > 1; })
+      .map(function(layers) {
+        var group = {mapType: layers[0].mapType};
+
+        var g = document.createElement('p');
+        g.className = 'map-layer btn-group';
+        mapTypes.appendChild(g);
+        group.wrapper = g;
+
+        group.layers = layers.map(function(key) {
+          var button = document.createElement('button');
+          button.className = 'btn';
+          button.name = key.id;
+          button.innerHTML = key.title;
+          button.style.width = (100 / layers.length) + '%';
+          g.appendChild(button);
+
+          $.on(button, 'click', this.setMapLayer, this);
+          return button;
+        }, this);
+
+        return group;
+      }, this);
+  },
+
+  updateButtons: function() {
+    // map type buttons
+    $.eachNode(this.mapTypeButtons, function(button) {
+      var active = button.name === this.mapType;
+      $.toggleClass(button, 'active', active);
+    }, this);
+
+    // toggle group
+    this.mapLayerGroups.forEach(function(group) {
+      if(group.mapType === this.mapType) {
+        $.show(group.wrapper);
+        // toggle buttons state in active group
+        group.layers.forEach(function(button) {
+          $.toggleClass(button, 'active', button.name === this.mapLayer);
+        }, this);
+      } else {
+        $.hide(group.wrapper);
+      }
+    }, this);
+
+    // XXX fix a strange Chrome issue that settings doesn't repaint
+    document.getElementById('settings')
+      .style.opacity = 1;
   }
-};
-
-function saveMap() {
-  var promise = offline.getTiles(map, layers.turistautak,
-    map.getBounds(), map.getZoom(), map.getZoom() + 3);
-  promise.then(mapSaved, mapSaveFailed, mapSaveProgress);
-  show(saving);
-  hide(saved);
-  return false;
-}
-
-function mapSaved() {
-  hide(saving);
-  show(saved);
-}
-
-function mapSaveFailed() {
-  hide(saving);
-  hide(saved);
-  alert('Failed to save map');
-}
-
-function mapSaveProgress(done, count) {
-  progress.max = count;
-  progress.value = done;
-}
-
-function setMapType(event) {
-  var button = event.target,
-    type = button.name,
-    isHikingMap = type === 'turistautak' || type === 'wanderkarte';
-
-  if(type === 'hiking') {
-    type = app.getHikingMapType();
-  } else if(isHikingMap) {
-    app.setHikingMapType(type);
-  }
-
-  app.setMapType(type);
-  updateButtons();
-  // XXX fix a strange Chrome issue that settings doesn't repaint
-  document.getElementById('settings')
-    .style.opacity = 1;
-}
-
-function closeSettings() {
-  toggleClass(document.body, 'settings', false);
-}
-
-function updateButtons() {
-  var mapType = app.getMapType(),
-    //hikingMapType = app.getHikingMapType(),
-    isHikingMap = mapType === 'turistautak' || mapType === 'wanderkarte',
-    active;
-  // map type buttons
-  eachNode(mapTypeButtons, function(button) {
-    active = button.name === mapType
-      || (button.name === 'hiking' && isHikingMap);
-    toggleClass(button, 'active', active);
-  });
-  // hiking map type buttons
-  eachNode(hikingTypeButtons, function(button) {
-    toggleClass(button, 'active', button.name === mapType);
-  });
-  // hiking map type group
-  if(isHikingMap) {
-    show(hikingTypeGroup);
-  } else {
-    hide(hikingTypeGroup);
-  }
-  // enable/disable save offline
-  saveButton.disabled = mapType !== 'turistautak';
-}
-
-function show(el) {
-  el.style.display = 'block';
-}
-
-function hide(el) {
-  el.style.display = 'none';
-}
-
-function eachNode(nodeList, fn) {
-  for(var i=0; i<nodeList.length; i++) {
-    fn.call(nodeList[i], nodeList[i]);
-  }
-}
-
-function toggleClass(el, className, enable) {
-  var classes = el.className.split(/\s+/),
-    index = classes.indexOf(className);
-  if(index > -1) {
-    classes.splice(index, 1);
-  }
-  if(enable) {
-    classes.push(className);
-  }
-  el.className = classes.join(' ');
-}
+});

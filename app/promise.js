@@ -71,5 +71,14 @@ Promise.prototype = {
 			return listener.promise;
 		}
 	}
-	
+};
+
+Promise.chain = function(functions) {
+  var first = Promise(),
+      last = first;
+  while(functions.length > 0) {
+    last = last.then(functions.shift());
+  }
+  first.resolve();
+  return last;
 };
