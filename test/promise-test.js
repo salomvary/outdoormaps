@@ -1,53 +1,51 @@
-define(function(require) {
-
 var Promise = require('../promise');
 
-module('Promise');
+suite('Promise');
 
-asyncTest('async', function() {
-	expect(1);
+test('async', function(done) {
+	//expect(1);
 	foo({yo:1}).then(baz).then(function(data) {
-		ok(true);
-		start();
+		assert.ok(true);
+		done();
 	}, function(err) {
-		ok(false);
-		start();
+		assert.ok(false);
+		done();
 	});//.then(baz);
 });
 
-asyncTest('async fail', function() {
-	expect(1);
+test('async fail', function(done) {
+	//expect(1);
 	foo({yo:1}).then(bar).then(baz).then(function(data) {
 	//bar({test:1}).then(foo).then(function(data) {
-		ok(false);
-		start();
+		assert.ok(false);
+		done();
 	}, function(err) {
-		ok(true);
-		start();
+		assert.ok(true);
+		done();
 	});
 });
 
-asyncTest('sync', function() {
-	expect(1);
+test('sync', function(done) {
+	//expect(1);
 	var fooResult = fooSync({yo:1});
 	var bazResult = fooResult.then(bazSync);
 	bazResult.then(function(data) {
-		ok(true);
-		start();
+		assert.ok(true);
+		done();
 	}, function(err) {
-		ok(false);
-		start();
+		assert.ok(false);
+		done();
 	});//.then(baz);
 });
 
-asyncTest('sync fail', function() {
-	expect(1);
+test('sync fail', function(done) {
+	//expect(1);
 	fooSync({yo:1}).then(barSync).then(bazSync).then(function(data) {
-		ok(false);
-		start();
+		assert.ok(false);
+		done();
 	}, function(err) {
-		ok(true);
-		start();
+		assert.ok(true);
+		done();
 	});//.then(baz);
 });
 
@@ -104,5 +102,3 @@ function bazSync(data) {
 	p.resolve(data);
 	return p;
 }
-
-});

@@ -30,12 +30,13 @@
     "grunt-contrib-livereload": "~0.1.2",
     "grunt-usemin": "~0.1.9",
     "grunt-requirejs": "~0.3.2",
-    "grunt-mocha": "~0.2.2",
+    "grunt-mocha": "~0.3.4",
     "grunt-open": "~0.2.0",
     "matchdep": "~0.1.1",
     "grunt-rev": "~0.1.0",
     "grunt-cssjoin": "~0.2.0",
     "grunt-furnace": "~0.1.2",
-    "grunt-regarde": "~0.1.1"
+    "grunt-regarde": "~0.1.1",
+    "phantomjs": "~1.9.0-4"
   }
 }
