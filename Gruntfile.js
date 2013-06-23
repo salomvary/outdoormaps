@@ -230,6 +230,13 @@ module.exports = function (grunt) {
             '*.{ico,txt}',
             '.htaccess'
           ]
+        }, {
+          expand: true,
+          cwd: '.',
+          dest: 'gh-pages',
+          src: [
+            'CNAME'
+          ]
         }]
       }
     },
