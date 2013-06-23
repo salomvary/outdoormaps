@@ -249,7 +249,7 @@ module.exports = function (grunt) {
           '*.js',
           '*.css',
           '*.png',
-          'vendor/require.js',
+          'vendor/*.require.js',
           'vendor/leaflet.js/images/*'
         ],
         dest: 'dist/index.appcache'
