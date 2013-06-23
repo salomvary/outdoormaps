@@ -80,7 +80,6 @@ module.exports = klass({
   },
 
   saveState: function() {
-    console.log('saveState', this.getState());
     this.options.set(this.getState());
     this.options.save();
   },
