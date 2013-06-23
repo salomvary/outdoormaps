@@ -233,7 +233,7 @@ module.exports = function (grunt) {
         }, {
           expand: true,
           cwd: '.',
-          dest: 'gh-pages',
+          dest: 'dist',
           src: [
             'CNAME'
           ]

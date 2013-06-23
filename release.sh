@@ -1,10 +1,10 @@
 #!/bin/sh
 set -e
-cd gh-pages
+cd dist
 git rm -rf *
 cd ..
-grunt compile
-cd gh-pages
+grunt build
+cd dist
 git add -A
 git commit -m "update"
 cd ..
