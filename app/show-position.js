@@ -2,8 +2,9 @@ var klass = require('vendor/klass'),
     L = require('vendor/leaflet');
 
 module.exports = klass({
-  initialize: function(controller) {
+  initialize: function(controller, options) {
     this.controller = controller;
+    this.options = options;
   },
 
   setMap: function(map) {
@@ -11,6 +12,9 @@ module.exports = klass({
       this.map = map;
       this.controller.createButton('locate', 'topleft',
         this.getCurrentPosition, this);
+    }
+    if(this.options.get('position')) {
+      this.setMarker(this.options.get('position'));
     }
   },
 
@@ -29,13 +33,22 @@ module.exports = klass({
   showPosition: function(position) {
     var center = new L.LatLng(position.coords.latitude,
       position.coords.longitude);
-    this.controller.addMarker(center);
+    this.setMarker(center);
     if(this.map.getZoom() < 15) {
       this.map.setView(center, 15);
     } else {
       this.map.panTo(center);
     }
-    //saveState();
+    this.options.set('position', center);
+    this.options.save();
+  },
+
+  setMarker: function(position) {
+    if(this.marker) {
+      this.marker.setLatLng(position);
+    } else {
+      this.marker = this.controller.addMarker(position);
+    }
   }
 });
 
