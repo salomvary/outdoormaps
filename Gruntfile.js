@@ -154,7 +154,9 @@ module.exports = function (grunt) {
       assets: {
         files: [{
           src: [
-            'dist/*.{js,css,png,jpg}'
+            'dist/*.{js,css,png,jpg}',
+            'dist/vendor/require.js'
+            //'dist/vendor/leaflet.js/images/*'
           ]
         }]
       }
@@ -230,6 +232,21 @@ module.exports = function (grunt) {
           ]
         }]
       }
+    },
+    manifest: {
+      generate: {
+        options: {
+          basePath: 'dist'
+        },
+        src: [
+          '*.js',
+          '*.css',
+          '*.png',
+          'vendor/require.js',
+          'vendor/leaflet.js/images/*'
+        ],
+        dest: 'dist/index.appcache'
+      }
     }
   });
 
@@ -272,7 +289,8 @@ module.exports = function (grunt) {
     'uglify',
     'copy',
     'rev',
-    'usemin'
+    'usemin',
+    'manifest'
   ]);
 
   grunt.registerTask('default', [
