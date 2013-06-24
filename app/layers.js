@@ -1,23 +1,23 @@
 var L = require('vendor/leaflet'),
-		flags = require('flags');
-		require('vendor/bing-layer');
+    flags = require('flags');
+    require('vendor/bing-layer');
 
 var layers = {}, instances = {};
 
 layers.map = {
-	url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-	attribution: 'Map data © OpenStreetMap contributors',
-	detectRetina: flags.isEnabled('detectRetina'),
+  url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: 'Map data © OpenStreetMap contributors',
+  detectRetina: flags.isEnabled('detectRetina'),
   mapType: 'map'
 };
 
 layers.turistautak = {
-	url: 'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png',
-	minZoom: 8,
-	maxZoom: 21,
-	subdomains: 'abcd',
-	attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
-	detectRetina: flags.isEnabled('detectRetina'),
+  url: 'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png',
+  minZoom: 8,
+  maxZoom: 21,
+  subdomains: 'abcd',
+  attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
   title: 'Turistautak',
   mapType: 'hiking',
   // approximate bounding box of hungary
@@ -27,23 +27,23 @@ layers.turistautak = {
 };
 
 layers.lines = {
-	url: 'http://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
-	minZoom: 8,
-	maxZoom: 21,
-	subdomains: 'abcd',
-	attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
-	detectRetina: flags.isEnabled('detectRetina'),
+  url: 'http://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
+  minZoom: 8,
+  maxZoom: 21,
+  subdomains: 'abcd',
+  attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
   title: 'Turistautak',
   mapType: 'overlay'
 };
 
 layers.wanderkarte = {
-	url: 'http://{s}.wanderreitkarte.de/topo/{z}/{x}/{y}.png',
+  url: 'http://{s}.wanderreitkarte.de/topo/{z}/{x}/{y}.png',
   subdomains: ['topo', 'topo2', 'topo3', 'topo4'],
-	minZoom: 5,
-	maxZoom: 18,
-	attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
-	detectRetina: flags.isEnabled('detectRetina'),
+  minZoom: 5,
+  maxZoom: 18,
+  attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
   title: 'Wanderkarte',
   mapType: 'hiking'
 };
@@ -64,9 +64,9 @@ exports.get = function(id) {
   // (eg. L.BingLayer)
   if(! instances[id]) {
     var Layer = layers[id].klazz || L.TileLayer;
-		instances[id] = new Layer(layers[id].url, layers[id]);
-	}
-	return instances[id];
+    instances[id] = new Layer(layers[id].url, layers[id]);
+  }
+  return instances[id];
 };
 
 exports.keys = function(mapType) {
