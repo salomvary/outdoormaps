@@ -38,7 +38,8 @@ layers.lines = {
 };
 
 layers.wanderkarte = {
-	url: 'http://www.wanderreitkarte.de/topo/{z}/{x}/{y}.png',
+	url: 'http://{s}.wanderreitkarte.de/topo/{z}/{x}/{y}.png',
+  subdomains: ['topo', 'topo2', 'topo3', 'topo4'],
 	minZoom: 5,
 	maxZoom: 18,
 	attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
