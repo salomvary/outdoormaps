@@ -11,34 +11,65 @@ module.exports = klass({
     if(navigator.geolocation) {
       this.map = map;
       this.controller.createButton('locate', 'topleft',
-        this.getCurrentPosition, this);
+        this.showCurrentPosition, this);
+      this.map.on('movestart zoomstart', this.viewChanged.bind(this));
     }
     if(this.options.get('position')) {
       this.setMarker(this.options.get('position'));
     }
   },
 
-  getCurrentPosition: function() {
-    navigator.geolocation.getAccurateCurrentPosition(
-      this.showPosition.bind(this),
-      this.positionError.bind(this),
-      this.showPosition.bind(this),
-      {desiredAccuracy:10, maxWait: 20000});
+  showCurrentPosition: function() {
+    this.moved = false;
+    // show the last know position, if any
+    var lastPosition = this.options.get('position');
+    if(lastPosition) {
+      this.showPosition(lastPosition);
+    }
+
+    // update the position
+    if(! this.locating) {
+      this.locating = true;
+      navigator.geolocation.getAccurateCurrentPosition(
+        this.positionUpdate.bind(this, false),
+        this.positionError.bind(this),
+        this.positionUpdate.bind(this, true),
+        {desiredAccuracy:10, maxWait: 20000});
+    }
+  },
+
+  viewChanged: function() {
+    this.moved = true;
   },
 
   positionError: function(error) {
-    alert('Could not get your position: '+error.message);
+    this.locating = false;
+    alert('Could not get your position: ' + error.message);
   },
 
-  showPosition: function(position) {
+  positionUpdate: function(progress, position) {
+    if(! progress) {
+      this.locating = false;
+    }
     var center = new L.LatLng(position.coords.latitude,
       position.coords.longitude);
+    this.showPosition(center);
+  },
+
+  showPosition: function(center) {
+    // update marker position
     this.setMarker(center);
-    if(this.map.getZoom() < 15) {
-      this.map.setView(center, 15);
-    } else {
-      this.map.panTo(center);
+
+    // if the user hasn't moved the map,
+    // reposition it to show the position
+    if(! this.moved) {
+      if(this.map.getZoom() < 15) {
+        this.map.setView(center, 15);
+      } else {
+        this.map.panTo(center);
+      }
     }
+
     this.options.set('position', center);
     this.options.save();
   },
