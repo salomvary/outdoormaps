@@ -154,7 +154,7 @@ module.exports = function (grunt) {
       assets: {
         files: [{
           src: [
-            'dist/*.{js,css,png,jpg}',
+            'dist/*.{js,css,png,jpg,ico}',
             'dist/vendor/require.js'
             //'dist/vendor/leaflet.js/images/*'
           ]
@@ -173,7 +173,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: 'app',
-          src: '{,*/}*.{png,jpg,jpeg}',
+          src: '{,*/}*.{png,jpg,jpeg,ico}',
           dest: 'dist'
         }]
       }
@@ -249,6 +249,7 @@ module.exports = function (grunt) {
           '*.js',
           '*.css',
           '*.png',
+          '*.ico',
           'vendor/*.require.js',
           'vendor/leaflet.js/images/*'
         ],
