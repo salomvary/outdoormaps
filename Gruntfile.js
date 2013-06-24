@@ -16,7 +16,8 @@ module.exports = function (grunt) {
           'app/*.html',
           '{.tmp,app}{,*/}*.css',
           '{.tmp,app}{,*/}*.js',
-          'app{,*/}*.{png,jpg,jpeg,webp}'
+          'app{,*/}*.{png,jpg,jpeg,webp}',
+          'test/*-test.js'
         ],
         // should be a separate subtask, but:
         // https://github.com/yeoman/grunt-regarde/issues/7
@@ -46,6 +47,13 @@ module.exports = function (grunt) {
             'initial-location.js',
             'recommend-layers.js',
             'util.js'
+          ],
+          dest: '.tmp/'
+        }, {
+          expand: true,
+          cwd: 'test/',
+          src: [
+            '*-test.js'
           ],
           dest: '.tmp/'
         }]
@@ -281,6 +289,13 @@ module.exports = function (grunt) {
     'connect:test',
     //'watch',
     'mocha'
+  ]);
+
+  grunt.registerTask('testServer', [
+    'clean:server',
+    'furnace',
+    'connect:test',
+    'watch'
   ]);
 
   grunt.registerTask('build', [
