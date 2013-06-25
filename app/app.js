@@ -5,8 +5,7 @@ window.addToHomeConfig = {
 require.config({
   deps: [
     'polyfills',
-    'vendor/add-to-homescreen/src/add2home',
-    'vendor/geo'
+    'vendor/add-to-homescreen/src/add2home'
   ],
   paths: {
     'vendor/leaflet': 'vendor/leaflet.js/leaflet-src'

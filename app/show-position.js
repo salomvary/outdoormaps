@@ -1,5 +1,6 @@
 var klass = require('vendor/klass'),
-    L = require('vendor/leaflet');
+    L = require('vendor/leaflet'),
+    geolocation = require('geolocation');
 
 module.exports = klass({
   initialize: function(controller, options) {
@@ -30,7 +31,7 @@ module.exports = klass({
     // update the position
     if(! this.locating) {
       this.locating = true;
-      navigator.geolocation.getAccurateCurrentPosition(
+      geolocation.getAccurateCurrentPosition(
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
         this.positionUpdate.bind(this, true),

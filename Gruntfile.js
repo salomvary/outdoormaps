@@ -46,7 +46,8 @@ module.exports = function (grunt) {
             'show-position.js',
             'initial-location.js',
             'recommend-layers.js',
-            'util.js'
+            'util.js',
+            'geolocation.js'
           ],
           dest: '.tmp/'
         }, {
