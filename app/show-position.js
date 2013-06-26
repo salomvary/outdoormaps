@@ -22,7 +22,7 @@ module.exports = klass({
 
   showCurrentPosition: function() {
     this.moved = false;
-    // show the last know position, if any
+    // show the last known position, if any
     var lastPosition = this.options.get('position');
     if(lastPosition) {
       this.showPosition(lastPosition);
@@ -40,7 +40,11 @@ module.exports = klass({
   },
 
   viewChanged: function() {
-    this.moved = true;
+    // ignore events fired by calls to
+    // setView/panTo below
+    if(! this.automoving) {
+      this.moved = true;
+    }
   },
 
   positionError: function(error) {
@@ -64,11 +68,13 @@ module.exports = klass({
     // if the user hasn't moved the map,
     // reposition it to show the position
     if(! this.moved) {
+      this.automoving = true;
       if(this.map.getZoom() < 15) {
         this.map.setView(center, 15);
       } else {
         this.map.panTo(center);
       }
+      this.automoving = false;
     }
 
     this.options.set('position', center);
