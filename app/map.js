@@ -9,7 +9,7 @@ var klass = require('vendor/klass'),
     StateStore = require('state-store'),
     Settings = require('settings');
 
-L.Icon.Default.imagePath = 'vendor/leaflet.js/images';
+L.Icon.Default.imagePath = 'vendor/leaflet/images';
 
 var plugins = [
   InitialLocation,

@@ -165,7 +165,7 @@ module.exports = function (grunt) {
           src: [
             'dist/*.{js,css,png,jpg,ico}',
             'dist/vendor/require.js'
-            //'dist/vendor/leaflet.js/images/*'
+            //'dist/vendor/leaflet/images/*'
           ]
         }]
       }
@@ -235,7 +235,7 @@ module.exports = function (grunt) {
           cwd: 'app',
           dest: 'dist',
           src: [
-            'vendor/leaflet.js/images/marker-*',
+            'vendor/leaflet/images/marker-*',
             '*.{ico,txt}',
             '.htaccess'
           ]
@@ -260,7 +260,7 @@ module.exports = function (grunt) {
           '*.png',
           '*.ico',
           'vendor/*.require.js',
-          'vendor/leaflet.js/images/*'
+          'vendor/leaflet/images/*'
         ],
         dest: 'dist/index.appcache'
       }
