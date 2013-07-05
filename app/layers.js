@@ -55,6 +55,23 @@ layers.satellite = {
   mapType: 'satellite'
 };
 
+layers.bergfex = {
+  url: 'http://static1.bergfex.at/images/amap/{z}/{folder}{z}_{x}_{y}.png',
+  minZoom: 8,
+  maxZoom: 15,
+  attribution: '© <a href="http://bergfex.com">bergfex.com</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'bergfex',
+  mapType: 'hiking',
+  folder: function(data) {
+    // credits:
+    // http://svn.openlayers.org/sandbox/ahocevar/bergfex/index.html
+    return data.z >= 14
+      ? String(data.x).slice(0, -2) + '/'
+      : '';
+  }
+};
+
 Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
