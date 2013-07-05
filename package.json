@@ -5,7 +5,7 @@
   "volo": {
     "baseDir": "app/vendor",
     "dependencies": {
-      "leaflet": "github:Leaflet/Leaflet/v0.5.1#dist",
+      "leaflet": "github:Leaflet/Leaflet/v0.6.2#dist",
       "bing-layer": "github:shramov/leaflet-plugins/master#layer/tile/Bing.js",
       "add-to-homescreen": "github:cubiq/add-to-homescreen/master",
       "require": "github:jrburke/requirejs/2.1.4",
