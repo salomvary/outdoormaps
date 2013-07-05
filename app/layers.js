@@ -18,7 +18,7 @@ layers.turistautak = {
   subdomains: 'abcd',
   attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Turistautak',
+  title: 'Turistautak.hu',
   mapType: 'hiking',
   // approximate bounding box of hungary
   bounds: new L.LatLngBounds(
@@ -33,7 +33,7 @@ layers.lines = {
   subdomains: 'abcd',
   attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Turistautak',
+  title: 'Turistautak.hu',
   mapType: 'overlay'
 };
 
