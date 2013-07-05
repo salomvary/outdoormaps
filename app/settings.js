@@ -78,7 +78,7 @@ module.exports = klass({
         var group = {mapType: layers[0].mapType};
 
         var g = document.createElement('p');
-        g.className = 'map-layer btn-group';
+        g.className = 'map-layer btn-group vertical-btn-group';
         mapTypes.appendChild(g);
         group.wrapper = g;
 
@@ -87,7 +87,7 @@ module.exports = klass({
           button.className = 'btn';
           button.name = key.id;
           button.innerHTML = key.title;
-          button.style.width = (100 / layers.length) + '%';
+          //button.style.width = (100 / layers.length) + '%';
           g.appendChild(button);
 
           $.on(button, 'click', this.setMapLayer, this);
