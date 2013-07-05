@@ -14,7 +14,7 @@
     }
   },
   "devDependencies": {
-    "volo": "~0.2.9",
+    "volo": "~0.3.0",
     "grunt-volo": "0.0.2",
     "grunt": "~0.4.0",
     "grunt-contrib-copy": "~0.4.0",
