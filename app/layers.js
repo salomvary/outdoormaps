@@ -72,6 +72,15 @@ layers.bergfex = {
   }
 };
 
+layers.opencyclemap = {
+  url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+  subdomains: 'abc',
+  attribution: 'Map data © OpenStreetMap contributors',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'OpenCycleMap',
+  mapType: 'hiking'
+};
+
 Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
