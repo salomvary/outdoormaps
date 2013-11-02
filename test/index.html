@@ -4,14 +4,13 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 	<title>Test Suite</title>
-  <link rel="stylesheet" href="mocha.css">
+  <link rel="stylesheet" href="vendor/mocha/mocha.css">
 </head>
 <body>
   <div id="mocha"></div>
-  <script src="sinon.js"></script>
-  <script src="mocha.js"></script>
+  <script src="vendor/mocha/mocha.js"></script>
   <script>mocha.setup('tdd')</script>
-  <script src="chai.js"></script>
+  <script src="vendor/chai/chai.js"></script>
   <script>var assert = chai.assert;</script>
   <script src="config.js"></script>
   <script src="vendor/require.js" data-main="index"></script>

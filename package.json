@@ -10,7 +10,9 @@
       "add-to-homescreen": "github:cubiq/add-to-homescreen/master",
       "require": "github:jrburke/requirejs/2.1.4",
       "almond": "github:jrburke/almond/0.2.5",
-      "klass": "github:ded/klass/master"
+      "klass": "github:ded/klass/master",
+      "mocha": "github:visionmedia/mocha/1.13.0",
+      "chai": "github:chaijs/chai/1.8.1"
     }
   },
   "devDependencies": {
