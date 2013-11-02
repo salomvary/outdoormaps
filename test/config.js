@@ -3,7 +3,7 @@ require = {
     'polyfills'
   ],
   paths: {
-    'vendor/leaflet': 'vendor/leaflet.js/leaflet-src'
+    'vendor/leaflet': 'vendor/leaflet/leaflet-src'
   },
   shim: {
     'vendor/leaflet': {
