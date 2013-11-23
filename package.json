@@ -2,22 +2,7 @@
   "name": "Turistautak",
   "version": "0.0.1",
   "description": "Hiking maps optimized for mobile and desktop",
-  "volo": {
-    "baseDir": "app/vendor",
-    "dependencies": {
-      "leaflet": "github:Leaflet/Leaflet/v0.6.2#dist",
-      "bing-layer": "github:shramov/leaflet-plugins/master#layer/tile/Bing.js",
-      "add-to-homescreen": "github:cubiq/add-to-homescreen/master",
-      "require": "github:jrburke/requirejs/2.1.4",
-      "almond": "github:jrburke/almond/0.2.5",
-      "klass": "github:ded/klass/master",
-      "mocha": "github:visionmedia/mocha/1.13.0",
-      "chai": "github:chaijs/chai/1.8.1"
-    }
-  },
   "devDependencies": {
-    "volo": "~0.3.0",
-    "grunt-volo": "0.0.2",
     "grunt": "~0.4.0",
     "grunt-contrib-copy": "~0.4.0",
     "grunt-contrib-concat": "~0.1.2",
