@@ -123,12 +123,14 @@ module.exports = klass({
   },
 
   createButton: function(className, position, handler, context) {
-    this.map.addControl(new MapButton({
+    var button = new MapButton({
       className: className,
       position: position,
       handler: handler.bind(context || this),
       context: context
-    }));
+    });
+    this.map.addControl(button);
+    return button;
   }
 });
 

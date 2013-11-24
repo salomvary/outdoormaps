@@ -1,4 +1,5 @@
-var klass = require('vendor/klass'),
+var $ = require('util'),
+    klass = require('vendor/klass'),
     L = require('vendor/leaflet'),
     geolocation = require('geolocation');
 
@@ -11,7 +12,7 @@ module.exports = klass({
   setMap: function(map) {
     if(navigator.geolocation) {
       this.map = map;
-      this.controller.createButton('locate', 'topleft',
+      this.button = this.controller.createButton('locate', 'topleft',
         this.showCurrentPosition, this);
       this.map.on('movestart zoomstart', this.viewChanged.bind(this));
     }
@@ -31,6 +32,7 @@ module.exports = klass({
     // update the position
     if(! this.locating) {
       this.locating = true;
+      $.toggleClass(this.button.getContainer(), 'busy-button', true);
       geolocation.getAccurateCurrentPosition(
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
@@ -49,12 +51,14 @@ module.exports = klass({
 
   positionError: function(error) {
     this.locating = false;
+    $.toggleClass(this.button.getContainer(), 'busy-button', false);
     alert('Could not get your position: ' + error.message);
   },
 
   positionUpdate: function(progress, position) {
     if(! progress) {
       this.locating = false;
+      $.toggleClass(this.button.getContainer(), 'busy-button', false);
     }
     var center = new L.LatLng(position.coords.latitude,
       position.coords.longitude);

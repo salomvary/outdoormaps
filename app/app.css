@@ -127,6 +127,10 @@ button {
   background-color: #5BB75B;
 }
 
+#map button:focus {
+  outline: none;
+}
+
 .locate-button {
   background-image: url(arrow2x.png);
   background-image: url(arrow2x.png), linear-gradient(top, #62C462, #51A351);
@@ -140,6 +144,14 @@ button {
   background-image: url(gear2x.png), linear-gradient(top, #62C462, #51A351);
   background-image: url(gear2x.png), -webkit-linear-gradient(top, #62C462, #51A351);
   background-image: url(gear2x.png), -moz-linear-gradient(top, #62C462, #51A351);
+  background-size: 25px 25px, 100%;
+}
+
+.busy-button {
+  background-image: url(loading.gif);
+  background-image: url(loading.gif), linear-gradient(top, #62C462, #51A351);
+  background-image: url(loading.gif), -webkit-linear-gradient(top, #62C462, #51A351);
+  background-image: url(loading.gif), -moz-linear-gradient(top, #62C462, #51A351);
   background-size: 25px 25px, 100%;
 }
 
