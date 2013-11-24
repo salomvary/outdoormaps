@@ -16,7 +16,7 @@ module.exports = function (grunt) {
           'app/*.html',
           '{.tmp,app}{,*/}*.css',
           '{.tmp,app}{,*/}*.js',
-          'app{,*/}*.{png,jpg,jpeg,webp}',
+          'app{,*/}*.{png,jpg,jpeg,webp,gif}',
           'test/*-test.js'
         ],
         // should be a separate subtask, but:
@@ -151,7 +151,7 @@ module.exports = function (grunt) {
       assets: {
         files: [{
           src: [
-            'dist/*.{js,css,png,jpg,ico}',
+            'dist/*.{js,css,png,jpg,ico,gif}',
             'dist/vendor/require.js'
             //'dist/vendor/leaflet/images/*'
           ]
@@ -170,7 +170,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: 'app',
-          src: '{,*/}*.{png,jpg,jpeg,ico}',
+          src: '{,*/}*.{png,jpg,jpeg,ico,gif}',
           dest: 'dist'
         }]
       }
@@ -224,7 +224,7 @@ module.exports = function (grunt) {
           dest: 'dist',
           src: [
             'vendor/leaflet/images/marker-*',
-            '*.{ico,txt}',
+            '*.{ico,txt,gif}',
             '.htaccess'
           ]
         }, {
@@ -246,6 +246,7 @@ module.exports = function (grunt) {
           '*.js',
           '*.css',
           '*.png',
+          '*.gif',
           '*.ico',
           'vendor/*.require.js',
           'vendor/leaflet/images/*'
