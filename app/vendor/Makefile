@@ -15,10 +15,18 @@ clean:
 
 # zip file hosted somewhere on the internetz
 
-leaflet:
-	$(CURL) http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.zip -o $@.download.zip
-	unzip -q $@.download.zip -d leaflet
-	rm $@.download.zip
+#leaflet:
+#	$(CURL) http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.zip -o $@.download.zip
+#	unzip -q $@.download.zip -d leaflet
+#	rm $@.download.zip
+
+leaflet: leaflet-src
+	cp -r leaflet-src/dist/ $@
+
+leaflet-src:
+	mkdir -p $@
+	$(CURL) https://codeload.github.com/Leaflet/Leaflet/tar.gz/v0.7|tar xf - --strip-components 1 -C $@
+	cd $@; npm install; node_modules/.bin/jake build[lvs0025]
 
 # single github file without tag
 
