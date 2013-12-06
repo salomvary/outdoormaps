@@ -6,6 +6,7 @@ var klass = require('vendor/klass'),
     InitialLocation = require('initial-location'),
     RecommendLayers = require('recommend-layers'),
     ShowPosition = require('show-position'),
+    Search = require('search'),
     StateStore = require('state-store'),
     Settings = require('settings');
 
@@ -16,7 +17,8 @@ var plugins = [
   RecommendLayers,
   DropMarker,
   ShowPosition,
-  Settings
+  Settings,
+  Search
 ];
 
 var stateEvents = 'moveend zoomend layeradd layerremove';
@@ -124,11 +126,12 @@ module.exports = klass({
 
   createButton: function(className, position, handler, context) {
     var button = new MapButton({
-      className: className,
+      className: 'map-button ' + className,
       position: position,
       handler: handler.bind(context || this),
       context: context
     });
+    L.DomEvent.disableClickPropagation(button);
     this.map.addControl(button);
     return button;
   }

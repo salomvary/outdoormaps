@@ -14,6 +14,7 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px;
   height: 100%;
+  color: #333;
 }
 
 #map, #settings {
@@ -28,18 +29,33 @@ body {
   z-index: 1000;
 }
 
-button {
+/*
+ * General controls
+ */
+
+button,
+input {
   height: 40px;
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border: 1px solid #CCC;
+  outline: none;
+  margin: 0;
+}
+
+button {
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
 
+input {
+  font-size: 14px;
+  padding: 4px;
+}
+
 /*
- * Buttons
+ * Settings buttons
  */
 
 .btn {
@@ -118,17 +134,17 @@ button {
  * Map view
  */
 
-#map button {
+.leaflet-control-container .leaflet-control {
   margin: 7px;
+}
+
+.map-button {
   width: 40px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   background-color: #5BB75B;
-}
-
-#map button:focus {
-  outline: none;
+  background-size: 25px 25px, 100%;
 }
 
 .locate-button {
@@ -136,7 +152,6 @@ button {
   background-image: url(arrow2x.png), linear-gradient(top, #62C462, #51A351);
   background-image: url(arrow2x.png), -webkit-linear-gradient(top, #62C462, #51A351);
   background-image: url(arrow2x.png), -moz-linear-gradient(top, #62C462, #51A351);
-  background-size: 25px 25px, 100%;
 }
 
 .settings-button {
@@ -144,7 +159,6 @@ button {
   background-image: url(gear2x.png), linear-gradient(top, #62C462, #51A351);
   background-image: url(gear2x.png), -webkit-linear-gradient(top, #62C462, #51A351);
   background-image: url(gear2x.png), -moz-linear-gradient(top, #62C462, #51A351);
-  background-size: 25px 25px, 100%;
 }
 
 .busy-button {
@@ -152,10 +166,49 @@ button {
   background-image: url(loading.gif), linear-gradient(top, #62C462, #51A351);
   background-image: url(loading.gif), -webkit-linear-gradient(top, #62C462, #51A351);
   background-image: url(loading.gif), -moz-linear-gradient(top, #62C462, #51A351);
-  background-size: 25px 25px, 100%;
 }
 
-.bump {color:red}
+/*
+ * Search
+ */
+
+.search-control {
+  clear: none;
+  width: 200px;
+}
+
+.search-input {
+  width: 100%;
+}
+
+.search-results {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  list-style-type: none;
+
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border: 1px solid #CCC;
+
+  border-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.search-result {
+  padding: 5px;
+  height: 40px;
+  line-height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-results:empty {
+  display: none;
+}
 
 /*
  * Settings view

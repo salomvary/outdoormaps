@@ -1,3 +1,5 @@
+var L = require('vendor/leaflet');
+
 module.exports = {
   extend: function(dst, src) {
     if(src) {
@@ -36,5 +38,7 @@ module.exports = {
 
   on: function(el, event, func, context) {
     el.addEventListener(event, func.bind(context), false);
-  }
+  },
+
+  create: L.DomUtil.create
 };
