@@ -12,6 +12,8 @@
     "setup": true,
     "teardown": true,
     "test": true,
-    "assert": true
+    "assert": true,
+    "expect": true,
+    "sinon": true
   }
 }

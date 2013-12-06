@@ -6,7 +6,9 @@ DEPENDENCIES=bing-layer.js\
 						 require.js\
 						 klass.js\
 						 mocha\
-						 chai
+						 chai\
+						 sinon.js\
+						 sinon-chai.js
 
 all: $(DEPENDENCIES)
 
@@ -40,6 +42,14 @@ bing-layer.js:
 
 require.js:
 	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.1.9/require.js
+
+# plain file from the internetz
+
+sinon.js:
+	$(CURL) -o $@ http://sinonjs.org/releases/sinon-1.7.3.js
+
+sinon-chai.js:
+	$(CURL) -o $@ https://raw.github.com/domenic/sinon-chai/2.4.0/lib/sinon-chai.js
 
 # GitHub releases
 
