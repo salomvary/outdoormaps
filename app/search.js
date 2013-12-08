@@ -1,6 +1,5 @@
-var $ = require('util'),
-    klass = require('vendor/klass'),
-    L = require('vendor/leaflet');
+var klass = require('vendor/klass'),
+    SearchControl = require('search-control');
 
 module.exports = klass({
   initialize: function(controller, options) {
@@ -18,8 +17,7 @@ module.exports = klass({
     map.addControl(this.control);
   },
 
-  onInput: function(event) {
-    var val = event.target.value.trim();
+  onInput: function(val) {
     if (val.length) {
       search(val, this.onSuccess, this.onError, this);
     } else {
@@ -75,26 +73,3 @@ function debounce(fn) {
     }, 1000);
   };
 }
-
-var SearchControl = L.Control.extend({
-  onAdd: function() {
-    var control = $.create('div', 'search-control');
-    var input = $.create('input', 'search-input', control);
-    input.type = 'search';
-    input.placeholder = 'Search';
-    this.results = $.create('ul', 'search-results', control);
-    L.DomEvent.disableClickPropagation(control);
-    $.on(input, 'input', this.options.onInput, false);
-    return control;
-  },
-
-  setResults: function(results) {
-    this.results.innerHTML = '';
-    results.map(function(result, i) {
-      var res = $.create('li', 'search-result');
-      res.innerHTML = result;
-      $.on(res, 'click', this.options.onSelect.bind(null, i), false);
-      this.results.appendChild(res);
-    }, this);
-  }
-});
