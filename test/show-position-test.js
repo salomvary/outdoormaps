@@ -1,4 +1,4 @@
-var ShowPosition = require('../show-position');
+var ShowPosition = require('show-position');
 
 suite('ShowPosition', function() {
   setup(function() {

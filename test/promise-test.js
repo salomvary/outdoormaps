@@ -1,4 +1,4 @@
-var Promise = require('../promise');
+var Promise = require('promise');
 
 suite('Promise', function() {
 

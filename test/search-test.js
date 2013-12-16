@@ -1,7 +1,7 @@
 /* jshint expr: true */
-var Search = require('../search'),
-    SearchControl = require('../search-control'),
-    SearchService = require('../search-service');
+var Search = require('search'),
+    SearchControl = require('search-control'),
+    SearchService = require('search-service');
 
 var FakeMap = function() {
   this.addControl = sinon.spy();
