@@ -124,6 +124,10 @@ module.exports = klass({
     return L.marker(position).addTo(this.map);
   },
 
+  removeMarker: function(marker) {
+    this.map.removeLayer(marker);
+  },
+
   createButton: function(className, position, handler, context) {
     var button = new MapButton({
       className: 'map-button ' + className,

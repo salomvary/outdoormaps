@@ -1,11 +1,14 @@
 var klass = require('vendor/klass'),
-    SearchControl = require('search-control');
+    SearchControl = require('search-control'),
+    SearchService = require('search-service');
 
 module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
     this.options = options;
   },
+
+  search: debounce(SearchService.search),
 
   setMap: function(map) {
     this.map = map;
@@ -17,50 +20,51 @@ module.exports = klass({
     map.addControl(this.control);
   },
 
-  onInput: function(val) {
-    if (val.length) {
-      search(val, this.onSuccess, this.onError, this);
+  setMarker: function(position) {
+    if(this.marker) {
+      this.marker.setLatLng(position);
     } else {
-      this.control.setResults([]);
+      this.marker = this.controller.addMarker(position);
     }
   },
 
-  onSelect: function() {
+  onInput: function(val) {
+    if (val.length) {
+      this.search(val, this.map.getBounds(),
+             this.onSuccess, this.onError, this);
+    } else {
+      this.results = [];
+      this.control.setResults(null);
+    }
+  },
+
+  onSelect: function(i) {
+    var result = this.results[i];
+    this.setMarker({
+      lat: result.lat,
+      lon: result.lon
+    });
+    this.map.fitBounds([
+     [result.boundingbox[0], result.boundingbox[2]],
+     [result.boundingbox[1], result.boundingbox[3]]
+    ]);
+    this.control.hideResults();
   },
 
   onSuccess: function(results) {
-    this.control.setResults(results.map(formatResult));
+    this.results = results;
+    this.control.setResults(
+      results.length ? results.map(formatResult) : 'No results');
   },
 
   onError: function() {
-    this.control.setResults(['Search failed :(']);
+    this.results = [];
+    this.control.setResults('Search failed :(');
   }
 });
 
 function formatResult(result) {
   return result.display_name;
-}
-
-var search = debounce(function(query, success, error, context) {
-  var url = 'http://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&q=' + encodeURIComponent(query);
-  return get(url, success, error, context);
-});
-
-function get(url, success, error, context) {
-  var request = new XMLHttpRequest();
-  request.timeout = 5000;
-  request.onload = function() {
-    if (this.status >= 200 && this.status < 300) {
-      success.call(context, JSON.parse(request.responseText));
-    } else {
-      error.call(context, this.status);
-    }
-  };
-  request.onerror = function() {
-    error.call(context, this.status);
-  };
-  request.open('GET', url, true);
-  request.send();
 }
 
 function debounce(fn) {
@@ -70,6 +74,6 @@ function debounce(fn) {
     clearTimeout(timer);
     timer = setTimeout(function () {
       fn.apply(context, args);
-    }, 1000);
+    }, 100);
   };
 }
