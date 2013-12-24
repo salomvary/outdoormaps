@@ -21,11 +21,21 @@ module.exports = klass({
   },
 
   search: function(query) {
-    SearchService.search(query, this.map.getBounds(),
-                         this.onSuccess, this.onError, this);
+    if (this.request) {
+      this.request.abort();
+    }
+    this.request = SearchService.search(query, {
+      bounds: this.map.getBounds(),
+      success: this.onSuccess,
+      error: this.onError,
+      context: this
+    });
   },
 
   reset: function() {
+    if (this.request) {
+      this.request.abort();
+    }
     this.results = [];
     this.control.setResults(null);
   },
@@ -72,12 +82,14 @@ module.exports = klass({
   },
 
   onSuccess: function(results) {
+    this.request = null;
     this.results = results;
     this.control.setResults(
       results.length ? results.map(formatResult) : 'No results');
   },
 
   onError: function() {
+    this.request = null;
     this.results = [];
     this.control.setResults('Search failed :(');
   }

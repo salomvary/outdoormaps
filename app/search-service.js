@@ -1,16 +1,16 @@
-var baseUrl = 'http://open.mapquestapi.com/nominatim/v1/search.php',
-    request;
+var $ = require('util'),
+    baseUrl = 'http://open.mapquestapi.com/nominatim/v1/search.php';
 
-module.exports.search = function(query, bounds, success, error, context) {
+module.exports.search = function(query, options) {
   var params = {
     addressdetails: 1,
     format: 'json',
     limit: 15,
-    viewboxlbrt: bounds.toBBoxString(),
+    viewboxlbrt: options.bounds.toBBoxString(),
     q: query
   };
   var url = baseUrl + '?' + encodeParams(params);
-  get(url, success, error, context);
+  get(url, options.success, options.error, options.context);
 };
 
 function encodeParams(params) {
@@ -23,23 +23,22 @@ function encodeParams(params) {
 }
 
 function get(url, success, error, context) {
-  if (request) {
-    request.abort();
-  }
-  request = new XMLHttpRequest();
-  request.timeout = 5000;
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 300) {
-      success.call(context, JSON.parse(request.responseText));
-    } else {
-      error.call(context, request.status);
+  var request = $.extend(new XMLHttpRequest(), {
+    timeout: 5000,
+    onload: function() {
+      if (request.status >= 200 && request.status < 300) {
+        success.call(context, JSON.parse(request.responseText));
+      } else {
+        error.call(context, request.status);
+      }
+      request = null;
+    },
+    onerror: function() {
+      error.call(context, this.status);
+      request = null;
     }
-    request = null;
-  };
-  request.onerror = function() {
-    error.call(context, this.status);
-    request = null;
-  };
+  });
   request.open('GET', url, true);
   request.send();
+  return request;
 }

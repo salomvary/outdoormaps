@@ -50,8 +50,8 @@ suite('Search', function() {
   });
 
   test('search on input', function() {
-    sandbox.stub(SearchService, 'search', function(val, bounds, success, error, ctx) {
-      success.call(ctx, [
+    sandbox.stub(SearchService, 'search', function(val, options) {
+      options.success.call(options.context, [
         { display_name: 'foo' }
       ]);
     });
@@ -147,7 +147,10 @@ suite('Search Service', function() {
       toBBoxString: function() { return 'a,b,c,d'; }
     };
 
-    SearchService.search('hello', bounds, success);
+    SearchService.search('hello', {
+      bounds: bounds,
+      success: success
+    });
     server.respond();
     expect(success).called;
     var results = success.args[0][0];
