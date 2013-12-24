@@ -25,6 +25,7 @@ var FakeController = function() {
 
 suite('Search', function() {
   var map,
+      sandbox,
       subject,
       controller;
 
@@ -33,9 +34,15 @@ suite('Search', function() {
     controller = new FakeController();
     subject = new Search(controller);
     subject.setMap(map);
-    sinon.stub(subject.control, 'setResults');
-    sinon.stub(subject.control, 'showResults');
-    sinon.stub(subject.control, 'hideResults');
+    sandbox = sinon.sandbox.create();
+    sandbox.useFakeTimers();
+    sandbox.stub(subject.control, 'setResults');
+    sandbox.stub(subject.control, 'showResults');
+    sandbox.stub(subject.control, 'hideResults');
+  });
+
+  teardown(function() {
+    sandbox.restore();
   });
 
   test('initialize', function() {
@@ -43,12 +50,14 @@ suite('Search', function() {
   });
 
   test('search on input', function() {
-    sinon.stub(subject, 'search', function(val, bounds, success, error, ctx) {
+    sandbox.stub(SearchService, 'search', function(val, bounds, success, error, ctx) {
       success.call(ctx, [
         { display_name: 'foo' }
       ]);
     });
     subject.onInput('hello');
+    sandbox.clock.tick(120);
+    expect(SearchService.search).called;
     expect(subject.control.setResults).calledWith(['foo']);
   });
 

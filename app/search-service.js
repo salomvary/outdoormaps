@@ -5,7 +5,7 @@ module.exports.search = function(query, bounds, success, error, context) {
   var params = {
     addressdetails: 1,
     format: 'json',
-    limit: 5,
+    limit: 15,
     viewboxlbrt: bounds.toBBoxString(),
     q: query
   };

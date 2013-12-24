@@ -179,10 +179,14 @@ input {
 
 .search-input {
   width: 100%;
+  -webkit-appearance: none;
 }
 
 .search-results {
   display: none;
+
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 
   margin: 0;
   padding: 0;

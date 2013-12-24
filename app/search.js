@@ -6,18 +6,39 @@ module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
     this.options = options;
+    this.debouncedSearch = debounce(this.search.bind(this));
   },
-
-  search: debounce(SearchService.search),
 
   setMap: function(map) {
     this.map = map;
     this.control = new SearchControl({
       position: 'topright',
       onInput: this.onInput.bind(this),
+      onSubmit: this.onSubmit.bind(this),
       onSelect: this.onSelect.bind(this)
     });
     map.addControl(this.control);
+  },
+
+  search: function(query) {
+    SearchService.search(query, this.map.getBounds(),
+                         this.onSuccess, this.onError, this);
+  },
+
+  reset: function() {
+    this.results = [];
+    this.control.setResults(null);
+  },
+
+  showResult: function(result) {
+    this.setMarker({
+      lat: result.lat,
+      lon: result.lon
+    });
+    this.map.fitBounds([
+     [result.boundingbox[0], result.boundingbox[2]],
+     [result.boundingbox[1], result.boundingbox[3]]
+    ]);
   },
 
   setMarker: function(position) {
@@ -30,24 +51,23 @@ module.exports = klass({
 
   onInput: function(val) {
     if (val.length) {
-      this.search(val, this.map.getBounds(),
-             this.onSuccess, this.onError, this);
+      this.debouncedSearch(val);
     } else {
-      this.results = [];
-      this.control.setResults(null);
+      this.reset();
+    }
+  },
+
+  onSubmit: function(val) {
+    if (val.length) {
+      this.search(val);
+    } else {
+      this.reset();
     }
   },
 
   onSelect: function(i) {
     var result = this.results[i];
-    this.setMarker({
-      lat: result.lat,
-      lon: result.lon
-    });
-    this.map.fitBounds([
-     [result.boundingbox[0], result.boundingbox[2]],
-     [result.boundingbox[1], result.boundingbox[3]]
-    ]);
+    this.showResult(result);
     this.control.hideResults();
   },
 

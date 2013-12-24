@@ -135,8 +135,8 @@ module.exports = klass({
       handler: handler.bind(context || this),
       context: context
     });
-    L.DomEvent.disableClickPropagation(button);
     this.map.addControl(button);
+    L.DomEvent.disableClickPropagation(button.getContainer());
     return button;
   }
 });
