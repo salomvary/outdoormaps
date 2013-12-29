@@ -1,5 +1,6 @@
 /* jshint expr: true */
-var Search = require('search'),
+var Promise = require('promise'),
+    Search = require('search'),
     SearchControl = require('search-control'),
     SearchService = require('search-service');
 
@@ -27,7 +28,8 @@ suite('Search', function() {
   var map,
       sandbox,
       subject,
-      controller;
+      controller,
+      oneResult;
 
   setup(function() {
     map = new FakeMap();
@@ -39,6 +41,12 @@ suite('Search', function() {
     sandbox.stub(subject.control, 'setResults');
     sandbox.stub(subject.control, 'showResults');
     sandbox.stub(subject.control, 'hideResults');
+    oneResult = [{
+      display_name: 'foo',
+      lat: '1.5',
+      lon: '2.5',
+      boundingbox: ['1', '2', '3', '4']
+    }];
   });
 
   teardown(function() {
@@ -50,44 +58,63 @@ suite('Search', function() {
   });
 
   test('search on input', function() {
-    sandbox.stub(SearchService, 'search', function(val, options) {
-      options.success.call(options.context, [
-        { display_name: 'foo' }
-      ]);
-    });
+    sandbox.stub(SearchService, 'search')
+      .returns(Promise.resolve(oneResult));
     subject.onInput('hello');
     sandbox.clock.tick(120);
     expect(SearchService.search).called;
     expect(subject.control.setResults).calledWith(['foo']);
   });
 
-  test('select result', function() {
-    subject.results = [{
-      display_name: 'foo',
-      lat: '1.5',
-      lon: '2.5',
-      boundingbox: ['1', '2', '3', '4']
-    }];
+  test('search on input - error', function() {
+    sandbox.stub(SearchService, 'search')
+      .returns(Promise.reject(500));
+    subject.onInput('hello');
+    sandbox.clock.tick(120);
+    expect(SearchService.search).called;
+    expect(subject.control.setResults).calledWith('Search failed :(');
+  });
 
-    subject.onSelect(0);
-    expect(controller.addMarker).calledWith({
-      lat: '1.5',
-      lon: '2.5'
+  test('search on input - abort', function() {
+    sandbox.stub(SearchService, 'search')
+      .returns(Promise.reject(0));
+    subject.onInput('hello');
+    sandbox.clock.tick(120);
+    expect(SearchService.search).called;
+    expect(subject.control.setResults).not.called;
+  });
+
+  test('search & show on submit', function() {
+    sandbox.stub(SearchService, 'search')
+      .returns(Promise.resolve(oneResult));
+    subject.onSubmit('hello');
+    expect(SearchService.search).called;
+    expect(controller.addMarker).called;
+    expect(map.fitBounds).called;
+  });
+
+  test('search & show on submit - no results', function() {
+    sandbox.stub(SearchService, 'search', function() {
+      return Promise.resolve([]);
     });
-    expect(map.fitBounds).calledWith([
-      ['1', '3'],
-      ['2', '4']
-    ]);
-    expect(subject.control.hideResults).called;
+    subject.onSubmit('hello');
+    expect(SearchService.search).called;
+    expect(controller.addMarker).not.called;
+    expect(map.fitBounds).not.called;
+  });
+
+  test('search & show on submit when already has results', function() {
+    sandbox.stub(SearchService, 'search')
+      .returns(Promise.resolve(oneResult));
+    subject.onInput('hello');
+    subject.onSubmit('hello');
+    expect(SearchService.search).calledOnce;
+    expect(controller.addMarker).called;
+    expect(map.fitBounds).called;
   });
 
   test('select result', function() {
-    subject.results = [{
-      display_name: 'foo',
-      lat: '1.5',
-      lon: '2.5',
-      boundingbox: ['1', '2', '3', '4']
-    }];
+    subject.results = oneResult;
 
     subject.onSelect(0);
     expect(controller.addMarker).calledWith({
@@ -147,14 +174,44 @@ suite('Search Service', function() {
       toBBoxString: function() { return 'a,b,c,d'; }
     };
 
-    SearchService.search('hello', {
-      bounds: bounds,
-      success: success
+    var request = SearchService.search('hello', {
+      bounds: bounds
     });
+    request.then(success);
     server.respond();
     expect(success).called;
     var results = success.args[0][0];
     expect(results[1].display_name).equal('bar');
+  });
+
+  test('search failed', function() {
+    var success = sinon.spy();
+    var fail = sinon.spy();
+    var bounds = {
+      toBBoxString: function() { return 'a,b,c,d'; }
+    };
+    var request = SearchService.search('hello', {
+      bounds: bounds
+    });
+    request.then(success, fail);
+    server.respond();
+    expect(success).not.called;
+    expect(fail).calledWith(404);
+  });
+
+  test('search aborted', function() {
+    var success = sinon.spy();
+    var fail = sinon.spy();
+    var bounds = {
+      toBBoxString: function() { return 'a,b,c,d'; }
+    };
+    var request = SearchService.search('hello', {
+      bounds: bounds
+    });
+    request.then(success, fail);
+    request.abort();
+    expect(success).not.called;
+    expect(fail).calledWith(0);
   });
 });
 

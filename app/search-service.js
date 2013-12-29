@@ -1,4 +1,5 @@
 var $ = require('util'),
+    Promise = require('promise'),
     baseUrl = 'http://open.mapquestapi.com/nominatim/v1/search.php';
 
 module.exports.search = function(query, options) {
@@ -10,7 +11,7 @@ module.exports.search = function(query, options) {
     q: query
   };
   var url = baseUrl + '?' + encodeParams(params);
-  get(url, options.success, options.error, options.context);
+  return get(url);
 };
 
 function encodeParams(params) {
@@ -22,23 +23,27 @@ function encodeParams(params) {
     .join('&');
 }
 
-function get(url, success, error, context) {
-  var request = $.extend(new XMLHttpRequest(), {
-    timeout: 5000,
-    onload: function() {
-      if (request.status >= 200 && request.status < 300) {
-        success.call(context, JSON.parse(request.responseText));
-      } else {
-        error.call(context, request.status);
+function get(url) {
+  var xhr;
+  var promise = Promise(function(resolve, reject) {
+    xhr = $.extend(new XMLHttpRequest(), {
+      timeout: 5000,
+      onload: function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          reject(xhr.status);
+        }
+      },
+      onerror: function() {
+        reject(xhr.status);
       }
-      request = null;
-    },
-    onerror: function() {
-      error.call(context, this.status);
-      request = null;
-    }
+    });
+    xhr.open('GET', url, true);
+    xhr.send();
   });
-  request.open('GET', url, true);
-  request.send();
-  return request;
+  // expose xhr.abort
+  // TODO abort should clean up the promise
+  promise.abort = xhr.abort.bind(xhr);
+  return promise;
 }

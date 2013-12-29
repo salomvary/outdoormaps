@@ -21,15 +21,19 @@ module.exports = klass({
   },
 
   search: function(query) {
-    if (this.request) {
-      this.request.abort();
+    // search if we haven't searched yet
+    if (!this.request || this.request.query != query) {
+      // if we have a pending request, abort it
+      if (this.request) {
+        this.request.abort();
+      }
+      this.request = SearchService.search(query, {
+        bounds: this.map.getBounds()
+      });
+      this.request.query = query;
     }
-    this.request = SearchService.search(query, {
-      bounds: this.map.getBounds(),
-      success: this.onSuccess,
-      error: this.onError,
-      context: this
-    });
+    this.request.then(this.onSuccess.bind(this), this.onError.bind(this));
+    return this.request;
   },
 
   reset: function() {
@@ -69,29 +73,33 @@ module.exports = klass({
 
   onSubmit: function(val) {
     if (val.length) {
-      this.search(val);
+        this.search(val)
+          .then(this.onSelect.bind(this, 0));
     } else {
       this.reset();
     }
   },
 
   onSelect: function(i) {
-    var result = this.results[i];
-    this.showResult(result);
-    this.control.hideResults();
+    if (i < this.results.length) {
+      var result = this.results[i];
+      this.showResult(result);
+      this.control.hideResults();
+    }
   },
 
   onSuccess: function(results) {
-    this.request = null;
     this.results = results;
     this.control.setResults(
       results.length ? results.map(formatResult) : 'No results');
   },
 
-  onError: function() {
-    this.request = null;
-    this.results = [];
-    this.control.setResults('Search failed :(');
+  onError: function(status) {
+    // zero is abort (user or programmatic)
+    if (status !== 0) {
+      this.results = [];
+      this.control.setResults('Search failed :(');
+    }
   }
 });
 
