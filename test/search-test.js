@@ -278,6 +278,7 @@ suite('Search Control', function() {
     var item = container.querySelector('.search-result:first-child');
     click(item);
     expect(subject.options.onSelect).calledWith(0);
+    expect(subject.input.value).equals('foo');
   });
 
   test('input', function() {

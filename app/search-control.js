@@ -79,6 +79,11 @@ module.exports = L.Control.extend({
     this.onInput();
   },
 
+  onSelect: function(i, result) {
+    this.input.value = result;
+    this.options.onSelect(i);
+  },
+
   getVal: function() {
     return this.input.value.trim();
   },
@@ -101,7 +106,7 @@ module.exports = L.Control.extend({
       results.map(function(result, i) {
         var res = $.create('li', 'search-result');
         res.innerHTML = result;
-        var select = this.options.onSelect.bind(null, i);
+        var select = this.onSelect.bind(this, i, result);
         $.on(res, 'click', select);
         $.on(res, 'touchstart', select);
         this.results.appendChild(res);
