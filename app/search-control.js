@@ -108,7 +108,6 @@ module.exports = L.Control.extend({
         res.innerHTML = result;
         var select = this.onSelect.bind(this, i, result);
         $.on(res, 'click', select);
-        $.on(res, 'touchstart', select);
         this.results.appendChild(res);
       }, this);
     }
