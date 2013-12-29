@@ -6,20 +6,38 @@ var $ = require('util'),
 
 module.exports = L.Control.extend({
   onAdd: function() {
-    // setup elements
     var control = $.create('form', 'search-control');
-    var input = this.input = $.create('input', 'search-input', control);
-    input.type = 'search';
-    input.placeholder = 'Search';
-    var results = this.results = $.create('ul', 'search-results', control);
-    this.adjustHeight();
-    // setup events
-    L.DomEvent.disableClickPropagation(control);
     $.on(control, 'submit', this.onSubmit, this);
+    L.DomEvent.disableClickPropagation(control);
+    var wrapper = $.create('span', 'search-input-wrapper', control);
+
+    // input
+    var input = this.input = $.create('input', 'search-input', wrapper);
+    // TODO use type=search and remove generated "clear" button
+    input.type = 'text';
+    input.placeholder = 'Search';
     $.on(input, 'input', this.onInput, this);
     $.on(input, 'focus', this.onFocus, this);
     $.on(input, 'blur', this.onBlur, this);
+
+    // hidden submit button
+    // (needed on iOS to be able to submit from sw keyboard)
+    var submitButton = $.create('button', 'search-button', wrapper);
+    submitButton.innerHTML = 'Search';
+
+    // clear button
+    var clear = this.clearButton = $.create('button', 'search-clear', wrapper);
+    clear.type = 'button';
+    clear.innerHTML = '✕';
+    $.on(clear, 'click', this.onClear, this);
+    $.on(clear, 'touchstart', this.onClear, this);
+    this.toggleClearButton();
+
+    // results
+    var results = this.results = $.create('ul', 'search-results', control);
     $.on(results, 'touchstart', this.onResultsTouch, this);
+    this.adjustHeight();
+
     return control;
   },
 
@@ -46,6 +64,7 @@ module.exports = L.Control.extend({
 
   onInput: function() {
     this.options.onInput(this.getVal());
+    this.toggleClearButton(this.input.value.length);
   },
 
   onSubmit: function(event) {
@@ -53,8 +72,19 @@ module.exports = L.Control.extend({
     this.options.onSubmit(this.getVal());
   },
 
+  onClear: function(event) {
+    // don't tap on the input
+    event.preventDefault();
+    this.input.value = '';
+    this.onInput();
+  },
+
   getVal: function() {
     return this.input.value.trim();
+  },
+
+  toggleClearButton: function(on) {
+    this.clearButton.style.visibility = on ? 'visible' : 'hidden';
   },
 
   adjustHeight: function() {
@@ -71,7 +101,9 @@ module.exports = L.Control.extend({
       results.map(function(result, i) {
         var res = $.create('li', 'search-result');
         res.innerHTML = result;
-        $.on(res, 'click', this.options.onSelect.bind(null, i));
+        var select = this.options.onSelect.bind(null, i);
+        $.on(res, 'click', select);
+        $.on(res, 'touchstart', select);
         this.results.appendChild(res);
       }, this);
     }

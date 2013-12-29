@@ -264,6 +264,14 @@ suite('Search Control', function() {
     expect(subject.hideResults).called;
   });
 
+  test('clear button', function() {
+    subject.setResults(['foo', 'bar']);
+    click(container.querySelector('.search-clear'));
+
+    expect(subject.input.value).equals('');
+    expect(subject.options.onInput).calledWith('');
+  });
+
   test('select result', function() {
     subject.setResults(['foo', 'bar']);
 

@@ -36,12 +36,14 @@ body {
 button,
 input {
   height: 40px;
+  min-width: 40px;
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border: 1px solid #CCC;
   outline: none;
   margin: 0;
+  color: #333;
 }
 
 button {
@@ -177,9 +179,29 @@ input {
   width: 200px;
 }
 
+.search-input-wrapper {
+  position: relative;
+}
+
 .search-input {
   width: 100%;
+  padding-right: 40px;
+  /* remove inner shadow, rounder borders and friends on iOS */
   -webkit-appearance: none;
+}
+
+.search-button {
+  visibility: hidden;
+  position: absolute;
+}
+
+.search-clear {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 20px;
+  padding: 0;
 }
 
 .search-results {
