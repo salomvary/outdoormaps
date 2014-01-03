@@ -85,6 +85,8 @@ module.exports = klass({
       var result = this.results[i];
       this.showResult(result);
       this.control.hideResults();
+      // blur input, focus map so that it can be kb controlled
+      this.map.getContainer().focus();
     }
   },
 

@@ -12,6 +12,11 @@ var FakeMap = function() {
       toBBoxString: function() { return 'a,b,c,d'; }
     };
   };
+  this.getContainer = function() {
+    return {
+      focus: sinon.spy()
+    };
+  };
 };
 
 var FakeMarker = function() {
