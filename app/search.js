@@ -42,7 +42,9 @@ module.exports = klass({
     }
     this.results = [];
     this.control.setResults(null);
-    this.removeMarker();
+    if (this.marker) {
+      this.removeMarker();
+    }
   },
 
   showResult: function(result) {
