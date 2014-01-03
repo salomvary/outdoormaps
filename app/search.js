@@ -42,6 +42,7 @@ module.exports = klass({
     }
     this.results = [];
     this.control.setResults(null);
+    this.removeMarker();
   },
 
   showResult: function(result) {
@@ -61,6 +62,11 @@ module.exports = klass({
     } else {
       this.marker = this.controller.addMarker(position);
     }
+  },
+
+  removeMarker: function() {
+    this.map.removeLayer(this.marker);
+    this.marker = null;
   },
 
   onInput: function(val) {

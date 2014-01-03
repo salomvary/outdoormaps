@@ -73,7 +73,7 @@ module.exports = L.Control.extend({
   },
 
   onClear: function(event) {
-    // don't tap on the input
+    // don't tap on the input (avoid focus)
     event.preventDefault();
     this.input.value = '';
     this.onInput();
