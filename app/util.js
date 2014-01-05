@@ -1,4 +1,5 @@
-var L = require('vendor/leaflet');
+var L = require('vendor/leaflet'),
+    fastClick = require('fast-click');
 
 module.exports = {
   extend: function(dst, src) {
@@ -40,5 +41,7 @@ module.exports = {
     el.addEventListener(event, func.bind(context), false);
   },
 
-  create: L.DomUtil.create
+  create: L.DomUtil.create,
+
+  fastClick: fastClick
 };

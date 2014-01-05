@@ -1,4 +1,5 @@
-var klass = require('vendor/klass'),
+var $ = require('util'),
+    klass = require('vendor/klass'),
     Promise = require('promise'),
     Layers = require('layers'),
     L = require('vendor/leaflet'),
@@ -144,6 +145,7 @@ module.exports = klass({
 var MapButton = L.Control.extend({
   onAdd: function() {
     var button = document.createElement('button');
+    $.fastClick(button);
     button.className = this.options.className + '-button';
     button.type = 'button';
     button.addEventListener('click', this.options.handler, false);

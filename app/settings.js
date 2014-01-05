@@ -10,6 +10,7 @@ module.exports = klass({
     // event handlers
     var closeButton = document.getElementById('close-button');
     $.on(closeButton, 'click', this.closeSettings, this);
+    $.fastClick(closeButton);
 
     // initial state
     this.mapLayer = (options.get('layers') || controller.defaults.layers)[0];
@@ -60,6 +61,7 @@ module.exports = klass({
 
   createButtons: function() {
     var mapTypes = document.querySelector('.map-types');
+    $.fastClick(mapTypes);
     this.mapTypeButtons = mapTypes.querySelectorAll('.map-type button');
 
     // handle click on map types

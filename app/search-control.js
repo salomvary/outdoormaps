@@ -19,6 +19,7 @@ module.exports = L.Control.extend({
     $.on(input, 'input', this.onInput, this);
     $.on(input, 'focus', this.onFocus, this);
     $.on(input, 'blur', this.onBlur, this);
+    $.fastClick(input, {focus: true});
 
     // hidden submit button
     // (needed on iOS to be able to submit from sw keyboard)
@@ -30,7 +31,7 @@ module.exports = L.Control.extend({
     clear.type = 'button';
     clear.innerHTML = '✕';
     $.on(clear, 'click', this.onClear, this);
-    $.on(clear, 'touchstart', this.onClear, this);
+    $.fastClick(clear);
     this.toggleClearButton();
 
     // results
@@ -108,6 +109,7 @@ module.exports = L.Control.extend({
         res.innerHTML = result;
         var select = this.onSelect.bind(this, i, result);
         $.on(res, 'click', select);
+        $.fastClick(res);
         this.results.appendChild(res);
       }, this);
     }
