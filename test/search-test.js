@@ -118,6 +118,21 @@ suite('Search', function() {
     expect(map.fitBounds).called;
   });
 
+  test('search on input & submit', function() {
+    // android browsers send both input and submit on submit
+    sandbox.stub(SearchService, 'search')
+      .returns(Promise.resolve(oneResult));
+    // enter something, wait for the dropdown
+    subject.onInput('hello');
+    sandbox.clock.tick(120);
+    // hit submit later
+    subject.onInput('hello');
+    subject.onSubmit('hello');
+    sandbox.clock.tick(120);
+    expect(subject.control.setResults).calledOnce;
+    expect(subject.control.setResults).calledWith(['foo']);
+  });
+
   test('select result', function() {
     subject.results = oneResult;
 

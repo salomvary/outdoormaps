@@ -31,8 +31,8 @@ module.exports = klass({
         bounds: this.map.getBounds()
       });
       this.request.query = query;
+      this.request.then(this.onSuccess.bind(this), this.onError.bind(this));
     }
-    this.request.then(this.onSuccess.bind(this), this.onError.bind(this));
     return this.request;
   },
 

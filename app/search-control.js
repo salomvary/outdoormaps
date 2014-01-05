@@ -73,10 +73,9 @@ module.exports = L.Control.extend({
     this.options.onSubmit(this.getVal());
   },
 
-  onClear: function(event) {
-    // don't tap on the input (avoid focus)
-    event.preventDefault();
+  onClear: function() {
     this.input.value = '';
+    this.input.focus();
     this.onInput();
   },
 
