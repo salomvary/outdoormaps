@@ -1,34 +1,34 @@
 <!doctype html>
 <!--
-	Created by: Márton Salomváry
-	Contact: salomvary@gmail.com twitter.com/salomvary
-	Tourist map data: http://turistautak.hu
-	Fork me on GitHub: https://github.com/salomvary/turistautak
-	Icons: Glyphish.com
+  Created by: Márton Salomváry
+  Contact: salomvary@gmail.com twitter.com/salomvary
+  Tourist map data: http://turistautak.hu
+  Fork me on GitHub: https://github.com/salomvary/turistautak
+  Icons: Glyphish.com
 -->
 <html manifest="index.appcache">
-	<head>
-		<meta charset="utf-8"/>
-		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
-		<title>Outdoor Maps</title>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+    <title>Outdoor Maps</title>
     <!-- build:css app.css -->
-		<link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="app.css">
     <!-- endbuild -->
-		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- chrome mobile home screen support -->
     <meta name="mobile-web-app-capable" content="yes">
-		<link rel="shortcut icon" sizes="114x114" href="apple-touch-icon-114x114.png">
-	</head>
-	<body>
-		<div id="map" class="map"></div>
-		<div id="settings" class="page">
-			<header>
-				<button class="btn" id="close-button">Close</button>
-			</header>
-			<section>
+    <link rel="shortcut icon" sizes="114x114" href="apple-touch-icon-114x114.png">
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div id="settings" class="page">
+      <header>
+        <button class="btn" id="close-button">Close</button>
+      </header>
+      <section>
         <div class="map-types">
           <p class="map-type btn-group horizontal-btn-group">
             <button class="btn left active" name="hiking">Outdoor</button>
@@ -37,26 +37,26 @@
           </p>
         </div>
         <!--
-				<div class="offline">
-					<p>
-						<button class="btn" id="save-button" disabled="disabled">Save map for offline use</button>
-					</p>
-					<p id="saving">
-						<progress></progress><a href="#" id="cancel-button">cancel</a>
-					</p>
-					<p id="saved">Offline map has been saved.</p>
-				</div>
+        <div class="offline">
+          <p>
+            <button class="btn" id="save-button" disabled="disabled">Save map for offline use</button>
+          </p>
+          <p id="saving">
+            <progress></progress><a href="#" id="cancel-button">cancel</a>
+          </p>
+          <p id="saved">Offline map has been saved.</p>
+        </div>
         -->
-			</section>
-		</div>
+      </section>
+    </div>
     <!-- build:js app.js -->
-		<script src="vendor/require.js" data-main="app"></script>
+    <script src="vendor/require.js" data-main="app"></script>
     <!-- endbuild -->
-		<script>
-			var _gaq=[['_setAccount','UA-31870955-1'],['_trackPageview']];
-			(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-			g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-			s.parentNode.insertBefore(g,s)}(document,'script'));
-		</script>
-	</body>
+    <script>
+      var _gaq=[['_setAccount','UA-31870955-1'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+  </body>
 </html>
