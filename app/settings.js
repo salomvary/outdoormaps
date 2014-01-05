@@ -77,14 +77,14 @@ module.exports = klass({
       .map(function(layers) {
         var group = {mapType: layers[0].mapType};
 
-        var g = document.createElement('p');
-        g.className = 'map-layer btn-group vertical-btn-group';
+        var g = document.createElement('fieldset');
+        g.className = 'map-layer control-group';
         mapTypes.appendChild(g);
         group.wrapper = g;
 
         group.layers = layers.map(function(key) {
           var button = document.createElement('button');
-          button.className = 'btn';
+          button.className = 'radio-btn';
           button.name = key.id;
           button.innerHTML = key.title;
           //button.style.width = (100 / layers.length) + '%';
