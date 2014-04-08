@@ -20,7 +20,7 @@ layers.turistautak = {
   subdomains: 'abcd',
   attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Turistautak.hu',
+  title: 'Turistautak.hu (Hungary)',
   mapType: 'hiking',
   // approximate bounding box of hungary
   bounds: new L.LatLngBounds(
@@ -46,7 +46,7 @@ layers.wanderkarte = {
   maxZoom: 18,
   attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Wanderkarte',
+  title: 'Wanderkarte (Central Europe)',
   mapType: 'hiking'
 };
 
@@ -63,7 +63,7 @@ layers.bergfex = {
   maxZoom: 15,
   attribution: '© <a href="http://bergfex.com">bergfex.com</a>',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'bergfex',
+  title: 'bergfex (Austria)',
   mapType: 'hiking',
   folder: function(data) {
     // credits:
