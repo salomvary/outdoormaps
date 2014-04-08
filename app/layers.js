@@ -1,8 +1,10 @@
 var L = require('vendor/leaflet'),
+    $ = require('util'),
     flags = require('flags');
     require('vendor/bing-layer');
 
-var layers = {}, instances = {};
+var layers = {}, instances = {},
+    customOptions = ['detectRetina', 'title', 'klazz', 'mapType'];
 
 layers.map = {
   url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -100,7 +102,11 @@ exports.get = function(id) {
   // (eg. L.BingLayer)
   if(! instances[id]) {
     var Layer = layers[id].klazz || L.TileLayer;
-    instances[id] = new Layer(layers[id].url, layers[id]);
+    instances[id] = new Layer(layers[id].url, getLeafletOptions(layers[id]));
+    // set custop properties after instantiating layers
+    // so that they don't interfere with constructors
+    // (eg. are not included in wms options)
+    $.extend(instances[id], getCustomOptions(layers[id]));
   }
   return instances[id];
 };
@@ -114,3 +120,16 @@ exports.keys = function(mapType) {
       return ! mapType || layer.mapType == mapType;
     });
 };
+
+var getLeafletOptions = filterOptions.bind(null, false);
+var getCustomOptions = filterOptions.bind(null, true);
+
+function filterOptions(isCustom, options) {
+  return Object.keys(options)
+    .reduce(function(filtered, key) {
+      if ((customOptions.indexOf(key) != -1) == isCustom) {
+        filtered[key] = options[key];
+      }
+      return filtered;
+    }, {});
+}
