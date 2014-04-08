@@ -88,7 +88,7 @@ layers.bgtopovj = {
   detectRetina: flags.isEnabled('detectRetina'),
   attribution: '<a href="http://web.uni-plovdiv.bg/vedrin/index_en.html">Map data: Uni-Plovdiv</a>',
   url: 'http://www.kade.si/cgi-bin/mapserv',
-  layers: 'CART Lab Map Server @ Uni-Plovdiv',
+  layers: 'BGtopoVJ-raster-v3.00',
   title: 'BGtopoVJ (Bulgaria)',
   mapType: 'hiking'
 };
