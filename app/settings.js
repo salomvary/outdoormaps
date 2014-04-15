@@ -14,7 +14,7 @@ module.exports = klass({
 
     // initial state
     this.mapLayer = (options.get('layers') || controller.defaults.layers)[0];
-    this.mapType = Layers.get(this.mapLayer).options.mapType;
+    this.mapType = Layers.get(this.mapLayer).mapType;
     this.defaultLayers = options.get('defaultLayers');
     if(! this.defaultLayers) {
       this.defaultLayers = {};
@@ -48,7 +48,7 @@ module.exports = klass({
 
   setMapLayer: function(event) {
     var id = event.target.name;
-    this.defaultLayers[Layers.get(id).options.mapType] = id;
+    this.defaultLayers[Layers.get(id).mapType] = id;
     this.setLayers([id]);
   },
 
