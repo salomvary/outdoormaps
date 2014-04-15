@@ -4,7 +4,7 @@ var L = require('vendor/leaflet'),
     require('vendor/bing-layer');
 
 var layers = {}, instances = {},
-    customOptions = ['detectRetina', 'title', 'klazz', 'mapType'];
+    customOptions = ['title', 'klazz', 'mapType'];
 
 layers.map = {
   url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
