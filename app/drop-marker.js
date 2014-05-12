@@ -27,6 +27,7 @@ module.exports = klass({
 
   setLocation: function(position) {
     Location.set({
+      layers: this.options.get('layers'),
       center: position,
       zoom: this.map.getZoom()
     });

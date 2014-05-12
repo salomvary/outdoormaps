@@ -1,11 +1,12 @@
 module.exports = {
   parse: function(path) {
-    var parts = path.split(','),
+    var parts = path.split('/'),
         state = {};
 
-    var lat = parseFloat(parts[0]),
-        lng = parseFloat(parts[1]),
-        zoom = parseInt(parts[2], 10);
+    var layer = parts[0],
+        lat = parseFloat(parts[1]),
+        lng = parseFloat(parts[2]),
+        zoom = parseInt(parts[3], 10);
 
     if (!(isNaN(lat) || isNaN(lng) || isNaN(zoom))) {
       state.center = {
@@ -13,15 +14,19 @@ module.exports = {
         lng: lng
       };
       state.zoom = zoom;
+      state.layers = [layer];
     }
 
     return state;
   },
 
   serialize: function(state) {
-    return roundCoordinate(state.center.lat) + ','
-      + roundCoordinate(state.center.lng) + ','
-      + state.zoom;
+    return [
+      state.layers[0],
+      roundCoordinate(state.center.lat),
+      roundCoordinate(state.center.lng),
+      state.zoom
+    ].join('/');
   },
 
   get: function() {
