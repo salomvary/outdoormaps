@@ -4,7 +4,7 @@ window.addToHomeConfig = {
 
 require.config({
   deps: [
-    'polyfills',
+    'vendor/polyfills',
     'vendor/add-to-homescreen/src/add2home'
   ],
   paths: {

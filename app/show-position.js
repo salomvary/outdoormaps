@@ -1,7 +1,7 @@
 var $ = require('util'),
     klass = require('vendor/klass'),
     L = require('vendor/leaflet'),
-    geolocation = require('geolocation');
+    geolocation = require('vendor/geolocation');
 
 module.exports = klass({
   initialize: function(controller, options) {

@@ -1,6 +1,6 @@
 require = {
   deps: [
-    'polyfills'
+    'vendor/polyfills'
   ],
   paths: {
     'vendor/leaflet': 'vendor/leaflet/leaflet-src'
