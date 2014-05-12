@@ -1,5 +1,5 @@
 release:
-	cd dist; git clean -f; git rm -rf *
+	cd dist; git clean -f; git rm -rf * || true
 	grunt build
 	cd dist; git add -A
 
