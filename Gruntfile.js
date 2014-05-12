@@ -35,6 +35,7 @@ module.exports = function (grunt) {
           cwd: 'app/',
           src: [
             '*.js',
+            'vendor/geolocation.js',
             '!app.js'
           ],
           dest: '.tmp/'
