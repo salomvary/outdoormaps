@@ -6,6 +6,7 @@ var $ = require('util'),
     DropMarker = require('drop-marker'),
     InitialLocation = require('initial-location'),
     RecommendLayers = require('recommend-layers'),
+    Router = require('router'),
     ShowPosition = require('show-position'),
     Search = require('search'),
     StateStore = require('state-store'),
@@ -14,6 +15,7 @@ var $ = require('util'),
 L.Icon.Default.imagePath = 'vendor/leaflet/images';
 
 var plugins = [
+  Router,
   InitialLocation,
   RecommendLayers,
   DropMarker,

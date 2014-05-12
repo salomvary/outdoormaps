@@ -1,10 +1,14 @@
-var klass = require('vendor/klass');
+var klass = require('vendor/klass'),
+    Location = require('location');
 
 module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
     this.options = options;
-    options.set(this.loadHashState());
+    var state = Location.get();
+    if (state.center) {
+      options.set({marker: state.center});
+    }
   },
 
   setMap: function(map) {
@@ -16,32 +20,16 @@ module.exports = klass({
     }
   },
 
-  loadHashState: function() {
-    var state = {};
-    if(window.location.hash.length > 1) {
-      var parts = window.location.hash.substring(1).split(',');
-      try {
-        state.center = {
-          lat: parseFloat(parts[0]),
-          lng: parseFloat(parts[1])
-        };
-        state.zoom = parseInt(parts[2], 10);
-      } catch(e) { /* invalid hash, ignore it */ }
-      state.marker = state.center;
-    }
-    return state;
-  },
-
   dropMarker: function(event) {
     this.setMarker(event.latlng);
-    this.saveHashState(event.latlng);
+    this.setLocation(event.latlng);
   },
 
-  saveHashState: function(position) {
-    window.location.hash =
-      roundCoordinate(position.lat) + ',' +
-      roundCoordinate(position.lng) + ',' +
-      this.map.getZoom();
+  setLocation: function(position) {
+    Location.set({
+      center: position,
+      zoom: this.map.getZoom()
+    });
   },
 
   setMarker: function(position) {
@@ -58,7 +46,3 @@ module.exports = klass({
     }
   }
 });
-
-function roundCoordinate(coordinate) {
-  return Math.round(coordinate * 100000) / 100000;
-}
