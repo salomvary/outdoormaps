@@ -37,7 +37,7 @@ module.exports = klass({
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
         this.positionUpdate.bind(this, true),
-        {desiredAccuracy:10, maxWait: 20000});
+        {desiredAccuracy:100, maxWait: 20000});
     }
   },
 
