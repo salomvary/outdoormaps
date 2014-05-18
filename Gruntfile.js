@@ -140,7 +140,7 @@ module.exports = function (grunt) {
           paths: ['app/']
         },
         files: {
-          'dist/app.css': ['app/app.css']
+          'dist/assets/app.css': ['app/assets/app.css']
         }
       }
     },
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
       assets: {
         files: [{
           src: [
-            'dist/*.{js,css,png,jpg,ico,gif}',
+            'dist/{,*/}*.{js,css,png,jpg,ico,gif}',
             'dist/vendor/require.js'
             //'dist/vendor/leaflet/images/*'
           ]
@@ -161,7 +161,7 @@ module.exports = function (grunt) {
     },
     usemin: {
       html: ['dist/*.html'],
-      css: ['dist/*.css'],
+      css: ['dist/{,*/}*.css'],
       options: {
         dirs: ['dist']
       }
@@ -179,7 +179,7 @@ module.exports = function (grunt) {
     cssmin: {
       dist: {
         files: {
-          'dist/app.css': [
+          'dist/assets/app.css': [
             'dist/{,*/}*.css'
           ]
         }
@@ -225,7 +225,7 @@ module.exports = function (grunt) {
           dest: 'dist',
           src: [
             'vendor/leaflet/images/marker-*',
-            '*.{ico,txt,gif}',
+            '{,*/}*.{ico,txt,gif}',
             '.htaccess'
           ]
         }, {
@@ -244,11 +244,11 @@ module.exports = function (grunt) {
           basePath: 'dist'
         },
         src: [
-          '*.js',
-          '*.css',
-          '*.png',
-          '*.gif',
-          '*.ico',
+          '{,*/}*.js',
+          '{,*/}*.css',
+          '{,*/}*.png',
+          '{,*/}*.gif',
+          '{,*/}*.ico',
           'vendor/*.require.js',
           'vendor/leaflet/images/*'
         ],
