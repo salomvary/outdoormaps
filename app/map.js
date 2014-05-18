@@ -123,8 +123,8 @@ module.exports = klass({
 
   },
 
-  addMarker: function(position) {
-    return L.marker(position).addTo(this.map);
+  addMarker: function(position, options) {
+    return L.marker(position, options).addTo(this.map);
   },
 
   removeMarker: function(marker) {

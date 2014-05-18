@@ -264,6 +264,13 @@ input {
   background-image: url(loading.gif), -moz-linear-gradient(top, #62C462, #51A351);
 }
 
+.my-location-icon {
+  box-shadow: 0 0 5px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: rgb(38, 126, 202);
+}
+
 /*
  * Search
  */

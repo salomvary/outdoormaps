@@ -3,6 +3,11 @@ var $ = require('util'),
     L = require('vendor/leaflet'),
     geolocation = require('vendor/geolocation');
 
+var myLocationIcon = L.divIcon({
+  iconSize: [20, 20],
+  className: 'my-location-icon'
+});
+
 module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
@@ -89,7 +94,9 @@ module.exports = klass({
     if(this.marker) {
       this.marker.setLatLng(position);
     } else {
-      this.marker = this.controller.addMarker(position);
+      this.marker = this.controller.addMarker(position, {
+        icon: myLocationIcon
+      });
     }
   }
 });
