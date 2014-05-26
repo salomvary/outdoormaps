@@ -4,6 +4,8 @@ suite('Location', function() {
   test('parse', function() {
     expect(Location.parse('osm/19.5/52.1/13'))
       .deep.equal({layers: ['osm'], center: {lat: 19.5, lng: 52.1}, zoom: 13});
+    expect(Location.parse('http://fubar.com'))
+      .deep.equal({track: 'http://fubar.com'});
     expect(Location.parse('crap'))
       .deep.equal({}, 'empty state');
   });

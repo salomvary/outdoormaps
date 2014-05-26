@@ -14,6 +14,9 @@ require.config({
     'vendor/leaflet': {
       exports: 'L'
     },
+    'vendor/GPX': {
+      exports: 'L.GPX'
+    },
     'vendor/bing-layer': ['vendor/leaflet']
   }
 });

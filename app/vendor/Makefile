@@ -9,7 +9,8 @@ DEPENDENCIES=bing-layer.js\
 						 chai\
 						 sinon.js\
 						 sinon-chai.js\
-						 jsonp.js
+						 jsonp.js\
+						 GPX.js
 
 all: $(DEPENDENCIES)
 
@@ -46,6 +47,9 @@ jsonp.js:
 
 require.js:
 	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.1.9/require.js
+
+GPX.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/shramov/leaflet-plugins/v1.1.2/layer/vector/GPX.js
 
 # plain file from the internetz
 

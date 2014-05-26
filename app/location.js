@@ -1,5 +1,5 @@
-module.exports = {
-  parse: function(path) {
+var routes = [
+  function latLonZoom(path) {
     var parts = path.split('/'),
         state = {};
 
@@ -15,9 +15,28 @@ module.exports = {
       };
       state.zoom = zoom;
       state.layers = [layer];
+      return state;
     }
+  },
 
-    return state;
+  function track(path) {
+    if (path.match(/^https?:\/\//)) {
+      return {
+        track: decodeURIComponent(path)
+      };
+    }
+  }
+];
+
+module.exports = {
+  parse: function(path) {
+    for (var i = 0; i < routes.length; i++) {
+      var state = routes[i](path);
+      if (state) {
+        return state;
+      }
+    }
+    return {};
   },
 
   serialize: function(state) {

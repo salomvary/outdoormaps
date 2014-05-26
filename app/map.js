@@ -10,7 +10,8 @@ var $ = require('util'),
     ShowPosition = require('show-position'),
     Search = require('search'),
     StateStore = require('state-store'),
-    Settings = require('settings');
+    Settings = require('settings'),
+    Tracks = require('tracks');
 
 L.Icon.Default.imagePath = 'vendor/leaflet/images';
 
@@ -21,7 +22,8 @@ var plugins = [
   DropMarker,
   ShowPosition,
   Settings,
-  Search
+  Search,
+  Tracks
 ];
 
 var stateEvents = 'moveend zoomend layeradd layerremove';
