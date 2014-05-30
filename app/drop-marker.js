@@ -5,10 +5,6 @@ module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
     this.options = options;
-    var state = Location.get();
-    if (state.center) {
-      options.set({marker: state.center});
-    }
   },
 
   setMap: function(map) {
@@ -20,17 +16,38 @@ module.exports = klass({
     }
   },
 
+  route: function(path) {
+    var parts = path.split('/'),
+        state = {};
+
+    var layer = parts[0],
+        lat = parseFloat(parts[1]),
+        lng = parseFloat(parts[2]),
+        zoom = parseInt(parts[3], 10);
+
+    if (!(isNaN(lat) || isNaN(lng) || isNaN(zoom))) {
+      state.marker = state.center = {
+        lat: lat,
+        lng: lng
+      };
+      state.zoom = zoom;
+      state.layers = [layer];
+      this.options.set(state);
+      return true;
+    }
+  },
+
   dropMarker: function(event) {
     this.setMarker(event.latlng);
     this.setLocation(event.latlng);
   },
 
   setLocation: function(position) {
-    Location.set({
+    Location.set(buildLocation({
       layers: this.options.get('layers'),
       center: position,
       zoom: this.map.getZoom()
-    });
+    }));
   },
 
   setMarker: function(position) {
@@ -47,3 +64,16 @@ module.exports = klass({
     }
   }
 });
+
+function buildLocation(state) {
+  return [
+    state.layers[0],
+    roundCoordinate(state.center.lat),
+    roundCoordinate(state.center.lng),
+    state.zoom
+  ].join('/');
+}
+
+function roundCoordinate(coordinate) {
+  return Math.round(coordinate * 100000) / 100000;
+}

@@ -3,13 +3,16 @@ var klass = require('vendor/klass'),
     Promise = require('promise');
 
 module.exports = klass({
-  initialize: function(controller, options) {
-    this.controller = controller;
-    var url = options.get('track');
-    if (url) {
-      var track = this.track = new GPX(url, {async: true});
-      this.trackLoaded = new Promise(track.on.bind(track, 'loaded'));
+  route: function(path) {
+    if (path.match(/^https?:\/\//)) {
+      this.loadTrack(path);
+      return true;
     }
+  },
+
+  loadTrack: function(url) {
+    var track = this.track = new GPX(url, {async: true});
+    this.trackLoaded = new Promise(track.on.bind(track, 'loaded'));
   },
 
   setMap: function(map) {

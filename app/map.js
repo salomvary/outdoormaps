@@ -16,14 +16,14 @@ var $ = require('util'),
 L.Icon.Default.imagePath = 'vendor/leaflet/images';
 
 var plugins = [
-  Router,
   InitialLocation,
   RecommendLayers,
   DropMarker,
   ShowPosition,
   Settings,
   Search,
-  Tracks
+  Tracks,
+  Router
 ];
 
 var stateEvents = 'moveend zoomend layeradd layerremove';
