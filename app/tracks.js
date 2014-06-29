@@ -2,10 +2,13 @@ var klass = require('vendor/klass'),
     GPX = require('vendor/GPX'),
     Promise = require('promise');
 
+var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)');
+
 module.exports = klass({
   route: function(path) {
-    if (path.match(/^https?:\/\//)) {
-      this.loadTrack(path);
+    var trackUrl = parseLocation(path);
+    if (trackUrl) {
+      this.loadTrack(trackUrl);
       return true;
     }
   },
@@ -28,3 +31,12 @@ module.exports = klass({
       .addLayer(this.track);
   }
 });
+
+function parseLocation(path) {
+  var match = DROPBOX_URL.exec(path);
+  return match && dropboxUrl(match[1], match[2]);
+}
+
+function dropboxUrl(hash, filename) {
+  return 'https://dl.dropboxusercontent.com/s/' + hash + '/' + filename;
+}
