@@ -93,6 +93,14 @@ layers.bgtopovj = {
   mapType: 'hiking'
 };
 
+layers.strava = {
+  url: 'http://d2z9m7k9h4f0yp.cloudfront.net/tiles/cycling/color1/{z}/{x}/{y}.png',
+  attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
+  detectRetina: true,
+  title: 'Strava Heatmap',
+  mapType: 'overlay'
+};
+
 Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
