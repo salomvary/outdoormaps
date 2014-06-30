@@ -8,7 +8,8 @@ DEPENDENCIES=bing-layer.js\
 						 mocha\
 						 chai\
 						 sinon.js\
-						 sinon-chai.js
+						 sinon-chai.js\
+						 jsonp.js
 
 all: $(DEPENDENCIES)
 
@@ -37,6 +38,9 @@ klass.js:
 
 bing-layer.js:
 	$(CURL) -o $@ https://raw.github.com/shramov/leaflet-plugins/44935a984e2b051131a21f23d45c373ab8362564/layer/tile/Bing.js
+
+jsonp.js:
+	$(CURL) -o $@ https://raw.github.com/larryosborn/JSONP/842ac6d454242e856af3550b07a67113cdf84e86/dist/jsonp.js
 
 # single github file, tagged
 

@@ -1,6 +1,7 @@
 var L = require('vendor/leaflet'),
     $ = require('util'),
-    flags = require('flags');
+    flags = require('flags'),
+    Panoramio = require('panoramio');
     require('vendor/bing-layer');
 
 var layers = {}, instances = {},
@@ -98,6 +99,12 @@ layers.strava = {
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
   detectRetina: true,
   title: 'Strava Heatmap',
+  mapType: 'overlay'
+};
+
+layers.panoramio = {
+  klazz: Panoramio,
+  title: 'Panoramio',
   mapType: 'overlay'
 };
 

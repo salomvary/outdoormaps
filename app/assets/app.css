@@ -359,3 +359,20 @@ input {
 .map-type button {
   width: 33.33%;
 }
+
+/** Photo popup */
+
+.photo-popup .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.photo-popup .photo {
+  margin: 5px 0;
+}
+
+.photo-popup .owner {
+  float: right;
+}
