@@ -53,7 +53,7 @@ layers.wanderkarte = {
 layers.satellite = {
   klazz: L.BingLayer,
   url: 'AugCQhyydetxyavzoAQjcWuElUpYz2r49p15Kol7MUZEHnAW9umPiQWiki5CsUuz',
-  detectRetina: flags.isEnabled('detectRetina'),
+  detectRetina: true,
   mapType: 'satellite'
 };
 
