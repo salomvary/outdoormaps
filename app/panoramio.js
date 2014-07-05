@@ -28,11 +28,11 @@ module.exports = L.FeatureGroup.extend({
     data
       .photos
       .map(function(photo) {
-        var icon = L.icon({
-          iconUrl: 'http://www.panoramio.com/img/panoramio-marker.png',
-          shadowUrl: null,
-          iconAnchor: [9,9],
-          popupAnchor: [0,-10]
+        var icon = L.divIcon({
+          iconSize: [16, 16],
+          iconAnchor: [8,8],
+          popupAnchor: [0,-10],
+          className: 'panoramio-icon'
         });
 
         var marker = L.marker([photo.latitude, photo.longitude], {icon: icon})
