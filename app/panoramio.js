@@ -38,6 +38,8 @@ module.exports = L.FeatureGroup.extend({
         var marker = L.marker([photo.latitude, photo.longitude], {icon: icon})
           .bindPopup(this._template(photo), {
             maxWidth: photo.width,
+            // avoid popup under top controls:
+            autoPanPaddingTopLeft: [0, 60],
             className: 'photo-popup'
           });
 
