@@ -13,8 +13,17 @@ module.exports = L.FeatureGroup.extend({
     this.clearLayers();
 	},
 
+  _removeMarkers: function() {
+    this.getLayers()
+      .filter(function(layer) {
+        // keep markers with open popup
+        return !this._map.hasLayer(layer.getPopup());
+      }, this)
+      .forEach(this.removeLayer, this);
+  },
+
 	_load: function(data) {
-    this.clearLayers();
+    this._removeMarkers();
 
     data
       .photos
