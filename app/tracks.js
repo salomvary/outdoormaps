@@ -5,6 +5,12 @@ var klass = require('vendor/klass'),
 var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)');
 
 module.exports = klass({
+  initialize: function() {
+    this.mapAvailable = new Promise(function(resolve) {
+      this.resolveMap = resolve;
+    }.bind(this));
+  },
+
   route: function(path) {
     var trackUrl = parseLocation(path);
     if (trackUrl) {
@@ -15,14 +21,15 @@ module.exports = klass({
 
   loadTrack: function(url) {
     var track = this.track = new GPX(url, {async: true});
-    this.trackLoaded = new Promise(track.on.bind(track, 'loaded'));
+    var trackLoaded = new Promise(track.on.bind(track, 'loaded'));
+    this.mapAvailable
+      .then(function() { return trackLoaded; })
+      .then(this.showTrack.bind(this));
   },
 
   setMap: function(map) {
     this.map = map;
-    if (this.trackLoaded) {
-      this.trackLoaded.then(this.showTrack.bind(this));
-    }
+    this.resolveMap();
   },
 
   showTrack: function(event) {
