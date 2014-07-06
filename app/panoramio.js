@@ -63,13 +63,19 @@ module.exports = L.FeatureGroup.extend({
 		var bounds = this._map.getBounds();
 		var sw = bounds.getSouthWest();
 		var ne = bounds.getNorthEast();
+    var size = this._map.getSize();
+    var magic = 7500;
+
+    // Limit is proportional to map size on the screen:
+    // ~15 on mobile screens, ~100 on large desktop screens
+    var limit = Math.max(10, Math.min(100, Math.round(size.x * size.y / magic)));
 
     JSONP({
       url: 'http://www.panoramio.com/map/get_panoramas.php',
       data: {
         set: 'public',
         from: 0,
-        to: 100,
+        to: limit,
         size: 'small',
         mapfilter: true,
         minx: sw.lng,
