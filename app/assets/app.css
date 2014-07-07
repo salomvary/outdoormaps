@@ -39,6 +39,7 @@ body {
   z-index: 1000;
   min-width: 250px;
   left: 0px;
+  overflow-y: scroll;
 }
 
 @media all and (min-width: 400px) {
