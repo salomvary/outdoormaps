@@ -1,9 +1,25 @@
-module.exports = {
+var $ = require('util'),
+    Events = require('vendor/leaflet').Mixin.Events,
+    currentHash;
+
+var Location = module.exports = $.extend({
   get: function() {
     return window.location.hash.substring(1);
   },
 
-  set: function(path) {
-    window.location.hash = path;
+  set: function(hash) {
+    currentHash = hash;
+    window.location.hash = hash;
   }
-};
+}, Events);
+
+$.on(window, 'hashchange', onHashChange);
+currentHash = Location.get();
+
+function onHashChange() {
+  console.log(Location.get(), currentHash);
+  if (Location.get() != currentHash) {
+    Location.fire('change');
+  }
+  currentHash = Location.get();
+}

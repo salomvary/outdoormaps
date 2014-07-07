@@ -1,5 +1,4 @@
-var $ = require('util'),
-    klass = require('vendor/klass'),
+var klass = require('vendor/klass'),
     Location = require('location');
 
 module.exports = klass({
@@ -7,14 +6,14 @@ module.exports = klass({
     this.handlers = controller.plugins.filter(function(plugin) {
       return plugin.route;
     });
-    $.on(window, 'hashchange', route, this);
     route.call(this);
+    Location.on('change', route, this);
   }
 });
 
 function route() {
   var location = Location.get();
-  this.handlers.some(function(plugin) {
+  this.handlers.forEach(function(plugin) {
     return plugin.route(location);
   });
 }

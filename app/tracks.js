@@ -13,6 +13,9 @@ module.exports = klass({
 
   route: function(path) {
     var trackUrl = parseLocation(path);
+    if (this.track) {
+      this.hideTrack();
+    }
     if (trackUrl) {
       this.loadTrack(trackUrl);
       return true;
@@ -36,6 +39,11 @@ module.exports = klass({
     this.map
       .fitBounds(event.target.getBounds())
       .addLayer(this.track);
+  },
+
+  hideTrack: function() {
+    this.map.removeLayer(this.track);
+    this.track = null;
   }
 });
 
