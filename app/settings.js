@@ -1,6 +1,8 @@
 var Layers = require('layers'),
     klass = require('vendor/klass'),
-    $ = require('util');
+    $ = require('util'),
+    Select = require('select'),
+    ButtonGroup = require('button-group');
 
 module.exports = klass({
   initialize: function(controller, options) {
@@ -42,20 +44,20 @@ module.exports = klass({
   },
 
   setMapType: function(event) {
-    var type = event.target.name;
+    var type = event.value;
     var layerId = this.defaultLayers[type] || Layers.keys(type)[0].id;
     this.mapType = type;
     this.setLayers([layerId, this.overlay]);
   },
 
   setMapLayer: function(event) {
-    var id = event.target.name;
+    var id = event.value;
     this.defaultLayers[Layers.get(id).mapType] = id;
     this.setLayers([id, this.overlay]);
   },
 
   setOverlay: function(event) {
-    var id = event.target.name,
+    var id = event.value,
         add = this.overlay != id;
     this.setLayers([this.mapLayer, add && id]);
   },
@@ -69,47 +71,56 @@ module.exports = klass({
   },
 
   createButtons: function() {
-    var mapTypes = document.querySelector('.map-types');
-    $.fastClick(mapTypes);
-    this.mapTypeButtons = mapTypes.querySelectorAll('.map-type button');
+    var container = document.querySelector('.map-types');
 
-    // handle click on map types
-    // XXX no event delegation on iOS Safari :(
-    $.eachNode(this.mapTypeButtons, function(button) {
-      $.on(button, 'click', this.setMapType, this);
-    }, this);
+    this.mapTypeButtons = new Select(container.querySelector('.map-type'))
+      .on('change', this.setMapType, this);
 
     // create layer type selection for map types with multiple
     // layers
-    this.mapLayerGroups = ['hiking', 'satellite', 'map']
-      .map(function(type) { return Layers.keys(type); })
-      .filter(function(layers) { return layers.length > 1; })
-      .map(makeLayerGroups.bind(this, mapTypes, this.setMapLayer));
+    this.layerButtons = ['hiking', 'satellite', 'map']
+      // only when it has more than one layer
+      .filter(function(mapType) { return Layers.keys(mapType).length > 1; })
+      // create button for each mapType with multiple layers
+      .reduce(function(layerButtons, mapType) {
+        layerButtons[mapType] = layerButtonsFor({
+          mapType: mapType,
+          parent: container,
+          handler: this.setMapLayer.bind(this)
+        });
+        return layerButtons;
+      }.bind(this), {});
 
     // overlay selection
-    this.overlayButtons =
-      makeLayerGroups.call(this, mapTypes, this.setOverlay, Layers.keys('overlay'));
+    this.overlayButtons = layerButtonsFor({
+      mapType: 'overlay',
+      options: {toggle: true},
+      parent: container,
+      handler: this.setOverlay.bind(this)
+    });
   },
 
   updateButtons: function() {
-    // map type buttons
-    $.eachNode(this.mapTypeButtons, function(button) {
-      var active = button.name === this.mapType;
-      $.toggleClass(button, 'active', active);
-    }, this);
+    // set the active map type
+    this.mapTypeButtons.set(this.mapType);
 
-    // toggle group
-    this.mapLayerGroups.forEach(function(group) {
-      if(group.mapType === this.mapType) {
-        $.show(group.wrapper);
-        toggleButtons(group.layers, this.mapLayer);
+    // show/hide layer group
+    Object.keys(this.layerButtons).forEach(function(mapType) {
+      var el = this.layerButtons[mapType].el;
+      if (mapType === this.mapType) {
+        $.show(el);
       } else {
-        $.hide(group.wrapper);
+        $.hide(el);
       }
     }, this);
 
-    // toggle overlay
-    toggleButtons(this.overlayButtons.layers, this.overlay);
+    // set the active layer
+    if (this.layerButtons[this.mapType]) {
+      this.layerButtons[this.mapType].set(this.mapLayer);
+    }
+
+    // set the active overlay
+    this.overlayButtons.set(this.overlay);
 
     // XXX fix a strange Chrome issue that settings doesn't repaint
     document.getElementById('settings')
@@ -117,32 +128,17 @@ module.exports = klass({
   }
 });
 
-function makeLayerGroups(mapTypes, handler, layers) {
-  var group = {mapType: layers[0].mapType};
-
-  var g = document.createElement('fieldset');
-  g.className = 'map-layer control-group';
-  mapTypes.appendChild(g);
-  group.wrapper = g;
-
-  group.layers = layers.map(function(key) {
-    var button = document.createElement('button');
-    button.className = 'radio-btn';
-    button.name = key.id;
-    button.innerHTML = key.title;
-    //button.style.width = (100 / layers.length) + '%';
-    g.appendChild(button);
-
-    $.on(button, 'click', handler, this);
-    return button;
-  }, this);
-
-  return group;
+function layerButtonsFor(options) {
+  var values = layersToOptions(Layers.keys(options.mapType));
+  var buttons = new ButtonGroup(options.options, values)
+    .on('change', options.handler);
+  options.parent.appendChild(buttons.el);
+  return buttons;
 }
 
-function toggleButtons(buttons, activeButton) {
-  // toggle buttons state in active group
-  buttons.forEach(function(button) {
-    $.toggleClass(button, 'active', button.name === activeButton);
-  }, this);
+function layersToOptions(layers) {
+  return layers.reduce(function(options, layer) {
+    options[layer.id] = layer.title;
+    return options;
+  }, {});
 }
