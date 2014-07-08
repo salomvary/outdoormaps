@@ -36,6 +36,14 @@ module.exports = klass($.extend({
   set: function(value) {
     this._value = value;
     this.update(value);
+  },
+
+  setDisabled: function(values) {
+    values = values || [];
+    var buttons = this.el.querySelectorAll('button');
+    $.eachNode(buttons, function(button) {
+      button.disabled = values.indexOf(button.name) > -1;
+    });
   }
 }, Events));
 

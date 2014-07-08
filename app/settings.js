@@ -29,14 +29,19 @@ module.exports = klass({
     this.updateButtons();
   },
 
-  setMap: function() {
+  setMap: function(map) {
+    this.map = map;
     this.controller.createButton('settings', 'topright',
       this.toggleSettings, this);
   },
 
   toggleSettings: function() {
-    $.toggleClass(document.body, 'settings',
-      document.body.className !== 'settings');
+    var show = document.body.className !== 'settings';
+    $.toggleClass(document.body, 'settings', show);
+    this.map[show ? 'on' : 'off']('moveend', updateAvailableLayers, this);
+    if (show) {
+      updateAvailableLayers.call(this);
+    }
   },
 
   closeSettings: function() {
@@ -141,4 +146,25 @@ function layersToOptions(layers) {
     options[layer.id] = layer.title;
     return options;
   }, {});
+}
+
+function updateAvailableLayers() {
+  // for the active layer
+  if (this.layerButtons[this.mapType]) {
+    var disabledLayers = getDisabledLayers.call(this, Layers.keys(this.mapType));
+    this.layerButtons[this.mapType].setDisabled(disabledLayers);
+  }
+
+  // for overlays
+  var disabledOverlays = getDisabledLayers.call(this, Layers.keys('overlay'));
+  this.overlayButtons.setDisabled(disabledOverlays);
+}
+
+function getDisabledLayers(layers) {
+  var mapBounds = this.map.getBounds();
+  return layers
+    .filter(function(layer) {
+      return layer.bounds && !layer.bounds.contains(mapBounds);
+    })
+    .map(function(layer) { return layer.id; });
 }

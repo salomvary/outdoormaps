@@ -7,6 +7,10 @@ var L = require('vendor/leaflet'),
 var layers = {}, instances = {},
     customOptions = ['title', 'klazz', 'mapType'];
 
+var Hungary = new L.LatLngBounds(
+  new L.LatLng(48.6, 16),
+  new L.LatLng(45.6, 23.2));
+
 layers.map = {
   url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution: 'Map data © OpenStreetMap contributors',
@@ -23,10 +27,7 @@ layers.turistautak = {
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'Turistautak.hu (Hungary)',
   mapType: 'hiking',
-  // approximate bounding box of hungary
-  bounds: new L.LatLngBounds(
-    new L.LatLng(48.6, 16), // sw
-    new L.LatLng(45.6, 23.2)) // ne
+  bounds:  Hungary
 };
 
 layers.lines = {
@@ -37,7 +38,8 @@ layers.lines = {
   attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'Turistautak.hu',
-  mapType: 'overlay'
+  mapType: 'overlay',
+  bounds:  Hungary
 };
 
 layers.wanderkarte = {

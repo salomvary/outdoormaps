@@ -210,6 +210,10 @@ input {
   background: #e8e8e8;
 }
 
+.radio-btn[disabled] {
+  color: #ccc;
+}
+
 .radio-btn.active {
   color: #1b5586;
 }
