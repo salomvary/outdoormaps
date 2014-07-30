@@ -179,11 +179,18 @@ input {
  * Radio control group
  */
 
+.control-group-title {
+  font-size: inherit;
+  margin: 12px 11px -2px 11px;
+  color: #313f57;
+  text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);
+}
+
 .control-group {
   border-radius: 4px;
   border: 1px solid #a2a7ad;
   background: #fff;
-  margin: 1em 0;
+  margin: 10px 0;
   padding: 0;
   overflow: hidden;
 }

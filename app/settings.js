@@ -90,7 +90,7 @@ module.exports = klass({
       .reduce(function(layerButtons, mapType) {
         layerButtons[mapType] = layerButtonsFor({
           mapType: mapType,
-          parent: container,
+          parent: container.querySelector('.map-layers'),
           handler: this.setMapLayer.bind(this)
         });
         return layerButtons;
@@ -100,7 +100,7 @@ module.exports = klass({
     this.overlayButtons = layerButtonsFor({
       mapType: 'overlay',
       options: {toggle: true},
-      parent: container,
+      parent: container.querySelector('.map-overlays'),
       handler: this.setOverlay.bind(this)
     });
   },
