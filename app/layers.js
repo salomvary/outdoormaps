@@ -8,8 +8,8 @@ var layers = {}, instances = {},
     customOptions = ['title', 'klazz', 'mapType'];
 
 var Hungary = new L.LatLngBounds(
-  new L.LatLng(48.6, 16),
-  new L.LatLng(45.6, 23.2));
+  new L.LatLng(48.6, 16),    // sw
+  new L.LatLng(45.6, 23.2)); // ne
 
 layers.map = {
   url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -50,7 +50,10 @@ layers.wanderkarte = {
   attribution: '<a href="http://wanderreitkarte.de">Wanderkarte (Nop)</a>',
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'Wanderkarte (Central Europe)',
-  mapType: 'hiking'
+  mapType: 'hiking',
+  bounds: new L.LatLngBounds(
+    new L.LatLng(27.4, -32),
+    new L.LatLng(58, 23))
 };
 
 layers.satellite = {
@@ -74,7 +77,10 @@ layers.bergfex = {
     return data.z >= 14
       ? String(data.x).slice(0, -2) + '/'
       : '';
-  }
+  },
+  bounds: new L.LatLngBounds(
+    new L.LatLng(46.3, 9.3), // sw
+    new L.LatLng(49, 17.3))  // ne
 };
 
 layers.opencyclemap = {
@@ -93,7 +99,10 @@ layers.bgtopovj = {
   url: 'http://www.kade.si/cgi-bin/mapserv',
   layers: 'BGtopoVJ-raster-v3.00',
   title: 'BGtopoVJ (Bulgaria)',
-  mapType: 'hiking'
+  mapType: 'hiking',
+  bounds: new L.LatLngBounds(
+    new L.LatLng(40, 20), // sw
+    new L.LatLng(44, 29)) // ne
 };
 
 layers.strava = {
