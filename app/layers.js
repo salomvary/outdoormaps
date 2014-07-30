@@ -18,28 +18,13 @@ layers.map = {
   mapType: 'map'
 };
 
-layers.turistautak = {
-  url: 'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png',
-  minZoom: 8,
-  maxZoom: 21,
-  subdomains: 'abcd',
-  attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
+layers.opencyclemap = {
+  url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+  subdomains: 'abc',
+  attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Turistautak.hu (Hungary)',
-  mapType: 'hiking',
-  bounds:  Hungary
-};
-
-layers.lines = {
-  url: 'http://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
-  minZoom: 8,
-  maxZoom: 21,
-  subdomains: 'abcd',
-  attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
-  detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Turistautak.hu',
-  mapType: 'overlay',
-  bounds:  Hungary
+  title: 'OpenCycleMap',
+  mapType: 'hiking'
 };
 
 layers.wanderkarte = {
@@ -54,6 +39,18 @@ layers.wanderkarte = {
   bounds: new L.LatLngBounds(
     new L.LatLng(27.4, -32),
     new L.LatLng(58, 23))
+};
+
+layers.turistautak = {
+  url: 'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png',
+  minZoom: 8,
+  maxZoom: 21,
+  subdomains: 'abcd',
+  attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'Turistautak.hu (Hungary)',
+  mapType: 'hiking',
+  bounds:  Hungary
 };
 
 layers.satellite = {
@@ -83,15 +80,6 @@ layers.bergfex = {
     new L.LatLng(49, 17.3))  // ne
 };
 
-layers.opencyclemap = {
-  url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-  subdomains: 'abc',
-  attribution: 'Map data © OpenStreetMap contributors',
-  detectRetina: flags.isEnabled('detectRetina'),
-  title: 'OpenCycleMap',
-  mapType: 'hiking'
-};
-
 layers.bgtopovj = {
   klazz: L.TileLayer.WMS,
   detectRetina: flags.isEnabled('detectRetina'),
@@ -105,6 +93,12 @@ layers.bgtopovj = {
     new L.LatLng(44, 29)) // ne
 };
 
+layers.panoramio = {
+  klazz: Panoramio,
+  title: 'Panoramio',
+  mapType: 'overlay'
+};
+
 layers.strava = {
   url: 'http://d2z9m7k9h4f0yp.cloudfront.net/tiles/cycling/color1/{z}/{x}/{y}.png',
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
@@ -113,10 +107,16 @@ layers.strava = {
   mapType: 'overlay'
 };
 
-layers.panoramio = {
-  klazz: Panoramio,
-  title: 'Panoramio',
-  mapType: 'overlay'
+layers.lines = {
+  url: 'http://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
+  minZoom: 8,
+  maxZoom: 21,
+  subdomains: 'abcd',
+  attribution: '© <a href="http://turistautak.hu">Turistautak.hu</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'Turistautak.hu',
+  mapType: 'overlay',
+  bounds:  Hungary
 };
 
 Object.keys(layers).forEach(function(id) {
