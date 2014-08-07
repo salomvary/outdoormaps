@@ -1,5 +1,4 @@
-var $ = require('util'),
-    Promise = require('promise'),
+var xhr = require('xhr'),
     baseUrl = 'http://open.mapquestapi.com/nominatim/v1/search.php';
 
 module.exports.search = function(query, options) {
@@ -11,7 +10,7 @@ module.exports.search = function(query, options) {
     q: query
   };
   var url = baseUrl + '?' + encodeParams(params);
-  return get(url);
+  return xhr.get(url);
 };
 
 function encodeParams(params) {
@@ -21,29 +20,4 @@ function encodeParams(params) {
       return entries;
     },[])
     .join('&');
-}
-
-function get(url) {
-  var xhr;
-  var promise = Promise(function(resolve, reject) {
-    xhr = $.extend(new XMLHttpRequest(), {
-      timeout: 5000,
-      onload: function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(JSON.parse(xhr.responseText));
-        } else {
-          reject(xhr.status);
-        }
-      },
-      onerror: function() {
-        reject(xhr.status);
-      }
-    });
-    xhr.open('GET', url, true);
-    xhr.send();
-  });
-  // expose xhr.abort
-  // TODO abort should clean up the promise
-  promise.abort = xhr.abort.bind(xhr);
-  return promise;
 }

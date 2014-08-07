@@ -1,7 +1,8 @@
 var L = require('vendor/leaflet'),
     $ = require('util'),
     flags = require('flags'),
-    Panoramio = require('panoramio');
+    Panoramio = require('panoramio'),
+    Flickr = require('flickr');
     require('vendor/bing-layer');
 
 var layers = {}, instances = {},
@@ -96,6 +97,12 @@ layers.bgtopovj = {
 layers.panoramio = {
   klazz: Panoramio,
   title: 'Panoramio',
+  mapType: 'overlay'
+};
+
+layers.flickr = {
+  klazz: Flickr,
+  title: 'Flickr',
   mapType: 'overlay'
 };
 

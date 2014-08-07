@@ -290,6 +290,29 @@ input {
   background-image: url(panoramio.png);
 }
 
+.flickr-logo {
+  display: inline-block;
+  width: 49.5px;
+  height: 15px;
+  background-size: 100%;
+  background-image: url(flickr-logo.png);
+
+  /* hide text */
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.flickr-icon {
+  background-position: top left;
+  background-repeat: no-repeat;
+  background-size: 16px 16px;
+  background-image: url(flickr@2x.png);
+  /* add shadow */
+  box-shadow: 0 0 5px;
+  border-radius: 50px;
+}
+
 @media
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
