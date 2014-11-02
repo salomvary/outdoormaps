@@ -226,7 +226,7 @@ input {
 }
 
 .radio-btn.active:after {
-  content: '✔';
+  content: '✓';
   font-size: 20px;
   line-height: 21px;
   position: absolute;
