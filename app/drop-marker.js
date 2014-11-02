@@ -11,7 +11,7 @@ module.exports = klass({
     this.map = map;
     map.on('contextmenu', this.dropMarker, this);
     var marker = this.options.get('marker');
-    if(marker) {
+    if (marker) {
       this.setMarker(marker);
     }
   },
@@ -51,7 +51,7 @@ module.exports = klass({
   },
 
   setMarker: function(position) {
-    if(! this.marker) {
+    if (!this.marker) {
       this.marker = this.controller.addMarker(position);
     } else {
       this.marker.setLatLng(position);
@@ -59,7 +59,7 @@ module.exports = klass({
   },
 
   getState: function() {
-    if(this.marker) {
+    if (this.marker) {
       return { marker: this.marker.getLatLng() };
     }
   }

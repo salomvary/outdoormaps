@@ -15,13 +15,13 @@ module.exports = klass({
   },
 
   setMap: function(map) {
-    if(navigator.geolocation) {
+    if (navigator.geolocation) {
       this.map = map;
       this.button = this.controller.createButton('locate', 'topleft',
         this.showCurrentPosition, this);
       this.map.on('movestart zoomstart', this.viewChanged.bind(this));
     }
-    if(this.options.get('position')) {
+    if (this.options.get('position')) {
       this.setMarker(this.options.get('position'));
     }
   },
@@ -30,12 +30,12 @@ module.exports = klass({
     this.moved = false;
     // show the last known position, if any
     var lastPosition = this.options.get('position');
-    if(lastPosition) {
+    if (lastPosition) {
       this.showPosition(lastPosition);
     }
 
     // update the position
-    if(! this.locating) {
+    if (!this.locating) {
       this.locating = true;
       $.toggleClass(this.button.getContainer(), 'busy-button', true);
       geolocation.getAccurateCurrentPosition(
@@ -49,7 +49,7 @@ module.exports = klass({
   viewChanged: function() {
     // ignore events fired by calls to
     // setView/panTo below
-    if(! this.automoving) {
+    if (!this.automoving) {
       this.moved = true;
     }
   },
@@ -61,7 +61,7 @@ module.exports = klass({
   },
 
   positionUpdate: function(progress, position) {
-    if(! progress) {
+    if (!progress) {
       this.locating = false;
       $.toggleClass(this.button.getContainer(), 'busy-button', false);
     }
@@ -76,7 +76,7 @@ module.exports = klass({
 
     // if the user hasn't moved the map,
     // reposition it to show the position
-    if(! this.moved) {
+    if (!this.moved) {
       this.automoving = true;
       if(this.map.getZoom() < 15) {
         this.map.setView(center, 15);
@@ -91,7 +91,7 @@ module.exports = klass({
   },
 
   setMarker: function(position) {
-    if(this.marker) {
+    if (this.marker) {
       this.marker.setLatLng(position);
     } else {
       this.marker = this.controller.addMarker(position, {
@@ -100,4 +100,3 @@ module.exports = klass({
     }
   }
 });
-
