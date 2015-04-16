@@ -114,6 +114,14 @@ layers.strava = {
   mapType: 'overlay'
 };
 
+layers.forumaps = {
+  url: 'http://5.35.249.82/{z}/{x}/{y}.png',
+  maxZoom: 15,
+  attribution: '© <a href="http://www.4umaps.eu/">4UMaps.eu</a>',
+  title: '4UMaps.eu',
+  mapType: 'hiking'
+};
+
 layers.lines = {
   url: 'http://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
   minZoom: 8,
