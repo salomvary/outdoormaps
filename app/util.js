@@ -3,8 +3,8 @@ var L = require('vendor/leaflet'),
 
 module.exports = {
   extend: function(dst, src) {
-    if(src) {
-      for(var k in src) {
+    if (src) {
+      for (var k in src) {
         dst[k] = src[k];
       }
     }
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   eachNode: function(nodeList, fn, context) {
-    for(var i=0; i<nodeList.length; i++) {
+    for (var i = 0; i < nodeList.length; i++) {
       fn.call(context, nodeList[i]);
     }
   },
@@ -28,10 +28,10 @@ module.exports = {
   toggleClass: function(el, className, enable) {
     var classes = el.className.split(/\s+/),
       index = classes.indexOf(className);
-    if(index > -1) {
+    if (index > -1) {
       classes.splice(index, 1);
     }
-    if(enable) {
+    if (enable) {
       classes.push(className);
     }
     el.className = classes.join(' ');

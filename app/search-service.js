@@ -18,6 +18,6 @@ function encodeParams(params) {
     .reduce(function(entries, key) {
       entries.push(key + '=' + encodeURIComponent(params[key]));
       return entries;
-    },[])
+    }, [])
     .join('&');
 }

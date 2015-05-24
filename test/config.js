@@ -1,3 +1,4 @@
+/*global require:true*/
 require = {
   deps: [
     'vendor/polyfills'

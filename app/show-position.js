@@ -42,7 +42,7 @@ module.exports = klass({
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
         this.positionUpdate.bind(this, true),
-        {desiredAccuracy:100, maxWait: 20000});
+        {desiredAccuracy: 100, maxWait: 20000});
     }
   },
 
@@ -78,7 +78,7 @@ module.exports = klass({
     // reposition it to show the position
     if (!this.moved) {
       this.automoving = true;
-      if(this.map.getZoom() < 15) {
+      if (this.map.getZoom() < 15) {
         this.map.setView(center, 15);
       } else {
         this.map.panTo(center);

@@ -20,7 +20,7 @@ module.exports = klass({
     this.overlay = layers[1];
     this.mapType = Layers.get(this.mapLayer).mapType;
     this.defaultLayers = options.get('defaultLayers');
-    if(! this.defaultLayers) {
+    if (!this.defaultLayers) {
       this.defaultLayers = {};
       this.defaultLayers[this.mapType] = this.mapLayer;
     }
@@ -63,7 +63,7 @@ module.exports = klass({
 
   setOverlay: function(event) {
     var id = event.value,
-        add = this.overlay != id;
+        add = this.overlay !== id;
     this.setLayers([this.mapLayer, add && id]);
   },
 

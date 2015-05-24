@@ -63,20 +63,20 @@ module.exports = klass({
 
     // tell plugins about the map instance
     this.plugins.forEach(function(plugin) {
-      if(plugin.setMap) {
+      if (plugin.setMap) {
         plugin.setMap(this.map);
       }
     }, this);
 
     // add zoom-control for non-pinch-zoom devices
-    if(! /(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent)) {
+    if (!/(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent)) {
       map.addControl(L.control.zoom());
     }
 
     // set options
     var defaults = {};
     Object.keys(this.defaults).forEach(function(k) {
-      if(typeof this.options.get(k) == 'undefined') {
+      if (typeof this.options.get(k) == 'undefined') {
         defaults[k] = this.defaults[k];
       }
     }, this);
@@ -92,10 +92,10 @@ module.exports = klass({
   },
 
   setState: function(state) {
-    if(state.layers) {
+    if (state.layers) {
       this.setLayers(state.layers);
     }
-    if(state.center && state.zoom !== undefined) {
+    if (state.center && state.zoom !== undefined) {
       this.map.setView(state.center, state.zoom, true);
     }
   },
@@ -113,7 +113,7 @@ module.exports = klass({
     var oldLayers = this.layers;
     this.layers = layers;
 
-    if(oldLayers) {
+    if (oldLayers) {
       oldLayers.forEach(function(layer) {
         this.map.removeLayer(Layers.get(layer));
       }, this);

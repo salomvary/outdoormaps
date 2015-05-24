@@ -17,8 +17,7 @@ $.on(window, 'hashchange', onHashChange);
 currentHash = Location.get();
 
 function onHashChange() {
-  console.log(Location.get(), currentHash);
-  if (Location.get() != currentHash) {
+  if (Location.get() !== currentHash) {
     Location.fire('change');
   }
   currentHash = Location.get();

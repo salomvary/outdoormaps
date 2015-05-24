@@ -9,7 +9,7 @@ module.exports = klass({
   },
 
   set: function(key, value) {
-    if(typeof key === 'object') {
+    if (typeof key === 'object') {
       $.extend(this.properties, key);
     } else {
       this.properties[key] = value;
@@ -23,7 +23,7 @@ module.exports = klass({
 
   load: function() {
     var properties;
-    if(window.localStorage && localStorage.turistautak) {
+    if (window.localStorage && localStorage.turistautak) {
       try {
         properties = JSON.parse(localStorage.turistautak, reviver);
       } catch(e) { /* parse error, ignore it */ }
@@ -32,14 +32,14 @@ module.exports = klass({
   },
 
   save: function() {
-    if(window.localStorage) {
+    if (window.localStorage) {
       localStorage.turistautak = JSON.stringify(this.properties);
     }
   }
 });
 
 function reviver(k, v) {
-  if(v.lat && v.lng) {
+  if (v.lat && v.lng) {
     return new L.LatLng(v.lat, v.lng);
   } else {
     return v;

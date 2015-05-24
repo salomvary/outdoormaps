@@ -1,5 +1,5 @@
 var L = require('vendor/leaflet'),
-    JSONP = require('vendor/jsonp');
+    jsonp = require('vendor/jsonp');
 
 module.exports = L.FeatureGroup.extend({
 	onAdd: function(map) {
@@ -30,8 +30,8 @@ module.exports = L.FeatureGroup.extend({
       .map(function(photo) {
         var icon = L.divIcon({
           iconSize: [16, 16],
-          iconAnchor: [8,8],
-          popupAnchor: [0,-10],
+          iconAnchor: [8, 8],
+          popupAnchor: [0, -10],
           className: 'panoramio-icon'
         });
 
@@ -70,7 +70,7 @@ module.exports = L.FeatureGroup.extend({
     // ~15 on mobile screens, ~100 on large desktop screens
     var limit = Math.max(10, Math.min(100, Math.round(size.x * size.y / magic)));
 
-    JSONP({
+    jsonp({
       url: 'http://www.panoramio.com/map/get_panoramas.php',
       data: {
         set: 'public',

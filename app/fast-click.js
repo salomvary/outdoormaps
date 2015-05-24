@@ -33,7 +33,7 @@ module.exports = function(el, options) {
 
     if (!moved) {
       var target = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-      if (target.nodeType == 3) {
+      if (target.nodeType === 3) {
         target = target.parentNode;
       }
 

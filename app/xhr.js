@@ -9,7 +9,7 @@ function get(url, options) {
   if (options.data) {
     url = url + '?' + encodeData(options.data);
   }
-  var promise = Promise(function(resolve, reject) {
+  var promise = new Promise(function(resolve, reject) {
     xhr = $.extend(new XMLHttpRequest(), {
       timeout: 5000,
       onload: function() {

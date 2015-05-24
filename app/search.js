@@ -22,7 +22,7 @@ module.exports = klass({
 
   search: function(query) {
     // search if we haven't searched yet
-    if (!this.request || this.request.query != query) {
+    if (!this.request || this.request.query !== query) {
       // if we have a pending request, abort it
       if (this.request) {
         this.request.abort();
@@ -59,7 +59,7 @@ module.exports = klass({
   },
 
   setMarker: function(position) {
-    if(this.marker) {
+    if (this.marker) {
       this.marker.setLatLng(position);
     } else {
       this.marker = this.controller.addMarker(position);
@@ -119,10 +119,10 @@ function formatResult(result) {
 
 function debounce(fn) {
   var timer = null;
-  return function () {
+  return function() {
     var context = this, args = arguments;
     clearTimeout(timer);
-    timer = setTimeout(function () {
+    timer = setTimeout(function() {
       fn.apply(context, args);
     }, 100);
   };

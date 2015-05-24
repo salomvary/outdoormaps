@@ -161,7 +161,7 @@ suite('Search', function() {
         lat: '3.5',
         lon: '4.5',
         boundingbox: ['1', '2', '3', '4']
-      },
+      }
     ];
 
     subject.onSelect(0);

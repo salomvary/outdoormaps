@@ -110,13 +110,13 @@ suite('Promise', function() {
   }
 
   function asyncResolve(data) {
-    return Promise(function(resolve) {
+    return new Promise(function(resolve) {
       setTimeout(resolve.bind(null, data), 1);
     });
   }
 
   function asyncReject(data) {
-    return Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
       setTimeout(reject.bind(null, data), 1);
     });
   }

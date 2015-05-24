@@ -1,0 +1,15 @@
+{
+    "env": {
+        "mocha": true,
+        "jasmine": true
+    },
+    "globals": {
+      "sinon": true,
+      "mocha": true,
+      "assert": true
+    },
+    "rules": {
+      "no-unused-expressions": 0
+    }
+}
+

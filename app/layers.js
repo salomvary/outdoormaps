@@ -51,7 +51,7 @@ layers.turistautak = {
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'Turistautak.hu (Hungary)',
   mapType: 'hiking',
-  bounds:  Hungary
+  bounds: Hungary
 };
 
 layers.satellite = {
@@ -131,17 +131,20 @@ layers.lines = {
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'Turistautak.hu',
   mapType: 'overlay',
-  bounds:  Hungary
+  bounds: Hungary
 };
 
 Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
 
+var getLeafletOptions = filterOptions.bind(null, false);
+var getCustomOptions = filterOptions.bind(null, true);
+
 exports.get = function(id) {
   // lazy-load this to avoid initial metadata request if not used
   // (eg. L.BingLayer)
-  if(! instances[id]) {
+  if (!instances[id]) {
     var Layer = layers[id].klazz || L.TileLayer;
     instances[id] = new Layer(layers[id].url, getLeafletOptions(layers[id]));
     // set custop properties after instantiating layers
@@ -158,17 +161,14 @@ exports.keys = function(mapType) {
       return layers[key];
     })
     .filter(function(layer) {
-      return ! mapType || layer.mapType == mapType;
+      return !mapType || layer.mapType === mapType;
     });
 };
-
-var getLeafletOptions = filterOptions.bind(null, false);
-var getCustomOptions = filterOptions.bind(null, true);
 
 function filterOptions(isCustom, options) {
   return Object.keys(options)
     .reduce(function(filtered, key) {
-      if ((customOptions.indexOf(key) != -1) == isCustom) {
+      if ((customOptions.indexOf(key) !== -1) === isCustom) {
         filtered[key] = options[key];
       }
       return filtered;

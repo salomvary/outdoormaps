@@ -34,8 +34,8 @@ module.exports = L.FeatureGroup.extend({
       .map(function(photo) {
         var icon = L.divIcon({
           iconSize: [16, 16],
-          iconAnchor: [8,8],
-          popupAnchor: [0,-10],
+          iconAnchor: [8, 8],
+          popupAnchor: [0, -10],
           className: 'flickr-icon'
         });
 

@@ -18,7 +18,7 @@ var Promise = module.exports = function(resolver) {
   var promise = {};
 
   promise.then = function then(onResolved, onRejected) {
-    return Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
       function applyCallbacks() {
         var fn = state === RESOLVED ? onResolved : onRejected;
         if (fn) {
@@ -64,7 +64,7 @@ var Promise = module.exports = function(resolver) {
 };
 
 function makePromise(which, value) {
-  return Promise(function() {
+  return new Promise(function() {
     arguments[which](value);
   });
 }
