@@ -10,7 +10,8 @@ DEPENDENCIES=bing-layer.js\
 						 sinon.js\
 						 sinon-chai.js\
 						 jsonp.js\
-						 GPX.js
+						 GPX.js\
+						 fastclick.js
 
 all: $(DEPENDENCIES)
 
@@ -50,6 +51,9 @@ require.js:
 
 GPX.js:
 	$(CURL) -o $@ https://raw.githubusercontent.com/shramov/leaflet-plugins/v1.1.2/layer/vector/GPX.js
+
+fastclick.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/ftlabs/fastclick/v1.0.6/lib/fastclick.js
 
 # plain file from the internetz
 
