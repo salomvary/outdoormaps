@@ -35,8 +35,7 @@ module.exports = L.Control.extend({
     this.toggleClearButton();
 
     // results
-    var results = this.results = $.create('ul', 'search-results', control);
-    $.on(results, 'touchstart', this.onResultsTouch, this);
+    this.results = $.create('ul', 'search-results', control);
     this.adjustHeight();
 
     return control;
@@ -49,18 +48,9 @@ module.exports = L.Control.extend({
   },
 
   onBlur: function() {
-    // hide results on desktop browsers
-    // TODO: instead of blur it should be something like:
-    // anything else than interacting with the search happens
-    if (!L.Browser.touch) {
-      // make sure we can click on the list
-      setTimeout(this.hideResults.bind(this), 10);
-    }
-  },
-
-  onResultsTouch: function() {
-    // blur so that the sw keyboard is not whown anymore
-    this.input.blur();
+    // hide results
+    // make sure we can click on the list
+    setTimeout(this.hideResults.bind(this), 10);
   },
 
   onInput: function() {
@@ -82,6 +72,7 @@ module.exports = L.Control.extend({
   onSelect: function(i, result) {
     this.input.value = result;
     this.options.onSelect(i);
+    this.hideResults();
   },
 
   getVal: function() {
