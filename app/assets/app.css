@@ -392,6 +392,11 @@ input {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  border-top: 1px solid #CCC;
+}
+
+.search-result:first-child {
+  border-top: 0;
 }
 
 .show-results .search-results {
