@@ -111,7 +111,9 @@ layers.strava = {
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
   detectRetina: true,
   title: 'Strava Heatmap',
-  mapType: 'overlay'
+  mapType: 'overlay',
+  maxNativeZoom: 15,
+  maxZoom: 21
 };
 
 layers.forumaps = {
