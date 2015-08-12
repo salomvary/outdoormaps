@@ -21,7 +21,7 @@ require.config({
   }
 });
 
-require(['map', 'vendor/leaflet-patches'], function(Map) {
+require(['map'], function(Map) {
   return new Map();
 });
 
