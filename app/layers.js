@@ -149,7 +149,7 @@ var getCustomOptions = filterOptions.bind(null, true);
 exports.get = function(id) {
   // lazy-load this to avoid initial metadata request if not used
   // (eg. L.BingLayer)
-  if (!instances[id]) {
+  if (!instances[id] && id in layers) {
     var Layer = layers[id].klazz || L.TileLayer;
     instances[id] = new Layer(layers[id].url, getLeafletOptions(layers[id]));
     // set custop properties after instantiating layers

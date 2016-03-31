@@ -38,6 +38,8 @@ module.exports = klass({
   initialize: function() {
     this.options = new StateStore();
 
+    this.validateLayers();
+
     // initialize plugins sequentially and
     // asynchronously, collect them in this.plugins
     this.plugins = [];
@@ -143,6 +145,22 @@ module.exports = klass({
     this.map.addControl(button);
     L.DomEvent.disableClickPropagation(button.getContainer());
     return button;
+  },
+
+  validateLayers: function() {
+    // Remove layers from config if they no longer exist
+    var layers = this.options.get('layers');
+    if (layers) {
+      var validLayers = Layers.keys().map(function(layer) { return layer.id; });
+      layers = layers.map(function(layer, i) {
+        if (validLayers.indexOf(layer) === -1) {
+          return this.defaults.layers[i];
+        } else {
+          return layer;
+        }
+      }, this);
+      this.options.set('layers', layers);
+    }
   }
 });
 
