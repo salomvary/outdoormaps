@@ -106,6 +106,8 @@ layers.flickr = {
   mapType: 'overlay'
 };
 
+// No longer works, they are probably fitering for Referrer
+/*
 layers.strava = {
   url: 'http://d2z9m7k9h4f0yp.cloudfront.net/tiles/cycling/color1/{z}/{x}/{y}.png',
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
@@ -115,6 +117,7 @@ layers.strava = {
   maxNativeZoom: 15,
   maxZoom: 21
 };
+*/
 
 layers.forumaps = {
   url: 'http://5.35.249.82/{z}/{x}/{y}.png',
