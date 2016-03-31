@@ -120,7 +120,7 @@ layers.strava = {
 */
 
 layers.forumaps = {
-  url: 'http://5.35.249.82/{z}/{x}/{y}.png',
+  url: 'http://tileserver.4umaps.eu/{z}/{x}/{y}.png',
   maxZoom: 15,
   attribution: '© <a href="http://www.4umaps.eu/">4UMaps.eu</a>',
   title: '4UMaps.eu',
