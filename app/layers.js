@@ -4,6 +4,7 @@ var L = require('vendor/leaflet'),
     Panoramio = require('panoramio'),
     Flickr = require('flickr');
     require('vendor/bing-layer');
+    require('vendor/OS');
 
 var layers = {}, instances = {},
     customOptions = ['title', 'klazz', 'mapType'];
@@ -134,6 +135,13 @@ layers.lines = {
   title: 'Turistautak.hu',
   mapType: 'overlay',
   bounds: Hungary
+};
+
+layers.ordnancesurvey = {
+	klazz: L.TileLayer.WMS.OS,
+	url: {k: '2ADBD707AC40153AE0530B6CA40A381E'},
+	mapType: 'hiking',
+	title: 'Ordnance Survey (UK)'
 };
 
 Object.keys(layers).forEach(function(id) {

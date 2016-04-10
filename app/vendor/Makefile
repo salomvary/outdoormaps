@@ -11,7 +11,11 @@ DEPENDENCIES=bing-layer.js\
 						 sinon-chai.js\
 						 jsonp.js\
 						 GPX.js\
-						 fastclick.js
+						 fastclick.js\
+						 MapMultiCRS.js\
+						 OS.js\
+						 proj4leaflet.js\
+						 proj4.js
 
 all: $(DEPENDENCIES)
 
@@ -44,10 +48,24 @@ bing-layer.js:
 jsonp.js:
 	$(CURL) -o $@ https://raw.github.com/larryosborn/JSONP/842ac6d454242e856af3550b07a67113cdf84e86/dist/jsonp.js
 
+MapMultiCRS.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/Dominique92/Leaflet.Map.MultiVendors/cf0b011e7caeb484771478b428d7c740672a46f6/MapMultiCRS.js
+
+OS.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/Dominique92/Leaflet.Map.MultiVendors/cf0b011e7caeb484771478b428d7c740672a46f6/layers-v1.0/OS.js
+
+# Required by OS
+proj4leaflet.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/kartena/Proj4Leaflet/ba1a2c582c71c668b6b658a2ae91da803bfbf940/src/proj4leaflet.js
+
+# Required by OS
+proj4.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/proj4js/proj4js/2.3.12/dist/proj4-src.js
+
 # single github file, tagged
 
 require.js:
-	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.1.9/require.js
+	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.1.22/require.js
 
 GPX.js:
 	$(CURL) -o $@ https://raw.githubusercontent.com/shramov/leaflet-plugins/v1.1.2/layer/vector/GPX.js

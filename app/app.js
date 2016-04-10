@@ -8,7 +8,14 @@ require.config({
     'vendor/add-to-homescreen/src/add2home'
   ],
   paths: {
-    'vendor/leaflet': 'vendor/leaflet/leaflet-src'
+    'vendor/leaflet': 'vendor/leaflet/leaflet-src',
+    'proj4leaflet': 'vendor/proj4leaflet',
+    'proj4': 'vendor/proj4'
+  },
+  map: {
+    '*': {
+      'leaflet': 'vendor/leaflet'
+    }
   },
   shim: {
     'vendor/leaflet': {
@@ -18,7 +25,9 @@ require.config({
       deps: ['vendor/leaflet'],
       exports: 'L.GPX'
     },
-    'vendor/bing-layer': ['vendor/leaflet']
+    'vendor/bing-layer': ['vendor/leaflet'],
+    'vendor/MapMultiCRS': ['vendor/leaflet'],
+    'vendor/OS': ['vendor/leaflet', 'vendor/proj4leaflet', 'vendor/MapMultiCRS']
   }
 });
 
