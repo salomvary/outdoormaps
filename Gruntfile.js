@@ -124,7 +124,8 @@ module.exports = function(grunt) {
           baseUrl: '.tmp',
           optimize: 'none',
           useStrict: true,
-          wrap: true
+          wrap: true,
+          wrapShim: true
         }
       }
     },

@@ -9,7 +9,6 @@ require.config({
   ],
   paths: {
     'vendor/leaflet': 'vendor/leaflet/leaflet-src',
-    'proj4leaflet': 'vendor/proj4leaflet',
     'proj4': 'vendor/proj4'
   },
   map: {
