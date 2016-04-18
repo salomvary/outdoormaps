@@ -144,6 +144,16 @@ layers.ordnancesurvey = {
 	title: 'Ordnance Survey (UK)'
 };
 
+layers.opentopomap = {
+  url: 'http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+  maxZoom: 15,
+  subdomains: 'abc',
+  attribution: '© <a href="http://opentopomap.org/">OpenTopoMap</a>',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'OpenTopoMap (Europe)',
+  mapType: 'hiking'
+};
+
 Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
