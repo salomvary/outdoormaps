@@ -8,11 +8,16 @@
 -->
 <html manifest="index.appcache">
   <head>
+    <script type="text/javascript">
+      if (('outdoormaps.eu' == window.location.host) && (window.location.protocol != 'https:'))
+        window.location.protocol = 'https';
+    </script>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" sizes="114x114" href="assets/apple-touch-icon-114x114.png">
+    <link rel="canonical" href="https://outdoormaps.eu" />
     <title>Outdoor Maps</title>
     <!-- build:css assets/app.css -->
     <link rel="stylesheet" href="assets/app.css">
