@@ -71,7 +71,7 @@ module.exports = L.FeatureGroup.extend({
     var limit = Math.max(10, Math.min(100, Math.round(size.x * size.y / magic)));
 
     jsonp({
-      url: 'http://www.panoramio.com/map/get_panoramas.php',
+      url: 'https://ssl.panoramio.com/map/get_panoramas.php',
       data: {
         set: 'public',
         from: 0,
