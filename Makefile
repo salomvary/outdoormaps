@@ -1,6 +1,6 @@
 release:
 	cd dist; git clean -f; git rm -rf * || true
-	grunt build
+	npm run -- grunt build
 	cd dist; git add -A
 
 deploy:
