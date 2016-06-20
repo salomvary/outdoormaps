@@ -23,4 +23,23 @@ unnecessary controls and don't work on mobile.
 Map data © their respective owners. Built using
 [Leaflet](http://leafletjs.com/).
 
-Brought to you by Márton Salomváry ([@salomvary](http://twitter.com/salomvary)).
+## Development
+
+Requirements: Recent Node.js
+
+Setup
+
+    npm install
+    make -C app/vendor
+
+Running the development server
+
+    npm run grunt -- server
+
+Run the linter before pushing changes
+
+    npm run lint
+
+Deployment
+
+    make release deploy
