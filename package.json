@@ -1,7 +1,7 @@
 {
-  "name": "Turistautak",
+  "name": "OutdoorMaps",
   "version": "0.0.1",
-  "description": "Hiking maps optimized for mobile and desktop",
+  "description": "Outdoor maps for mobile and desktop",
   "devDependencies": {
     "eslint": "^2.5.3",
     "grunt": "^0.4.5",
