@@ -28,11 +28,16 @@ var plugins = [
 
 var stateEvents = 'moveend zoomend layeradd layerremove';
 
+// Neither geographically nor politically correct ;)
+var europeBounds = [
+  [35, -15], // sw
+  [65, 35]   // ne
+];
+
 module.exports = klass({
   defaults: {
-    center: new L.LatLng(47.3, 19.5),
-    zoom: 8,
-    layers: ['turistautak']
+    bounds: europeBounds,
+    layers: ['opencyclemap']
   },
 
   initialize: function() {
@@ -99,6 +104,8 @@ module.exports = klass({
     }
     if (state.center && state.zoom !== undefined) {
       this.map.setView(state.center, state.zoom, true);
+    } else if (state.bounds) {
+      this.map.fitBounds(state.bounds);
     }
   },
 
