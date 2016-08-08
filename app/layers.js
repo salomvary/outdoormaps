@@ -63,19 +63,15 @@ layers.satellite = {
 };
 
 layers.bergfex = {
-  url: 'http://static1.bergfex.at/images/amap/{z}/{folder}{z}_{x}_{y}.png',
-  minZoom: 8,
-  maxZoom: 15,
+  url: 'http://maps.bergfex.at/oek/{folder}/{z}/{x}/{y}.jpg',
+  minZoom: 4,
+  maxZoom: 16,
   attribution: '© <a href="http://bergfex.com">bergfex.com</a>',
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'bergfex (Austria)',
   mapType: 'hiking',
   folder: function(data) {
-    // credits:
-    // http://svn.openlayers.org/sandbox/ahocevar/bergfex/index.html
-    return data.z >= 14
-      ? String(data.x).slice(0, -2) + '/'
-      : '';
+    return data.z <= 15 ? '512px' : 'standard';
   },
   bounds: new L.LatLngBounds(
     new L.LatLng(46.3, 9.3), // sw
