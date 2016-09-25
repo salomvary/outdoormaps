@@ -21,7 +21,7 @@ layers.map = {
 };
 
 layers.opencyclemap = {
-  url: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+  url: 'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0050a9bf53204806a4a9af0a4c5e03f7',
   subdomains: 'abc',
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: flags.isEnabled('detectRetina'),
