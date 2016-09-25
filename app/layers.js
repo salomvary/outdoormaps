@@ -14,7 +14,7 @@ var Hungary = new L.LatLngBounds(
   new L.LatLng(45.6, 23.2)); // ne
 
 layers.map = {
-  url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: flags.isEnabled('detectRetina'),
   mapType: 'map'
