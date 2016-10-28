@@ -68,7 +68,7 @@ require.js:
 	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.1.22/require.js
 
 GPX.js:
-	$(CURL) -o $@ https://raw.githubusercontent.com/shramov/leaflet-plugins/v1.1.2/layer/vector/GPX.js
+	$(CURL) -o $@ https://raw.githubusercontent.com/shramov/leaflet-plugins/1.1.2/layer/vector/GPX.js
 
 fastclick.js:
 	$(CURL) -o $@ https://raw.githubusercontent.com/ftlabs/fastclick/v1.0.6/lib/fastclick.js
