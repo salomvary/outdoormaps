@@ -28,7 +28,6 @@ Map data © their respective owners. Built using
 Requirements:
 
 - Recent Node.js (tested with node 6.2.2 npm 3.9.5)
-- Ruby 1.8 or later (tested with 2.0.0p648)
 
 Setup
 
