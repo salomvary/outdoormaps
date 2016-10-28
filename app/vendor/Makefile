@@ -1,4 +1,4 @@
-CURL=curl -s -S -L
+CURL=curl -s -S -L --fail
 
 DEPENDENCIES=bing-layer.js\
 						 leaflet\
