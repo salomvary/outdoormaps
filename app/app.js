@@ -8,7 +8,7 @@ require.config({
     'vendor/add-to-homescreen/src/add2home'
   ],
   paths: {
-    'vendor/leaflet': 'vendor/leaflet/leaflet-src',
+    'vendor/leaflet': 'vendor/leaflet/leaflet-custom-src',
     'proj4': 'vendor/proj4'
   },
   map: {
