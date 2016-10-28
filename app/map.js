@@ -13,7 +13,7 @@ var $ = require('util'),
     Settings = require('settings'),
     Tracks = require('tracks');
 
-L.Icon.Default.imagePath = 'vendor/leaflet/images';
+L.Icon.Default.imagePath = 'vendor/leaflet/images/';
 
 var plugins = [
   InitialLocation,
