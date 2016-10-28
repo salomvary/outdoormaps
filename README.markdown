@@ -25,7 +25,10 @@ Map data © their respective owners. Built using
 
 ## Development
 
-Requirements: Recent Node.js
+Requirements:
+
+- Recent Node.js (tested with node 6.2.2 npm 3.9.5)
+- Ruby 1.8 or later (tested with 2.0.0p648)
 
 Setup
 
@@ -43,3 +46,11 @@ Run the linter before pushing changes
 Deployment
 
     make release deploy
+
+Troubleshooting
+
+- `make -C app/vendor` fails with `Error installing nokogiri: ERROR: Failed to
+  build gem native extension` on macOS. Solution: run `xcode-select --install` or if that
+  does not help check out the [Installing
+  Nokogiri](http://www.nokogiri.org/tutorials/installing_nokogiri.html)
+  documentation.
