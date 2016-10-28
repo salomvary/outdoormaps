@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Outdoor maps for mobile and desktop",
   "devDependencies": {
-    "eslint": "^2.5.3",
+    "eslint": "^3.8.1",
     "grunt": "^0.4.5",
     "grunt-cli": "^1.1.0",
     "grunt-contrib-clean": "0.4.0",
