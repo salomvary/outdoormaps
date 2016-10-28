@@ -34,7 +34,7 @@ leaflet: leaflet-src
 
 leaflet-src:
 	mkdir -p $@
-	$(CURL) https://codeload.github.com/Leaflet/Leaflet/tar.gz/v1.0.0-rc.3|tar xf - --strip-components 1 -C $@
+	$(CURL) https://github.com/Leaflet/Leaflet/archive/v1.0.1.tar.gz|tar xf - --strip-components 1 -C $@
 	cd $@ && npm install && node_modules/.bin/jake build[lqs002d,custom]
 
 # single github file without tag
