@@ -1,7 +1,6 @@
 var L = require('vendor/leaflet'),
     $ = require('util'),
     flags = require('flags'),
-    Panoramio = require('panoramio'),
     Flickr = require('flickr');
     require('vendor/bing-layer');
     require('vendor/OS');
@@ -89,12 +88,6 @@ layers.bgtopovj = {
   bounds: new L.LatLngBounds(
     new L.LatLng(40, 20), // sw
     new L.LatLng(44, 29)) // ne
-};
-
-layers.panoramio = {
-  klazz: Panoramio,
-  title: 'Panoramio',
-  mapType: 'overlay'
 };
 
 layers.flickr = {

@@ -292,13 +292,6 @@ input {
   background: rgb(38, 126, 202);
 }
 
-.panoramio-icon {
-  background-position: top left;
-  background-repeat: no-repeat;
-  background-size: 16px 16px;
-  background-image: url(panoramio.png);
-}
-
 .flickr-logo {
   display: inline-block;
   width: 49.5px;
@@ -320,14 +313,6 @@ input {
   /* add shadow */
   box-shadow: 0 0 5px;
   border-radius: 50px;
-}
-
-@media
-(-webkit-min-device-pixel-ratio: 2),
-(min-resolution: 192dpi) {
-  .panoramio-icon {
-    background-image: url(panoramio@2x.png)
-  }
 }
 
 /*
