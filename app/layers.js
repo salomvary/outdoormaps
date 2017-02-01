@@ -143,6 +143,24 @@ layers.opentopomap = {
   mapType: 'hiking'
 };
 
+layers.opensnowmapBase = {
+  url: 'http://www5.opensnowmap.org/base_snow_map/{z}/{x}/{y}.png',
+  maxZoom: 18,
+  attribution: '© <a href="http://opensnowmap.org">opensnowmap.org</a> CC-BY-SA',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'OpenSnowMap (Base)',
+  mapType: 'hiking'
+};
+
+layers.opensnowmapPiste = {
+  url: 'http://www.opensnowmap.org/tiles-pistes/{z}/{x}/{y}.png',
+  maxZoom: 18,
+  attribution: '© <a href="http://opensnowmap.org">opensnowmap.org</a> CC-BY-SA',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'OpenSnowMap (Piste)',
+  mapType: 'overlay'
+};
+
 Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
