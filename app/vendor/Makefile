@@ -24,18 +24,20 @@ clean:
 
 # zip file hosted somewhere on the internetz
 
-#leaflet:
-#	$(CURL) http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.zip -o $@.download.zip
-#	unzip -q $@.download.zip -d leaflet
-#	rm $@.download.zip
+leaflet:
+	$(CURL) http://cdn.leafletjs.com/leaflet/v1.0.3/leaflet.zip -o $@.download.zip
+	unzip -q $@.download.zip -d leaflet
+	rm $@.download.zip
 
-leaflet: leaflet-src
-	cp -r leaflet-src/dist/ $@
-
-leaflet-src:
-	mkdir -p $@
-	$(CURL) https://github.com/Leaflet/Leaflet/archive/v1.0.1.tar.gz|tar xf - --strip-components 1 -C $@
-	cd $@ && npm install && node_modules/.bin/jake build[dqs0fet,custom]
+#TODO bring back custom build once all dependencies are figured out
+#(drawing gpx tracks is currently broken)
+#leaflet: leaflet-src
+#	cp -r leaflet-src/dist/ $@
+#
+#leaflet-src:
+#	mkdir -p $@
+#	$(CURL) https://github.com/Leaflet/Leaflet/archive/v1.0.1.tar.gz|tar xf - --strip-components 1 -C $@
+#	cd $@ && npm install && node_modules/.bin/jake build[dqs0fet,custom]
 
 # single github file without tag
 
