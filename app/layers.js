@@ -96,16 +96,6 @@ layers.flickr = {
   mapType: 'overlay'
 };
 
-layers.strava = {
-  url: 'http://globalheat.strava.com/tiles/cycling/color1/{z}/{x}/{y}.png',
-  attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
-  detectRetina: true,
-  title: 'Strava Heatmap',
-  mapType: 'overlay',
-  maxNativeZoom: 15,
-  maxZoom: 21
-};
-
 layers.forumaps = {
   url: 'http://tileserver.4umaps.eu/{z}/{x}/{y}.png',
   maxZoom: 15,
