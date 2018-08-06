@@ -1,5 +1,6 @@
 @import url("../vendor/add-to-homescreen/style/add2home.css");
 @import url("../vendor/leaflet/leaflet.css");
+@import url("../vendor/leaflet-routing-machine.css");
 
 * {
   -moz-box-sizing: border-box;
@@ -27,7 +28,7 @@ body {
   left: 0;
   top:0;
   width: 100%;
-  height: 100%;
+  bottom: 0;
 }
 
 .page {
@@ -285,6 +286,28 @@ input {
   background-image: url(loading.gif), -moz-linear-gradient(top, #62C462, #51A351);
 }
 
+.directions-button {
+  background-image: url(directions.svg);
+  background-image: url(directions.svg), linear-gradient(top, #62C462, #51A351);
+  background-image: url(directions.svg), -webkit-linear-gradient(top, #62C462, #51A351);
+  background-image: url(directions.svg), -moz-linear-gradient(top, #62C462, #51A351);
+}
+
+.directions-active-button {
+  background-image: url(directions-active.svg);
+  background-image: url(directions-active.svg), linear-gradient(top, #62C462, #51A351);
+  background-image: url(directions-active.svg), -webkit-linear-gradient(top, #62C462, #51A351);
+  background-image: url(directions-active.svg), -moz-linear-gradient(top, #62C462, #51A351);
+}
+
+.delete-button {
+  background-image: url(delete.svg);
+}
+
+.close-button {
+  background-image: url(close.svg);
+}
+
 .my-location-icon {
   box-shadow: 0 0 5px;
   border: 3px solid #fff;
@@ -424,4 +447,44 @@ input {
 
 .photo-popup .owner {
   float: right;
+}
+
+/*
+ * Routing
+ */
+
+ /** Do not show itinerary for now */
+.leaflet-routing-container {
+  display: none;
+}
+
+/*
+ * Routing panel view
+ */
+.routing-panel {
+  display: none;
+}
+
+.routing-panel-active .routing-panel {
+  display: block;
+}
+
+.routing-panel-active .map {
+  bottom: 51px;
+}
+
+.routing-panel {
+  background: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 51px;
+  padding: 5px 7px;
+  border-top: 1px solid #ccc;
+}
+
+.routing-panel-close-button {
+  position: absolute;
+  right: 7px;
 }

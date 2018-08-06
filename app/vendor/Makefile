@@ -15,7 +15,9 @@ DEPENDENCIES=bing-layer.js\
 						 MapMultiCRS.js\
 						 OS.js\
 						 proj4leaflet.js\
-						 proj4.js
+						 proj4.js\
+						 leaflet-routing-machine.css\
+						 leaflet-routing-machine.js
 
 all: $(DEPENDENCIES)
 
@@ -96,3 +98,10 @@ mocha:
 chai:
 	mkdir -p $@
 	$(CURL) https://codeload.github.com/chaijs/chai/tar.gz/1.8.1|tar xf - --strip-components 1 -C $@
+
+leaflet-routing-machine.css:
+	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.7/dist/leaflet-routing-machine.css
+
+leaflet-routing-machine.js:
+	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.7/dist/leaflet-routing-machine.js
+

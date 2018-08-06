@@ -7,6 +7,7 @@ var $ = require('util'),
     InitialLocation = require('initial-location'),
     RecommendLayers = require('recommend-layers'),
     Router = require('router'),
+    Routing = require('routing'),
     ShowPosition = require('show-position'),
     Search = require('search'),
     StateStore = require('state-store'),
@@ -23,7 +24,8 @@ var plugins = [
   Settings,
   Search,
   Tracks,
-  Router
+  Router,
+  Routing
 ];
 
 var stateEvents = 'moveend zoomend layeradd layerremove';
