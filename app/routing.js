@@ -41,6 +41,22 @@ module.exports = klass({
     this.panel.setStats(itinerary.route.summary);
   },
 
+  onContextMenu: function(i, event) {
+    var deleteButton = $.create('button', 'delete-button');
+    $.on(deleteButton, 'click', this.onDeleteWaypointClick.bind(this, i));
+    deleteButton.innerHTML = '&nbsp;';
+
+    L.popup({offset: [0, -31]})
+      .setLatLng(event.latlng)
+      .setContent(deleteButton)
+      .openOn(this.map);
+  },
+
+  onDeleteWaypointClick: function(i) {
+    this.map.closePopup();
+    this.removeWaypoint(i);
+  },
+
   toggleRouting: function() {
     if (!this.active) {
       this.show();
@@ -57,7 +73,8 @@ module.exports = klass({
         router: L.Routing.mapbox(apiKey),
         // Hide itinerary for now (there is no better way)
         summaryTemplate: '',
-        itineraryBuilder: noOpItineraryBuilder
+        itineraryBuilder: noOpItineraryBuilder,
+        createMarker: this.createMarker.bind(this)
       }).addTo(this.map);
       this.map.on('click', this.onMapClick, this);
       this.routingControl.on('routeselected', this.onRouteSelected, this);
@@ -76,6 +93,16 @@ module.exports = klass({
 
   togglePanel: function(active) {
     $.toggleClass(document.body, 'routing-panel-active', active);
+  },
+
+  createMarker: function(i, waypoint) {
+    return L.marker(waypoint.latLng, {
+      draggable: true
+    }).on('contextmenu', this.onContextMenu.bind(this, i));
+  },
+
+  removeWaypoint: function(i) {
+    this.routingControl.spliceWaypoints(i, 1);
   },
 
   addWaypoint: function(latlng) {
