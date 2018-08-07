@@ -71,7 +71,7 @@ proj4.js:
 # single github file, tagged
 
 require.js:
-	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.1.22/require.js
+	$(CURL) -o $@ https://raw.github.com/jrburke/requirejs/2.3.5/require.js
 
 GPX.js:
 	$(CURL) -o $@ https://raw.githubusercontent.com/shramov/leaflet-plugins/1.1.2/layer/vector/GPX.js
