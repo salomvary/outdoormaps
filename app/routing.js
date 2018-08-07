@@ -1,7 +1,8 @@
 var $ = require('util'),
     klass = require('vendor/klass'),
     L = require('vendor/leaflet'),
-    RoutingPanel = require('routing-panel');
+    RoutingPanel = require('routing-panel'),
+    gpxExport = require('gpx-export');
 
 require('vendor/leaflet-routing-machine');
 
@@ -14,7 +15,8 @@ module.exports = klass({
     this.options = options;
     this.panel = new RoutingPanel({
       onClear: this.onClear.bind(this),
-      onClose: this.onClose.bind(this)
+      onClose: this.onClose.bind(this),
+      onExport: this.onExport.bind(this)
     });
   },
 
@@ -38,6 +40,7 @@ module.exports = klass({
   },
 
   onRouteSelected: function(itinerary) {
+    this.selectedItinerary = itinerary;
     this.panel.setStats(itinerary.route.summary);
   },
 
@@ -55,6 +58,10 @@ module.exports = klass({
   onDeleteWaypointClick: function(i) {
     this.map.closePopup();
     this.removeWaypoint(i);
+  },
+
+  onExport: function() {
+    gpxExport(this.selectedItinerary.route.coordinates);
   },
 
   toggleRouting: function() {

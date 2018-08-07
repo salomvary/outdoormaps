@@ -17,7 +17,9 @@ DEPENDENCIES=bing-layer.js\
 						 proj4leaflet.js\
 						 proj4.js\
 						 leaflet-routing-machine.css\
-						 leaflet-routing-machine.js
+						 leaflet-routing-machine.js\
+						 jxon.js\
+						 FileSaver.js
 
 all: $(DEPENDENCIES)
 
@@ -77,6 +79,9 @@ GPX.js:
 fastclick.js:
 	$(CURL) -o $@ https://raw.githubusercontent.com/ftlabs/fastclick/v1.0.6/lib/fastclick.js
 
+jxon.js:
+	$(CURL) -o $@ https://raw.githubusercontent.com/tyrasd/jxon/1.6.1/index.js
+
 # plain file from the internetz
 
 sinon.js:
@@ -105,3 +110,5 @@ leaflet-routing-machine.css:
 leaflet-routing-machine.js:
 	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.7/dist/leaflet-routing-machine.js
 
+FileSaver.js:
+	$(CURL) -o $@ https://unpkg.com/file-saver@1.3.8/FileSaver.js

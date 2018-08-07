@@ -15,6 +15,10 @@ module.exports = klass({
       var closeButton = this.el.querySelector('.routing-panel-close-button');
       $.on(closeButton, 'click', this.options.onClose, this);
       $.fastClick(closeButton);
+
+      var exportButton = this.el.querySelector('.routing-panel-export-button');
+      $.on(exportButton, 'click', this.options.onExport, this);
+      $.fastClick(exportButton);
     },
 
     setStats: function(stats) {
