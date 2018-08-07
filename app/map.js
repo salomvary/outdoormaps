@@ -39,7 +39,7 @@ var europeBounds = [
 module.exports = klass({
   defaults: {
     bounds: europeBounds,
-    layers: ['opencyclemap']
+    layers: ['mapboxstreets']
   },
 
   initialize: function() {

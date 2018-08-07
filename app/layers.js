@@ -5,6 +5,8 @@ var L = require('vendor/leaflet'),
     require('vendor/bing-layer');
     require('vendor/OS');
 
+var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
+
 var layers = {}, instances = {},
     customOptions = ['title', 'klazz', 'mapType'];
 
@@ -16,7 +18,22 @@ layers.map = {
   url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: flags.isEnabled('detectRetina'),
+  title: 'OpenStreetMap',
   mapType: 'map'
+};
+
+layers.mapboxstreets = {
+  url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + mapboxKey,
+  attribution: '© Mapbox',
+  title: 'Mapbox Streets',
+  mapType: 'map'
+};
+
+layers.mapboxoutdoors = {
+  url: 'http://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=' + mapboxKey,
+  attribution: '© Mapbox',
+  title: 'Mapbox Outdoors',
+  mapType: 'hiking'
 };
 
 layers.opencyclemap = {
