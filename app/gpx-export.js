@@ -13,17 +13,17 @@ require('vendor/FileSaver');
 module.exports = function gpxExport(coordinates) {
   var trackPoints = coordinates.map(function(coordinate) {
     return {
-      '@lat': coordinate.lat,
-      '@lon': coordinate.lng
+      '$lat': coordinate.lat,
+      '$lon': coordinate.lng
     };
   });
 
   var gpx = {
     'gpx': {
-      '@xmlns': 'http://www.topografix.com/GPX/1/1',
-      '@xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-      '@xsi:schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd',
-      '@version': '1.1',
+      '$xmlns': 'http://www.topografix.com/GPX/1/1',
+      '$xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+      '$xsi:schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd',
+      '$version': '1.1',
       'trk': {
         'trkseg': {
           'trkpt': trackPoints

@@ -83,7 +83,7 @@ fastclick.js:
 	$(CURL) -o $@ https://raw.githubusercontent.com/ftlabs/fastclick/v1.0.6/lib/fastclick.js
 
 jxon.js:
-	$(CURL) -o $@ https://raw.githubusercontent.com/tyrasd/jxon/1.6.1/index.js
+	$(CURL) -o $@ https://raw.githubusercontent.com/tyrasd/jxon/2.0.0-beta.5/jxon.js
 
 # plain file from the internetz
 

@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           '{.tmp,app}{,*/}*.css',
           '{.tmp,app}{,*/}*.js',
           '{.tmp,app}/vendor/{,*/}*.js',
-          'app{,*/}*.{png,jpg,jpeg,webp,gif}',
+          'app{,*/}*.{png,jpg,jpeg,webp,gif,svg}',
           'test/*-test.js'
         ],
         tasks: ['furnace']
@@ -148,7 +148,7 @@ module.exports = function(grunt) {
       assets: {
         files: [{
           src: [
-            'dist/{,*/}*.{js,css,png,jpg,ico,gif}',
+            'dist/{,*/}*.{js,css,png,jpg,ico,gif,svg}',
             'dist/vendor/require.js'
             //'dist/vendor/leaflet/images/*'
           ]
@@ -167,7 +167,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'app',
-          src: '{,*/}*.{png,jpg,jpeg,ico,gif}',
+          src: '{,*/}*.{png,jpg,jpeg,ico,gif,svg}',
           dest: 'dist'
         }]
       }
@@ -245,6 +245,7 @@ module.exports = function(grunt) {
           '{,*/}*.png',
           '{,*/}*.gif',
           '{,*/}*.ico',
+          '{,*/}*.svg',
           'vendor/*.require.js',
           'vendor/leaflet/images/*'
         ],
