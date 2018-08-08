@@ -26,7 +26,10 @@ module.exports = klass({
     if (window.localStorage && localStorage.turistautak) {
       try {
         properties = JSON.parse(localStorage.turistautak, reviver);
-      } catch (e) { /* parse error, ignore it */ }
+      } catch (e) {
+        /* parse error, ignore it */
+        console.error('Error parsing localStorage', e);
+      }
       $.extend(this.properties, properties);
     }
   },
