@@ -15,6 +15,7 @@ module.exports = function(grunt) {
           'app/*.html',
           '{.tmp,app}{,*/}*.css',
           '{.tmp,app}{,*/}*.js',
+          '{.tmp,app}/vendor/{,*/}*.js',
           'app{,*/}*.{png,jpg,jpeg,webp,gif}',
           'test/*-test.js'
         ],
