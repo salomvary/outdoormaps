@@ -1,6 +1,5 @@
 'use strict';
 
-var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
 var mountFolder = function(connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
@@ -11,7 +10,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     watch: {
-      livereload: {
+      furnace: {
         files: [
           'app/*.html',
           '{.tmp,app}{,*/}*.css',
@@ -19,9 +18,7 @@ module.exports = function(grunt) {
           'app{,*/}*.{png,jpg,jpeg,webp,gif}',
           'test/*-test.js'
         ],
-        // should be a separate subtask, but:
-        // https://github.com/yeoman/grunt-regarde/issues/7
-        tasks: ['livereload', 'furnace']
+        tasks: ['furnace']
       }
     },
     furnace: {
@@ -55,11 +52,10 @@ module.exports = function(grunt) {
         // change this to '0.0.0.0' to access the server from outside
         hostname: '0.0.0.0'
       },
-      livereload: {
+      server: {
         options: {
           middleware: function(connect) {
             return [
-              lrSnippet,
               mountFolder(connect, '.tmp'),
               mountFolder(connect, 'app')
             ];
@@ -85,11 +81,6 @@ module.exports = function(grunt) {
             ];
           }
         }
-      }
-    },
-    open: {
-      server: {
-        path: 'http://localhost:<%= connect.options.port %>'
       }
     },
     clean: {
@@ -262,15 +253,13 @@ module.exports = function(grunt) {
 
   grunt.registerTask('server', function(target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+      return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
       'clean:server',
       'furnace',
-      'livereload-start',
-      'connect:livereload',
-      'open',
+      'connect:server',
       'watch'
     ]);
   });
