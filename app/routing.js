@@ -139,7 +139,12 @@ module.exports = klass({
     return L.marker(waypoint.latLng, {
       icon: i === 0 ? routeStartIcon : routeWaypointIcon,
       draggable: true
-    }).on('contextmenu', this.onContextMenu.bind(this, i));
+    })
+      .on('contextmenu', this.onContextMenu.bind(this, i))
+      .on('click', function(e) {
+        // Prevent adding a route point when a marker is clicked
+        e.stop();
+      });
   },
 
   removeWaypoint: function(i) {
