@@ -24,6 +24,12 @@ module.exports = klass({
     setStats: function(stats) {
       var distance = this.el.querySelector('.routing-panel-distance');
       distance.innerHTML = formatDistance(stats.totalDistance);
+
+      var ascent = this.el.querySelector('.routing-panel-ascent');
+      ascent.innerHTML = formatElevation(stats.totalAscend);
+
+      var descent = this.el.querySelector('.routing-panel-descent');
+      descent.innerHTML = formatElevation(stats.totalDescend);
     }
 });
 
@@ -32,5 +38,13 @@ function formatDistance(meters) {
     return Math.round(meters / 1000) + ' km';
   } else {
     return '0 km';
+  }
+}
+
+function formatElevation(meters) {
+  if (meters > 0) {
+    return Math.round(meters) + ' m';
+  } else {
+    return '0 m';
   }
 }

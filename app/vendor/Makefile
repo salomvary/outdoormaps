@@ -19,7 +19,10 @@ DEPENDENCIES=bing-layer.js\
 						 leaflet-routing-machine.css\
 						 leaflet-routing-machine.js\
 						 jxon.js\
-						 FileSaver.js
+						 FileSaver.js\
+						 L.Routing.GraphHopper.js\
+						 corslite.js\
+						 polyline.js
 
 all: $(DEPENDENCIES)
 
@@ -112,3 +115,14 @@ leaflet-routing-machine.js:
 
 FileSaver.js:
 	$(CURL) -o $@ https://unpkg.com/file-saver@1.3.8/FileSaver.js
+
+L.Routing.GraphHopper.js:
+	$(CURL) -o $@ https://github.com/salomvary/lrm-graphhopper/blob/b77184a98ea16024028efc71b18d5025213b1a04/src/L.Routing.GraphHopper.js
+
+# Needed by L.Routing.GraphHopper
+corslite.js:
+	$(CURL) -o $@ https://unpkg.com/corslite@0.0.7/corslite.js
+
+# Needed by L.Routing.GraphHopper
+polyline.js:
+	$(CURL) -o $@ https://unpkg.com/polyline@0.2.0/src/polyline.js

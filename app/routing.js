@@ -5,6 +5,7 @@ var $ = require('util'),
     gpxExport = require('gpx-export');
 
 require('vendor/leaflet-routing-machine');
+require('vendor/L.Routing.GraphHopper');
 
 // MapBox API key
 var apiKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
@@ -77,7 +78,14 @@ module.exports = klass({
       this.active = true;
       this.togglePanel(true);
       this.routingControl = L.Routing.control({
-        router: L.Routing.mapbox(apiKey),
+        //router: L.Routing.mapbox(apiKey),
+        router: L.Routing.graphHopper('cd462023-b872-4db6-b5cd-aad62847c8b7', {
+          urlParameters: {
+            vehicle: 'racingbike',
+            // elevation: true,
+            // points_encoded: false
+          }
+        }),
         // Hide itinerary for now (there is no better way)
         summaryTemplate: '',
         itineraryBuilder: noOpItineraryBuilder,

@@ -33,6 +33,9 @@ module.exports = function(grunt) {
           src: [
             '*.js',
             'vendor/geolocation.js',
+            'vendor/L.Routing.GraphHopper.js',
+            'vendor/corslite.js',
+            'vendor/polyline.js',
             '!app.js'
           ],
           dest: '.tmp/'

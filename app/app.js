@@ -9,7 +9,9 @@ require.config({
   ],
   paths: {
     'vendor/leaflet': 'vendor/leaflet/leaflet-src',
-    'proj4': 'vendor/proj4'
+    'proj4': 'vendor/proj4',
+    'polyline': 'vendor/polyline',
+    'corslite': 'vendor/corslite'
   },
   map: {
     '*': {
