@@ -35,6 +35,9 @@ module.exports = klass({
     this.map = map;
     this.button = this.controller.createButton('directions', 'topleft',
       this.toggleRouting, this);
+    if (this.options.get('routingActive')) {
+      this.show();
+    }
   },
 
   onMapClick: function(e) {
@@ -43,6 +46,7 @@ module.exports = klass({
 
   onClear: function() {
     this.panel.setStats({});
+    this.selectedRoute = null;
     this.routingControl.setWaypoints([]);
   },
 
@@ -50,9 +54,10 @@ module.exports = klass({
     this.hide();
   },
 
-  onRouteSelected: function(itinerary) {
-    this.selectedItinerary = itinerary;
-    this.panel.setStats(itinerary.route.summary);
+  onRouteSelected: function(event) {
+    this.selectedRoute = event.route;
+    this.panel.setStats(event.route.summary);
+    this.options.save();
   },
 
   onContextMenu: function(i, event) {
@@ -72,7 +77,11 @@ module.exports = klass({
   },
 
   onExport: function() {
-    gpxExport(this.selectedItinerary.route.coordinates);
+    gpxExport(this.selectedRoute.coordinates);
+  },
+
+  onWaypointsChanged: function() {
+    this.saveWaypoints();
   },
 
   toggleRouting: function() {
@@ -88,6 +97,7 @@ module.exports = klass({
       this.active = true;
       this.togglePanel(true);
       this.routingControl = L.Routing.control({
+        waypoints: this.options.get('routingWaypoints'),
         //router: L.Routing.mapbox(apiKey),
         router: L.Routing.graphHopper('cd462023-b872-4db6-b5cd-aad62847c8b7', {
           urlParameters: {
@@ -103,6 +113,9 @@ module.exports = klass({
       }).addTo(this.map);
       this.map.on('click', this.onMapClick, this);
       this.routingControl.on('routeselected', this.onRouteSelected, this);
+      this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
+      this.options.set('routingActive', this.active);
+      this.options.save();
     }
   },
 
@@ -113,6 +126,8 @@ module.exports = klass({
       this.routingControl.remove();
       this.routingControl = null;
       this.map.off('click', this.onMapClick, this);
+      this.options.set('routingActive', this.active);
+      this.options.save();
     }
   },
 
@@ -144,6 +159,18 @@ module.exports = klass({
       // Apped third or later one
       this.routingControl.spliceWaypoints(currentWaypoints.length, 0, latlng);
     }
+  },
+
+  saveWaypoints: function() {
+    var waypoints = this.routingControl.getWaypoints()
+      .map(function(waypoint) {
+        return waypoint.latLng;
+      })
+      // Empty state is two waypoints with null latLngs
+      .filter(function(latLngs) {
+        return !!latLngs;
+      });
+    this.options.set('routingWaypoints', waypoints);
   }
 });
 
