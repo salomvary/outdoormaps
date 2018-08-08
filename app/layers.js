@@ -30,7 +30,7 @@ layers.mapboxstreets = {
 };
 
 layers.mapboxoutdoors = {
-  url: 'http://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=' + mapboxKey,
+  url: 'https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=' + mapboxKey,
   attribution: '© Mapbox',
   title: 'Mapbox Outdoors',
   mapType: 'hiking'
@@ -46,7 +46,7 @@ layers.opencyclemap = {
 };
 
 layers.wanderkarte = {
-  url: 'http://{s}.wanderreitkarte.de/topo/{z}/{x}/{y}.png',
+  url: 'https://{s}.wanderreitkarte.de/topo/{z}/{x}/{y}.png',
   subdomains: ['topo', 'topo2', 'topo3', 'topo4'],
   minZoom: 5,
   maxZoom: 18,
@@ -60,7 +60,7 @@ layers.wanderkarte = {
 };
 
 layers.turistautak = {
-  url: 'http://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png',
+  url: 'https://{s}.map.turistautak.hu/tiles/turistautak/{z}/{x}/{y}.png',
   minZoom: 8,
   maxZoom: 21,
   subdomains: 'abcd',
@@ -79,7 +79,7 @@ layers.satellite = {
 };
 
 layers.bergfex = {
-  url: 'http://maps.bergfex.at/oek/{folder}/{z}/{x}/{y}.jpg',
+  url: 'https://maps.bergfex.at/oek/{folder}/{z}/{x}/{y}.jpg',
   minZoom: 4,
   maxZoom: 16,
   attribution: '© <a href="http://bergfex.com">bergfex.com</a>',
@@ -114,7 +114,7 @@ layers.flickr = {
 };
 
 layers.forumaps = {
-  url: 'http://tileserver.4umaps.eu/{z}/{x}/{y}.png',
+  url: 'https://tileserver.4umaps.com/{z}/{x}/{y}.png',
   maxZoom: 15,
   attribution: '© <a href="http://www.4umaps.eu/">4UMaps.eu</a>',
   title: '4UMaps.eu',
@@ -122,7 +122,7 @@ layers.forumaps = {
 };
 
 layers.lines = {
-  url: 'http://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
+  url: 'https://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
   minZoom: 8,
   maxZoom: 21,
   subdomains: 'abcd',
@@ -141,7 +141,7 @@ layers.ordnancesurvey = {
 };
 
 layers.opentopomap = {
-  url: 'http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+  url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
   maxZoom: 15,
   subdomains: 'abc',
   attribution: '© <a href="http://opentopomap.org/">OpenTopoMap</a>',
