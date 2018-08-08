@@ -65,7 +65,7 @@ module.exports = klass({
     $.on(deleteButton, 'click', this.onDeleteWaypointClick.bind(this, i));
     deleteButton.innerHTML = '&nbsp;';
 
-    L.popup({offset: [0, -31]})
+    L.popup({offset: [0, -2]})
       .setLatLng(event.latlng)
       .setContent(deleteButton)
       .openOn(this.map);
