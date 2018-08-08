@@ -10,6 +10,16 @@ require('vendor/L.Routing.GraphHopper');
 // MapBox API key
 var apiKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
+var routeStartIcon = L.divIcon({
+  iconSize: [20, 20],
+  className: 'route-start-icon'
+});
+
+var routeWaypointIcon = L.divIcon({
+  iconSize: [20, 20],
+  className: 'route-waypoint-icon'
+});
+
 module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
@@ -112,6 +122,7 @@ module.exports = klass({
 
   createMarker: function(i, waypoint) {
     return L.marker(waypoint.latLng, {
+      icon: i === 0 ? routeStartIcon : routeWaypointIcon,
       draggable: true
     }).on('contextmenu', this.onContextMenu.bind(this, i));
   },
