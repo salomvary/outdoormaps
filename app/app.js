@@ -26,6 +26,7 @@ require.config({
       deps: ['vendor/leaflet'],
       exports: 'L.GPX'
     },
+    'vendor/L.Routing.GraphHopper': ['vendor/leaflet-routing-machine'],
     'vendor/bing-layer': ['vendor/leaflet'],
     'vendor/MapMultiCRS': ['vendor/leaflet'],
     'vendor/OS': ['vendor/leaflet', 'vendor/proj4leaflet', 'vendor/MapMultiCRS']
