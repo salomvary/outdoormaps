@@ -117,7 +117,7 @@ FileSaver.js:
 	$(CURL) -o $@ https://unpkg.com/file-saver@1.3.8/FileSaver.js
 
 L.Routing.GraphHopper.js:
-	$(CURL) -o $@ https://github.com/salomvary/lrm-graphhopper/blob/b77184a98ea16024028efc71b18d5025213b1a04/src/L.Routing.GraphHopper.js
+	$(CURL) -o $@ https://raw.githubusercontent.com/salomvary/lrm-graphhopper/b77184a98ea16024028efc71b18d5025213b1a04/src/L.Routing.GraphHopper.js
 
 # Needed by L.Routing.GraphHopper
 corslite.js:
