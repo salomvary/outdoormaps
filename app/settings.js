@@ -31,7 +31,7 @@ module.exports = klass({
 
   setMap: function(map) {
     this.map = map;
-    this.controller.createButton('settings', 'topright',
+    this.controller.createButton('layers', 'topright',
       this.toggleSettings, this);
   },
 

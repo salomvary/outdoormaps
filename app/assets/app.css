@@ -273,11 +273,11 @@ input {
   background-image: url(arrow2x.png), -moz-linear-gradient(top, #62C462, #51A351);
 }
 
-.settings-button {
-  background-image: url(gear2x.png);
-  background-image: url(gear2x.png), linear-gradient(top, #62C462, #51A351);
-  background-image: url(gear2x.png), -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: url(gear2x.png), -moz-linear-gradient(top, #62C462, #51A351);
+.layers-button {
+  background-image: url(layers.svg);
+  background-image: url(layers.svg), linear-gradient(top, #62C462, #51A351);
+  background-image: url(layers.svg), -webkit-linear-gradient(top, #62C462, #51A351);
+  background-image: url(layers.svg), -moz-linear-gradient(top, #62C462, #51A351);
 }
 
 .busy-button {
