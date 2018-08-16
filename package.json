@@ -28,6 +28,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "grunt": "grunt"
+    "grunt": "grunt",
+    "start": "grunt -- server"
   }
 }
