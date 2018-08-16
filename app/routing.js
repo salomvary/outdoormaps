@@ -24,10 +24,13 @@ module.exports = klass({
   initialize: function(controller, options) {
     this.controller = controller;
     this.options = options;
+    this.routingVehicle = options.get('routingVehicle') || 'bike';
     this.panel = new RoutingPanel({
+      routingVehicle: this.routingVehicle,
       onClear: this.onClear.bind(this),
       onClose: this.onClose.bind(this),
-      onExport: this.onExport.bind(this)
+      onExport: this.onExport.bind(this),
+      onVehicleChange: this.onVehicleChange.bind(this)
     });
   },
 
@@ -84,6 +87,12 @@ module.exports = klass({
     this.saveWaypoints();
   },
 
+  onVehicleChange: function(value) {
+    this.routingVehicle = value;
+    this.routingControl.getRouter().options.urlParameters.vehicle = this.routingVehicle;
+    this.routingControl.route();
+  },
+
   toggleRouting: function() {
     if (!this.active) {
       this.show();
@@ -101,7 +110,7 @@ module.exports = klass({
         //router: L.Routing.mapbox(apiKey),
         router: L.Routing.graphHopper('cd462023-b872-4db6-b5cd-aad62847c8b7', {
           urlParameters: {
-            vehicle: 'racingbike',
+            vehicle: this.routingVehicle
             // elevation: true,
             // points_encoded: false
           }

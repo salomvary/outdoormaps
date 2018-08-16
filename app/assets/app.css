@@ -87,7 +87,8 @@ section {
  */
 
 button,
-input {
+input,
+select {
   height: 40px;
   min-width: 40px;
   border-radius: 4px;
@@ -100,12 +101,13 @@ input {
 }
 
 button {
-  background-color: #efefef;
+  font-size: 16px;
+  background-color: #fff;
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
 
-input {
+input, select {
   font-size: 16px;
   padding: 4px;
 }
@@ -184,6 +186,37 @@ input {
 
 .btn-group {
   overflow: hidden;
+}
+
+/*
+ * Flat horizontal button group
+ */ 
+.flat-btn {
+  font: inherit;
+}
+
+.flat-horizontal-btn-group {
+  display: inline-flex;
+}
+
+.flat-btn.active,
+.flat-btn:active {
+  background-color: #e0e0e0;
+}
+
+.flat-horizontal-btn-group .flat-btn:first-child,
+.flat-horizontal-btn-group .flat-btn + .flat-btn:not(:last-child) {
+  margin-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+
+.flat-horizontal-btn-group .flat-btn:last-child,
+.flat-horizontal-btn-group .flat-btn + .flat-btn {
+  margin-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 /*
@@ -503,7 +536,35 @@ input {
   border-top: 1px solid #ccc;
 }
 
+.routing-panel-stats {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.routing-panel-elevation {
+  font-size: 12px;
+}
+
 .routing-panel-close-button {
   position: absolute;
   right: 7px;
+}
+
+@media all and (max-width: 385px) {
+  .routing-vehicle-select {
+    width: 80px;
+  }
+}
+
+@media all and (max-width: 520px) {
+  .routing-vehicle-buttons {
+    display: none;
+  }
+}
+
+@media all and (min-width: 520px) {
+  .routing-vehicle-select {
+    display: none;
+  }
 }
