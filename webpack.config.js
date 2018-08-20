@@ -24,5 +24,9 @@ module.exports = {
       'corslite': 'vendor/corslite',
       'leaflet': 'vendor/leaflet/leaflet-src'
     }
+  },
+  serve: {
+    hotClient: false,
+    content: 'app'
   }
 };
