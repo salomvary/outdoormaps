@@ -3,9 +3,11 @@ var path = require('path');
 module.exports = {
   mode: 'development',
   node: false,
-  entry: './app/app',
+  context: path.resolve(__dirname, 'app'),
+  entry: './app',
   output: {
-    path: path.resolve(__dirname, 'app')
+    path: path.resolve(__dirname, 'app'),
+    filename: 'main.js'
   },
   module: {
     rules: [
@@ -26,7 +28,8 @@ module.exports = {
     }
   },
   serve: {
+    port: 9000,
     hotClient: false,
-    content: 'app'
+    content: './app'
   }
 };

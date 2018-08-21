@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Outdoor maps for mobile and desktop",
   "devDependencies": {
+    "assetgraph-builder": "^6.4.1",
     "eslint": "^3.8.1",
     "imports-loader": "^0.8.0",
     "webpack": "^4.16.5",
@@ -11,6 +12,7 @@
   },
   "scripts": {
     "start": "webpack-serve",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "buildProduction --webpackconfig ../../../webpack.config.js --root app --outroot dist app/index.html"
   }
 }

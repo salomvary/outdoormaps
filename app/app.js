@@ -1,41 +1,11 @@
+var Map = require('map');
+
 window.addToHomeConfig = {
   returningVisitor: true
 };
 
-require.config({
-  deps: [
-    'vendor/polyfills',
-    'vendor/add-to-homescreen/src/add2home'
-  ],
-  paths: {
-    'vendor/leaflet': 'vendor/leaflet/leaflet-src',
-    'proj4': 'vendor/proj4',
-    'polyline': 'vendor/polyline',
-    'corslite': 'vendor/corslite'
-  },
-  map: {
-    '*': {
-      'leaflet': 'vendor/leaflet'
-    }
-  },
-  shim: {
-    'vendor/leaflet': {
-      exports: 'L'
-    },
-    'vendor/GPX': {
-      deps: ['vendor/leaflet'],
-      exports: 'L.GPX'
-    },
-    'vendor/L.Routing.GraphHopper': ['vendor/leaflet-routing-machine'],
-    'vendor/bing-layer': ['vendor/leaflet'],
-    'vendor/MapMultiCRS': ['vendor/leaflet'],
-    'vendor/OS': ['vendor/leaflet', 'vendor/proj4leaflet', 'vendor/MapMultiCRS']
-  }
-});
-
-require(['map'], function(Map) {
-  return new Map();
-});
+// eslint-disable-next-line no-new
+new Map();
 
 // check for application cache updates
 if (window.applicationCache) {
