@@ -36,7 +36,7 @@ Setup
 
 Running the development server
 
-    npm run grunt -- server
+    npm start
 
 Run the linter before pushing changes
 
