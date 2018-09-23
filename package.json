@@ -13,6 +13,6 @@
   "scripts": {
     "start": "webpack-serve",
     "lint": "eslint .",
-    "build": "buildProduction --precacheserviceworker --webpackconfig ../../../webpack.config.js --root app --outroot dist app/index.html"
+    "build": "buildProduction --precacheserviceworker --webpackconfig ../../../webpack.production.config.js --root app --outroot dist app/index.html"
   }
 }

@@ -14,7 +14,18 @@ var $ = require('util'),
     Settings = require('settings'),
     Tracks = require('tracks');
 
-L.Icon.Default.imagePath = 'vendor/leaflet/images/';
+// The default Icon.Default is incompatible with the AssetGraph build
+// due to rewritten urls
+L.Marker.prototype.options.icon = L.icon({
+  iconUrl: '/vendor/leaflet/images/marker-icon.png'.toString('url'),
+  iconRetinaUrl: '/vendor/leaflet/images/marker-icon-2x.png'.toString('url'),
+  shadowUrl: '/vendor/leaflet/images/marker-shadow.png'.toString('url'),
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
 
 var plugins = [
   InitialLocation,
