@@ -5,3 +5,6 @@ release:
 
 deploy:
 	cd dist; git commit -m "update"; git push
+
+clean:
+	rm -r dist/*
