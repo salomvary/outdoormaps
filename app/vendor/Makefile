@@ -65,7 +65,7 @@ OS.js:
 
 # Required by OS
 proj4leaflet.js:
-	$(CURL) -o $@ https://raw.githubusercontent.com/kartena/Proj4Leaflet/ba1a2c582c71c668b6b658a2ae91da803bfbf940/src/proj4leaflet.js
+	$(CURL) -o $@ https://raw.githubusercontent.com/kartena/Proj4Leaflet/1.0.2/src/proj4leaflet.js
 
 # Required by OS
 proj4.js:

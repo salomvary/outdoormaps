@@ -166,6 +166,29 @@ layers.opensnowmapPiste = {
   detectRetina: flags.isEnabled('detectRetina'),
   title: 'OpenSnowMap (Piste)',
   mapType: 'overlay'
+
+};
+
+// Source:
+// http://icgc.cat/Administracio-i-empresa/Serveis/Geoinformacio-en-linia-Geoserveis/Serveis-per-a-API-i-Widgets/API-de-Leaflet
+layers.catalonia = {
+  klazz: L.TileLayer.WMS,
+  url: 'http://mapcache.icc.cat/map/bases/service?',
+  format: 'image/jpeg',
+  layers: 'topo',
+  crs: new L.Proj.CRS(
+    'EPSG:25831',
+      '+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+        { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] }
+  ),
+  continuousWorld: true,
+  attribution: 'Institut Cartogràfic i Geològic de Catalunya -ICGC',
+  detectRetina: flags.isEnabled('detectRetina'),
+  title: 'Catalonia (ES)',
+  mapType: 'hiking',
+  bounds: new L.LatLngBounds(
+    new L.LatLng(42.9, 0.04),
+    new L.LatLng(40.52, 3.41))
 };
 
 Object.keys(layers).forEach(function(id) {
