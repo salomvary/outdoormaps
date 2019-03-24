@@ -1,6 +1,5 @@
 var JXON = require('vendor/jxon');
-require('vendor/FileSaver');
-/* global saveAs */
+var FileSaver = require('vendor/FileSaver');
 
 /**
  * Export LatLng coordinates as a GPX file
@@ -33,8 +32,8 @@ module.exports = function gpxExport(coordinates) {
   };
 
   var gpxData = JXON.stringify(gpx);
-  var blob = new Blob(['<?xml version="1.0" encoding="utf-8"?>', "\n", gpxData], {
+  var blob = new Blob(['<?xml version="1.0" encoding="utf-8"?>', '\n', gpxData], {
     type: 'application/gpx+xml;charset=utf-8'
   }, false);
-  saveAs(blob, 'route.gpx');
+  FileSaver.saveAs(blob, 'route.gpx');
 };

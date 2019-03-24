@@ -9,12 +9,10 @@ module.exports = klass($.extend({
     this.render();
     $.fastClick(el);
 
-    // handle click events
-    // XXX no event delegation on iOS Safari :(
-    var buttons = this.el.querySelectorAll('button');
-    $.eachNode(buttons, function(button) {
-      $.on(button, 'click', onClick, this);
-    }, this);
+    if (this.options.values) {
+      this.setValues(this.options.values);
+    }
+    this.setupListeners();
   },
 
   /** @protected */
@@ -38,14 +36,42 @@ module.exports = klass($.extend({
     this.update(value);
   },
 
+  setValues: function(values) {
+    updateSelectOptions(this.el, values);
+    this.setupListeners();
+    this.update(this._value);
+  },
+
   setDisabled: function(values) {
     values = values || [];
     var buttons = this.el.querySelectorAll('button');
     $.eachNode(buttons, function(button) {
       button.disabled = values.indexOf(button.name) > -1;
     });
+  },
+
+  setupListeners: function() {
+    // handle click events
+    // XXX no event delegation on iOS Safari :(
+    var buttons = this.el.querySelectorAll('button');
+    $.eachNode(buttons, function(button) {
+      $.on(button, 'click', onClick, this);
+    }, this);
   }
-}, Events));
+ }, Events));
+
+function updateSelectOptions(wrapper, values) {
+  wrapper.innerHTML = '';
+  var options = document.createDocumentFragment();
+  Object.keys(values).forEach(function(key) {
+    var button = document.createElement('button');
+    button.name = key;
+    button.className = 'flat-btn';
+    button.innerHTML = values[key];
+    options.appendChild(button);
+  });
+  wrapper.appendChild(options);
+}
 
 function onClick(event) {
   var value = event.target.name;

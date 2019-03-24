@@ -50,7 +50,8 @@ var europeBounds = [
 module.exports = klass({
   defaults: {
     bounds: europeBounds,
-    layers: ['mapboxstreets']
+    layers: ['mapboxstreets'],
+    routingService: 'mapbox'
   },
 
   initialize: function() {

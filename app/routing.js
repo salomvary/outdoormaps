@@ -2,13 +2,11 @@ var $ = require('util'),
     klass = require('vendor/klass'),
     L = require('vendor/leaflet'),
     RoutingPanel = require('routing-panel'),
+    RoutingSettings = require('routing-settings'),
+    routingServices = require('routing-services'),
     gpxExport = require('gpx-export');
 
 require('vendor/leaflet-routing-machine');
-require('vendor/L.Routing.GraphHopper');
-
-// MapBox API key
-var apiKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
 var routeStartIcon = L.divIcon({
   iconSize: [20, 20],
@@ -25,12 +23,19 @@ module.exports = klass({
     this.controller = controller;
     this.options = options;
     this.routingVehicle = options.get('routingVehicle') || 'bike';
+    this.routingService = options.get('routingService') || 'mapbox';
     this.panel = new RoutingPanel({
+      vehicles: this.getVehicles(),
       routingVehicle: this.routingVehicle,
       onClear: this.onClear.bind(this),
       onClose: this.onClose.bind(this),
       onExport: this.onExport.bind(this),
+      onSettings: this.onSettings.bind(this),
       onVehicleChange: this.onVehicleChange.bind(this)
+    });
+    this.settings = new RoutingSettings({
+      routingService: this.routingService,
+      onRoutingServiceChange: this.onRoutingServiceChange.bind(this)
     });
   },
 
@@ -83,13 +88,32 @@ module.exports = klass({
     gpxExport(this.selectedRoute.coordinates);
   },
 
+  onSettings: function() {
+    this.settings.toggle();
+  },
+
   onWaypointsChanged: function() {
     this.saveWaypoints();
   },
 
+  getVehicles: function() {
+    var vehicles = routingServices.get(this.routingService).vehicles;
+    return Object.keys(vehicles)
+      .reduce(function(acc, key) {
+        acc[key] = vehicles[key].title;
+        return acc;
+      }, {});
+  },
+
   onVehicleChange: function(value) {
     this.routingVehicle = value;
-    this.routingControl.getRouter().options.urlParameters.vehicle = this.routingVehicle;
+    this.updateRoutingVehicle();
+    this.routingControl.route();
+  },
+
+  onRoutingServiceChange: function(value) {
+    this.routingService = value;
+    this.updateRoutingService();
     this.routingControl.route();
   },
 
@@ -105,24 +129,8 @@ module.exports = klass({
     if (!this.active) {
       this.active = true;
       this.togglePanel(true);
-      this.routingControl = L.Routing.control({
-        waypoints: this.options.get('routingWaypoints'),
-        //router: L.Routing.mapbox(apiKey),
-        router: L.Routing.graphHopper('cd462023-b872-4db6-b5cd-aad62847c8b7', {
-          urlParameters: {
-            vehicle: this.routingVehicle
-            // elevation: true,
-            // points_encoded: false
-          }
-        }),
-        // Hide itinerary for now (there is no better way)
-        summaryTemplate: '',
-        itineraryBuilder: noOpItineraryBuilder,
-        createMarker: this.createMarker.bind(this)
-      }).addTo(this.map);
+      this.addRoutingControl();
       this.map.on('click', this.onMapClick, this);
-      this.routingControl.on('routeselected', this.onRouteSelected, this);
-      this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
       this.options.set('routingActive', this.active);
       this.options.save();
     }
@@ -144,6 +152,34 @@ module.exports = klass({
     $.toggleClass(document.body, 'routing-panel-active', active);
   },
 
+  addRoutingControl: function() {
+    var routingService = routingServices.get(this.routingService);
+    var router = routingService.create(this.routingVehicle);
+    this.routingControl = L.Routing.control({
+      waypoints: this.options.get('routingWaypoints'),
+      router: router,
+      // Hide itinerary for now (there is no better way)
+      summaryTemplate: '',
+      itineraryBuilder: noOpItineraryBuilder,
+      createMarker: this.createMarker.bind(this)
+    }).addTo(this.map);
+    this.routingControl.on('routeselected', this.onRouteSelected, this);
+    this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
+  },
+
+  updateRoutingVehicle: function() {
+    var routingService = routingServices.get(this.routingService);
+    var router = this.routingControl.getRouter();
+    routingService.updateVehicle(router, this.routingVehicle);
+  },
+
+  updateRoutingService: function() {
+    var routingService = routingServices.get(this.routingService);
+    var router = routingService.create(this.routingVehicle);
+    // _router is a "private" property but updating it seems to be fine
+    this.routingControl._router = router;
+  },
+
   createMarker: function(i, waypoint) {
     return L.marker(waypoint.latLng, {
       icon: i === 0 ? routeStartIcon : routeWaypointIcon,
@@ -152,7 +188,7 @@ module.exports = klass({
       .on('contextmenu', this.onContextMenu.bind(this, i))
       .on('click', function(e) {
         // Prevent adding a route point when a marker is clicked
-        e.stop();
+        e.originalEvent.stopPropagation();
       });
   },
 
