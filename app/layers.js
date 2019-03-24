@@ -184,7 +184,7 @@ layers.catalonia = {
   continuousWorld: true,
   attribution: 'Institut Cartogràfic i Geològic de Catalunya -ICGC',
   detectRetina: flags.isEnabled('detectRetina'),
-  title: 'Catalonia (ES)',
+  title: 'ICGC Catalonia (Spain)',
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(42.9, 0.04),
