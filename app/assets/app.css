@@ -453,6 +453,7 @@ input, select {
   overflow: hidden;
   text-overflow: ellipsis;
   border-top: 1px solid #CCC;
+  cursor: pointer;
 }
 
 .search-result:first-child {
