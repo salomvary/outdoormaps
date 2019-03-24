@@ -50,7 +50,7 @@ module.exports = L.Control.extend({
   onBlur: function() {
     // hide results
     // make sure we can click on the list
-    setTimeout(this.hideResults.bind(this), 10);
+    setTimeout(this.hideResults.bind(this), 100);
   },
 
   onInput: function() {
