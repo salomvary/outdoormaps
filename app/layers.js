@@ -113,6 +113,17 @@ layers.flickr = {
   mapType: 'overlay'
 };
 
+layers.strava = {
+  url: 'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
+  subdomains: ['a', 'b', 'c'],
+  attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
+  detectRetina: true,
+  title: 'Strava Heatmap',
+  mapType: 'overlay',
+  maxNativeZoom: 15,
+  maxZoom: 21
+};
+
 layers.forumaps = {
   url: 'https://tileserver.4umaps.com/{z}/{x}/{y}.png',
   maxZoom: 15,
