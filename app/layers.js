@@ -120,7 +120,7 @@ layers.strava = {
   detectRetina: true,
   title: 'Strava Heatmap',
   mapType: 'overlay',
-  maxNativeZoom: 15,
+  maxNativeZoom: 14,
   maxZoom: 21
 };
 
