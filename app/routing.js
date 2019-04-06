@@ -107,12 +107,14 @@ module.exports = klass({
 
   onVehicleChange: function(value) {
     this.routingVehicle = value;
+    this.options.set('routingVehicle', this.routingVehicle);
     this.updateRoutingVehicle();
     this.routingControl.route();
   },
 
   onRoutingServiceChange: function(value) {
     this.routingService = value;
+    this.options.set('routingService', this.routingService);
     this.updateRoutingService();
     this.routingControl.route();
   },
