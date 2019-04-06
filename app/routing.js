@@ -161,7 +161,8 @@ module.exports = klass({
       // Hide itinerary for now (there is no better way)
       summaryTemplate: '',
       itineraryBuilder: noOpItineraryBuilder,
-      createMarker: this.createMarker.bind(this)
+      createMarker: this.createMarker.bind(this),
+      fitSelectedRoutes: false
     }).addTo(this.map);
     this.routingControl.on('routeselected', this.onRouteSelected, this);
     this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
