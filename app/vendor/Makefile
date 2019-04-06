@@ -108,10 +108,10 @@ chai:
 	$(CURL) https://codeload.github.com/chaijs/chai/tar.gz/1.8.1|tar xf - --strip-components 1 -C $@
 
 leaflet-routing-machine.css:
-	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.7/dist/leaflet-routing-machine.css
+	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css
 
 leaflet-routing-machine.js:
-	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.7/dist/leaflet-routing-machine.js
+	$(CURL) -o $@ https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js
 
 FileSaver.js:
 	$(CURL) -o $@ https://unpkg.com/file-saver@1.3.8/FileSaver.js
