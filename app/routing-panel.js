@@ -1,6 +1,6 @@
-var $ = require('util'),
-    klass = require('vendor/klass'),
-    Select = require('select');
+var $ = require('./util'),
+    klass = require('klass'),
+    Select = require('./select');
 
 module.exports = klass({
     initialize: function(options) {

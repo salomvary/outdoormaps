@@ -1,5 +1,5 @@
-var Promise = require('promise'),
-    L = require('vendor/leaflet');
+var Promise = require('./promise'),
+    L = require('leaflet');
 
 module.exports = function(controller, options) {
   // get initial location if not saved from a previous session

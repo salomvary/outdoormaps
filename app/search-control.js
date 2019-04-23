@@ -1,5 +1,5 @@
-var $ = require('util'),
-    L = require('vendor/leaflet'),
+var $ = require('./util'),
+    L = require('leaflet'),
     padding = 7,
     attributionHeight = 16,
     inputHeight = 40;

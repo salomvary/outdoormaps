@@ -1,15 +1,9 @@
 /*global require:true*/
 require = {
-  deps: [
-    'vendor/polyfills'
-  ],
-  paths: {
-    'vendor/leaflet': 'vendor/leaflet/leaflet-src'
-  },
   shim: {
-    'vendor/leaflet': {
+    'leaflet': {
       exports: 'L'
     },
-    'vendor/bing-layer': ['vendor/leaflet']
+    'vendor/bing-layer': ['leaflet']
   }
 };

@@ -1,6 +1,6 @@
-var klass = require('vendor/klass'),
-    SearchControl = require('search-control'),
-    SearchService = require('search-service');
+var klass = require('klass'),
+    SearchControl = require('./search-control'),
+    SearchService = require('./search-service');
 
 module.exports = klass({
   initialize: function(controller, options) {

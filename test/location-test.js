@@ -1,4 +1,4 @@
-var Location = require('location');
+var Location = require('./location');
 
 suite('Location', function() {
   test('parse', function() {

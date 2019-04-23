@@ -1,7 +1,7 @@
-var $ = require('util'),
-    klass = require('vendor/klass'),
-    L = require('vendor/leaflet'),
-    geolocation = require('vendor/geolocation');
+var $ = require('./util'),
+    klass = require('klass'),
+    L = require('leaflet'),
+    geolocation = require('./vendor/geolocation');
 
 var myLocationIcon = L.divIcon({
   iconSize: [20, 20],

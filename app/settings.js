@@ -1,8 +1,8 @@
-var Layers = require('layers'),
-    klass = require('vendor/klass'),
-    $ = require('util'),
-    Select = require('select'),
-    ButtonGroup = require('button-group');
+var Layers = require('./layers'),
+    klass = require('klass'),
+    $ = require('./util'),
+    Select = require('./select'),
+    ButtonGroup = require('./button-group');
 
 module.exports = klass({
   initialize: function(controller, options) {

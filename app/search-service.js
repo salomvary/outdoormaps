@@ -1,4 +1,4 @@
-var xhr = require('xhr'),
+var xhr = require('./xhr'),
     baseUrl = '//nominatim.openstreetmap.org/search';
 
 module.exports.search = function(query, options) {

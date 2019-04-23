@@ -1,7 +1,7 @@
-var routingServices = require('routing-services'),
-    klass = require('vendor/klass'),
-    $ = require('util'),
-    ButtonGroup = require('button-group');
+var routingServices = require('./routing-services'),
+    klass = require('klass'),
+    $ = require('./util'),
+    ButtonGroup = require('./button-group');
 
 module.exports = klass({
   initialize: function(options) {

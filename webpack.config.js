@@ -10,23 +10,10 @@ module.exports = {
     path: path.resolve(__dirname, 'app'),
     filename: 'main.js'
   },
-  module: {
-    rules: [
-      {
-        test: require.resolve('./app/vendor/OS'),
-        use: 'imports-loader?proj4leaflet=vendor/proj4leaflet,MapMultiCRS=vendor/MapMultiCRS'
-      }
-    ]
-  },
   resolve: {
-    modules: [path.resolve(__dirname, 'app')],
-    alias: {
-      'vendor/leaflet': 'vendor/leaflet/leaflet-src',
-      'proj4': 'vendor/proj4',
-      'polyline': 'vendor/polyline',
-      'corslite': 'vendor/corslite',
-      'leaflet': 'vendor/leaflet/leaflet-src'
-    }
+    modules: [
+      path.resolve(__dirname, 'app/node_modules')
+    ]
   },
   serve: {
     port: 9000,

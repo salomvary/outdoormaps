@@ -1,4 +1,4 @@
-var Select = require('select');
+var Select = require('./select');
 
 module.exports = Select.extend({
   initialize: function(options, values) {

@@ -1,5 +1,5 @@
-var L = require('vendor/leaflet'),
-    xhr = require('xhr');
+var L = require('leaflet'),
+    xhr = require('./xhr');
 
 // TODO: share code with panoramio.js
 

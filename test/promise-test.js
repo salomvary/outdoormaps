@@ -1,5 +1,5 @@
 /* jshint expr: true */
-var Promise = require('promise');
+var Promise = require('./promise');
 
 suite('Promise', function() {
   test('constructor', function(done) {

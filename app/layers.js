@@ -1,9 +1,10 @@
-var L = require('vendor/leaflet'),
-    $ = require('util'),
-    flags = require('flags'),
-    Flickr = require('flickr');
-    require('vendor/bing-layer');
-    require('vendor/OS');
+var L = require('leaflet'),
+    $ = require('./util'),
+    flags = require('./flags'),
+    Flickr = require('./flickr');
+    require('leaflet-plugins/layer/tile/Bing');
+    require('proj4leaflet');
+    // require('os-leaflet');
 
 var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
@@ -144,12 +145,15 @@ layers.lines = {
   bounds: Hungary
 };
 
-layers.ordnancesurvey = {
-	klazz: L.TileLayer.WMS.OS,
-	url: {k: '2ADBD707AC40153AE0530B6CA40A381E'},
-	mapType: 'hiking',
-	title: 'Ordnance Survey (UK)'
-};
+// FIXME this is currently broken due to library changes,
+// might need to use this somehow again:
+// https://github.com/Dominique92/Leaflet.Map.MultiVendors/blob/master/src/MapMultiCRS.js
+// layers.ordnancesurvey = {
+// 	klazz: L.OSOpenSpace.TileLayer,
+// 	url: '2ADBD707AC40153AE0530B6CA40A381E',
+// 	mapType: 'hiking',
+// 	title: 'Ordnance Survey (UK)'
+// };
 
 layers.opentopomap = {
   url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',

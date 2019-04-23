@@ -4,8 +4,12 @@
   "description": "Outdoor maps for mobile and desktop",
   "devDependencies": {
     "assetgraph-builder": "^6.4.1",
+    "chai": "^1.8.1",
     "eslint": "^3.8.1",
     "imports-loader": "^0.8.0",
+    "mocha": "^1.14.0",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.4.0",
     "webpack": "^4.16.5",
     "webpack-command": "^0.4.1",
     "webpack-serve": "^2.0.2"
@@ -13,6 +17,7 @@
   "scripts": {
     "start": "webpack-serve",
     "lint": "eslint .",
-    "build": "buildProduction --precacheserviceworker --webpackconfig ../../../webpack.production.config.js --root app --outroot dist app/index.html"
+    "build": "buildProduction --precacheserviceworker --webpackconfig ../../../webpack.production.config.js --root app --outroot dist app/index.html",
+    "postinstall": "cd app && npm install"
   }
 }

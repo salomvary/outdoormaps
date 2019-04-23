@@ -1,6 +1,6 @@
-var Events = require('vendor/leaflet').Mixin.Events,
-    klass = require('vendor/klass'),
-    $ = require('util');
+var Events = require('leaflet').Mixin.Events,
+    klass = require('klass'),
+    $ = require('./util');
 
 module.exports = klass($.extend({
   initialize: function(el, options) {

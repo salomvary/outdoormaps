@@ -1,5 +1,5 @@
-var $ = require('util'),
-    Events = require('vendor/leaflet').Mixin.Events,
+var $ = require('./util'),
+    Events = require('leaflet').Mixin.Events,
     currentHash;
 
 var Location = module.exports = $.extend({

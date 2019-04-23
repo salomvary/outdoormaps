@@ -1,5 +1,5 @@
-var $ = require('util'),
-    Promise = require('promise');
+var $ = require('./util'),
+    Promise = require('./promise');
 
 module.exports.get = get;
 

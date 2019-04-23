@@ -32,7 +32,6 @@ Requirements:
 Setup
 
     npm install
-    make -C app/vendor
 
 Running the development server
 
@@ -45,11 +44,3 @@ Run the linter before pushing changes
 Deployment
 
     make release deploy
-
-Troubleshooting
-
-- `make -C app/vendor` fails with `Error installing nokogiri: ERROR: Failed to
-  build gem native extension` on macOS. Solution: run `xcode-select --install` or if that
-  does not help check out the [Installing
-  Nokogiri](http://www.nokogiri.org/tutorials/installing_nokogiri.html)
-  documentation.

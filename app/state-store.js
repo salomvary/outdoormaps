@@ -1,6 +1,6 @@
-var klass = require('vendor/klass'),
-    $ = require('util'),
-    L = require('vendor/leaflet');
+var klass = require('klass'),
+    $ = require('./util'),
+    L = require('leaflet');
 
 module.exports = klass({
   initialize: function() {

@@ -1,8 +1,8 @@
 /* jshint expr: true */
-var Promise = require('promise'),
-    Search = require('search'),
-    SearchControl = require('search-control'),
-    SearchService = require('search-service');
+var Promise = require('./promise'),
+    Search = require('./search'),
+    SearchControl = require('./search-control'),
+    SearchService = require('./search-service');
 
 var FakeMap = function() {
   this.addControl = sinon.spy();

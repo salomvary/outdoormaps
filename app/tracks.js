@@ -1,6 +1,6 @@
-var klass = require('vendor/klass'),
-    GPX = require('vendor/GPX'),
-    Promise = require('promise');
+var klass = require('klass'),
+    GPX = require('leaflet-plugins/layer/vector/GPX'),
+    Promise = require('./promise');
 
 var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)');
 

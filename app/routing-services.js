@@ -1,7 +1,7 @@
-var L = require('vendor/leaflet');
+var L = require('leaflet');
 
-require('vendor/leaflet-routing-machine');
-require('vendor/L.Routing.GraphHopper');
+require('leaflet-routing-machine');
+require('lrm-graphhopper');
 
 var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 var graphHopperKey = 'cd462023-b872-4db6-b5cd-aad62847c8b7';

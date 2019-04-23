@@ -1,5 +1,5 @@
-var JXON = require('vendor/jxon');
-var FileSaver = require('vendor/FileSaver');
+var JXON = require('jxon');
+var FileSaver = require('file-saver');
 
 /**
  * Export LatLng coordinates as a GPX file

@@ -1,12 +1,12 @@
-var $ = require('util'),
-    klass = require('vendor/klass'),
-    L = require('vendor/leaflet'),
-    RoutingPanel = require('routing-panel'),
-    RoutingSettings = require('routing-settings'),
-    routingServices = require('routing-services'),
-    gpxExport = require('gpx-export');
+var $ = require('./util'),
+    klass = require('klass'),
+    L = require('leaflet'),
+    RoutingPanel = require('./routing-panel'),
+    RoutingSettings = require('./routing-settings'),
+    routingServices = require('./routing-services'),
+    gpxExport = require('./gpx-export');
 
-require('vendor/leaflet-routing-machine');
+require('leaflet-routing-machine');
 
 var routeStartIcon = L.divIcon({
   iconSize: [20, 20],

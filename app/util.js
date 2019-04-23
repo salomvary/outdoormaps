@@ -1,5 +1,5 @@
-var L = require('vendor/leaflet'),
-    fastClick = require('vendor/fastclick');
+var L = require('leaflet'),
+    fastClick = require('fastclick');
 
 module.exports = {
   extend: function(dst, src) {

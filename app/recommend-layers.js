@@ -1,4 +1,4 @@
-var Layers = require('layers');
+var Layers = require('./layers');
 
 module.exports = function(controller, options) {
   if (!options.get('layers') && options.get('center')) {

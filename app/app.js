@@ -1,4 +1,5 @@
-var Map = require('map');
+var Map = require('./map');
+require('add-to-homescreen');
 
 window.addToHomeConfig = {
   returningVisitor: true
