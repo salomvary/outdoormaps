@@ -1,6 +1,6 @@
 // copied from
 // github:gwilson/getAccurateCurrentPosition/master#geo.js
-module.exports.getAccurateCurrentPosition = function (geolocationSuccess, geolocationError, geoprogress, options) {
+export function getAccurateCurrentPosition (geolocationSuccess, geolocationError, geoprogress, options) {
     var lastCheckedPosition;
     var locationEventCount = 0;
 

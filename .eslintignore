@@ -1,3 +1,4 @@
 app/vendor
 dist
-app/node_modules
+test
+webpack.*.js

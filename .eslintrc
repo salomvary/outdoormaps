@@ -1,15 +1,16 @@
 {
-    "ecmaFeatures": {},
-    "parser": "espree",
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
     "env": {
-        "browser": true,
-        "node": true,
-        "amd": true,
-        "mocha": false,
-        "jasmine": false
+        "browser": true
     },
-
+    "extends": ["plugin:@typescript-eslint/recommended"],
     "rules": {
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "@typescript-eslint/indent": ["error", 2],
+        "@typescript-eslint/no-use-before-define": ["error", { "functions": false }],
+        "@typescript-eslint/no-angle-bracket-type-assertion": 0,
+        "@typescript-eslint/no-explicit-any": 0,
         "no-alert": 0,
         "no-array-constructor": 2,
         "no-bitwise": 0,
