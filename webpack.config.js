@@ -3,21 +3,14 @@ var path = require('path');
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
-  node: false,
-  context: path.resolve(__dirname, 'app'),
-  entry: './app',
+  entry: './app/app',
   output: {
-    path: path.resolve(__dirname, 'app'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'main.js'
-  },
-  resolve: {
-    modules: [
-      path.resolve(__dirname, 'app/node_modules')
-    ]
   },
   serve: {
     port: 9000,
     hotClient: false,
-    content: './app'
+    content: './'
   }
 };
