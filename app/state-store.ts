@@ -1,28 +1,29 @@
-import klass from 'klass';
 import $ from './util';
 import * as L from 'leaflet';
 
-export default klass({
-  initialize: function() {
+export default class StateStore {
+  private properties: {}
+
+  constructor() {
     this.properties = {};
     this.load();
-  },
+  }
 
-  set: function(key, value) {
+  set(key: string | object, value?: any) {
     if (typeof key === 'object') {
       $.extend(this.properties, key);
     } else {
       this.properties[key] = value;
     }
     this.save();
-  },
+  }
 
-  get: function(key) {
+  get(key?: string) {
     return key ? this.properties[key] : this.properties;
-  },
+  }
 
-  load: function() {
-    var properties;
+  load() {
+    var properties: {};
     if (window.localStorage && localStorage.turistautak) {
       try {
         properties = JSON.parse(localStorage.turistautak, reviver);
@@ -32,14 +33,14 @@ export default klass({
       }
       $.extend(this.properties, properties);
     }
-  },
+  }
 
-  save: function() {
+  save() {
     if (window.localStorage) {
       localStorage.turistautak = JSON.stringify(this.properties);
     }
   }
-});
+}
 
 function reviver(k, v) {
   if (v.lat && v.lng) {

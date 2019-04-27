@@ -1,22 +1,28 @@
-import klass from 'klass';
 import Location from './location';
+import Map from './map';
+import StateStore from './state-store';
 
-export default klass({
-  initialize: function(controller, options) {
+export default class DropMarker implements MapPlugin {
+  controller: Map
+  options: StateStore
+  map: L.Map
+  private marker: L.Marker
+
+  constructor(controller: Map, options: StateStore) {
     this.controller = controller;
     this.options = options;
-  },
+  }
 
-  setMap: function(map) {
+  setMap(map: L.Map) {
     this.map = map;
     map.on('contextmenu', this.dropMarker, this);
     var marker = this.options.get('marker');
     if (marker) {
       this.setMarker(marker);
     }
-  },
+  }
 
-  route: function(path) {
+  route(path) {
     var parts = path.split('/'),
       state: {zoom?: number; marker?: {}; layers?: string[]; center?: {}} = {};
 
@@ -35,35 +41,35 @@ export default klass({
       this.options.set(state);
       return true;
     }
-  },
+  }
 
-  dropMarker: function(event) {
+  dropMarker(event) {
     this.setMarker(event.latlng);
     this.setLocation(event.latlng);
-  },
+  }
 
-  setLocation: function(position) {
+  setLocation(position) {
     Location.set(buildLocation({
       layers: this.options.get('layers'),
       center: position,
       zoom: this.map.getZoom()
     }));
-  },
+  }
 
-  setMarker: function(position) {
+  setMarker(position) {
     if (!this.marker) {
       this.marker = this.controller.addMarker(position);
     } else {
       this.marker.setLatLng(position);
     }
-  },
+  }
 
-  getState: function() {
+  getState() {
     if (this.marker) {
       return { marker: this.marker.getLatLng() };
     }
   }
-});
+}
 
 function buildLocation(state) {
   return [

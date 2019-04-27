@@ -22,6 +22,7 @@
         "@typescript-eslint/no-use-before-define": ["error", { "functions": false }],
         "@typescript-eslint/no-angle-bracket-type-assertion": 0,
         "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/explicit-member-accessibility": 0,
         "no-alert": 0,
         "no-array-constructor": 2,
         "no-bitwise": 0,

@@ -1,5 +1,4 @@
 import $ from './util';
-import klass from 'klass';
 import Promise from './promise';
 import Layers from './layers';
 import * as L from 'leaflet';
@@ -48,7 +47,7 @@ var europeBounds = [
 ];
 
 var MapButton = L.Control.extend({
-  onAdd: function() {
+  onAdd() {
     var button = document.createElement('button');
     $.fastClick(button);
     button.className = this.options.className + '-button';
@@ -58,14 +57,19 @@ var MapButton = L.Control.extend({
   }
 });
 
-export default klass({
-  defaults: {
+export default class Map {
+  options: StateStore
+  plugins: any[]
+  map?: L.Map
+  layers: string[]
+
+  defaults = {
     bounds: europeBounds,
     layers: ['mapboxstreets'],
     routingService: 'mapbox'
-  },
+  }
 
-  initialize: function() {
+  constructor() {
     this.options = new StateStore();
 
     this.validateLayers();
@@ -83,9 +87,9 @@ export default klass({
 
     // continue initializing when the last one is done
       .then(this.pluginsInitialized.bind(this));
-  },
+  }
 
-  pluginsInitialized: function() {
+  private pluginsInitialized() {
     // create map
     var map = this.map = new L.Map('map', {
       zoomControl: false
@@ -116,34 +120,34 @@ export default klass({
     this.setState(this.options.get());
 
     map.on(stateEvents, this.saveState, this);
-  },
+  }
 
-  saveState: function() {
+  private saveState() {
     this.options.set(this.getState());
     this.options.save();
-  },
+  }
 
-  setState: function(state) {
+  private setState(state) {
     if (state.layers) {
       this.setLayers(state.layers);
     }
     if (state.center && state.zoom !== undefined) {
-      this.map.setView(state.center, state.zoom, true);
+      this.map.setView(state.center, state.zoom /*FIXME , true*/);
     } else if (state.bounds) {
       this.map.fitBounds(state.bounds);
     }
-  },
+  }
 
-  getState: function() {
+  private getState() {
     var state = {
       zoom: this.map.getZoom(),
       center: this.map.getCenter(),
       layers: this.layers
     };
     return state;
-  },
+  }
 
-  setLayers: function(layers) {
+  setLayers(layers: string[]) {
     var oldLayers = this.layers;
     this.layers = layers;
 
@@ -157,17 +161,17 @@ export default klass({
       this.map.addLayer(Layers.get(layer));
     }, this);
 
-  },
+  }
 
-  addMarker: function(position, options) {
+  addMarker(position: L.LatLngExpression, options?: L.MarkerOptions) {
     return L.marker(position, options).addTo(this.map);
-  },
+  }
 
-  removeMarker: function(marker) {
+  removeMarker(marker) {
     this.map.removeLayer(marker);
-  },
+  }
 
-  createButton: function(className, position, handler, context) {
+  createButton(className, position, handler, context) {
     var button = new (<any>MapButton)({
       className: 'map-button ' + className,
       position: position,
@@ -177,9 +181,9 @@ export default klass({
     this.map.addControl(button);
     L.DomEvent.disableClickPropagation(button.getContainer());
     return button;
-  },
+  }
 
-  validateLayers: function() {
+  private validateLayers() {
     // Remove layers from config if they no longer exist
     var layers = this.options.get('layers');
     if (layers) {
@@ -194,4 +198,4 @@ export default klass({
       this.options.set('layers', layers);
     }
   }
-});
+}

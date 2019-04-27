@@ -19,12 +19,14 @@
     "proj4leaflet": "^1.0.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
     "@types/file-saver": "^2.0.0",
     "@types/leaflet": "^1.4.4",
     "@types/leaflet-routing-machine": "^3.2.1",
     "@types/mocha": "^5.2.6",
     "@types/proj4leaflet": "^1.0.5",
     "@types/sinon": "^7.0.11",
+    "@types/sinon-chai": "^3.2.2",
     "@typescript-eslint/eslint-plugin": "^1.7.0",
     "@typescript-eslint/parser": "^1.7.0",
     "assetgraph-builder": "^6.10.1",
