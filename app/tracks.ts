@@ -1,6 +1,5 @@
 import klass from 'klass';
 import GPX from 'leaflet-plugins/layer/vector/GPX';
-import Promise from './promise';
 
 var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)');
 

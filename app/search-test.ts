@@ -3,7 +3,6 @@
 import { expect, use } from 'chai';
 import * as sinonChai from 'sinon-chai';
 import * as sinon from 'sinon';
-import Promise from './promise';
 import Search from './search';
 import SearchControl from './search-control';
 import * as SearchService from './search-service';

@@ -1,5 +1,4 @@
 import $ from './util';
-import Promise from './promise';
 import Layers from './layers';
 import * as L from 'leaflet';
 import DropMarker from './drop-marker';
@@ -77,7 +76,7 @@ export default class Map {
     // initialize plugins sequentially and
     // asynchronously, collect them in this.plugins
     this.plugins = [];
-    Promise.chain(plugins.map(function(Plugin) {
+    chain(plugins.map(function(Plugin) {
       return function() {
         var plugin = new Plugin(this, this.options);
         this.plugins.push(plugin);
@@ -198,4 +197,10 @@ export default class Map {
       this.options.set('layers', layers);
     }
   }
+}
+
+function chain(functions: (() => Promise<void>)[]) {
+  return functions.reduce(function(prev, fn) {
+    return prev.then(fn);
+  }, Promise.resolve());
 }

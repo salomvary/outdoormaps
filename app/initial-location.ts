@@ -1,4 +1,3 @@
-import Promise from './promise';
 import * as L from 'leaflet';
 
 export default function(controller, options) {

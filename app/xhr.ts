@@ -1,13 +1,16 @@
 import $ from './util';
-import Promise from './promise';
 
-export function get(url, options?) {
+interface AbortablePromise<T> extends Promise<T> {
+  abort(): void;
+}
+
+export function get(url, options?): AbortablePromise<any> {
   options = options || {};
   var xhr;
   if (options.data) {
     url = url + '?' + encodeData(options.data);
   }
-  var promise = new Promise(function(resolve, reject) {
+  var promise: any = new Promise(function(resolve, reject) {
     xhr = $.extend(new XMLHttpRequest(), {
       timeout: 5000,
       onload: function() {
