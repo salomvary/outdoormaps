@@ -5,6 +5,17 @@
         "browser": true
     },
     "extends": ["plugin:@typescript-eslint/recommended"],
+    "overrides": [
+      {
+        "files": ["*-test.ts"],
+        "env": {
+          "mocha": true
+        },
+        "rules": {
+          "no-unused-expressions": 0
+        }
+      }
+    ],
     "rules": {
         "@typescript-eslint/explicit-function-return-type": 0,
         "@typescript-eslint/indent": ["error", 2],
