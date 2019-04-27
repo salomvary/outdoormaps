@@ -1,15 +1,18 @@
-import klass from 'klass';
 import Location from './location';
+import Map from './map';
+import { MapPlugin } from './map-plugin';
 
-export default klass({
-  initialize: function(controller) {
+export default class Router {
+  private handlers: MapPlugin[]
+
+  constructor(controller: Map) {
     this.handlers = controller.plugins.filter(function(plugin) {
       return plugin.route;
     });
     route.call(this);
     Location.on('change', route, this);
   }
-});
+}
 
 function route() {
   var location = Location.get();

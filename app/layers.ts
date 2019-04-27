@@ -6,12 +6,14 @@ import 'leaflet-plugins/layer/tile/Bing';
 import 'proj4leaflet';
 // import 'os-leaflet';
 
+export type LayerMapType = 'map' | 'hiking' | 'satellite' | 'overlay'
+
 interface LayerConfig {
   id?: string;
   url?: string;
   attribution?: string;
   title?: string;
-  mapType: 'map' | 'hiking' | 'overlay' | 'satellite';
+  mapType: LayerMapType;
   subdomains?: string | string[];
   detectRetina?: boolean;
   minZoom?: number;
@@ -247,7 +249,7 @@ function get(id) {
   return instances[id];
 }
 
-function keys(mapType?) {
+function keys(mapType?: LayerMapType) {
   return Object.keys(layers)
     .map(function(key) {
       return layers[key];

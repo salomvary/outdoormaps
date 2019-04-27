@@ -1,56 +1,60 @@
 import {Evented} from 'leaflet';
-import klass from 'klass';
 import $ from './util';
 
-export default klass($.extend({
-  initialize: function(el, options) {
+export interface SelectOptions {
+  values?: {[key: string]: string};
+  toggle?: boolean;
+}
+
+export default class Select extends Evented {
+  el: HTMLElement
+  protected options: SelectOptions
+  private _value: string
+
+  constructor(el: HTMLElement, options?: SelectOptions) {
+    super();
     this.el = el;
     this.options = options || {};
-    this.render();
     $.fastClick(el);
 
     if (this.options.values) {
       this.setValues(this.options.values);
     }
     this.setupListeners();
-  },
+  }
 
-  /** @protected */
-  render: function() {},
-
-  /** @protected */
-  update: function(value) {
+  protected update(value: string) {
     var buttons = this.el.querySelectorAll('button');
     $.eachNode(buttons, function(button) {
       var active = button.name === value;
       $.toggleClass(button, 'active', active);
     });
-  },
+  }
 
-  get: function() {
+  get() {
     return this._value;
-  },
+  }
 
-  set: function(value) {
+  set(value: string) {
     this._value = value;
     this.update(value);
-  },
+  }
 
-  setValues: function(values) {
+  setValues(values: {[key: string]: string}) {
     updateSelectOptions(this.el, values);
     this.setupListeners();
     this.update(this._value);
-  },
+  }
 
-  setDisabled: function(values) {
+  setDisabled(values: string[]) {
     values = values || [];
     var buttons = this.el.querySelectorAll('button');
     $.eachNode(buttons, function(button) {
       button.disabled = values.indexOf(button.name) > -1;
     });
-  },
+  }
 
-  setupListeners: function() {
+  private setupListeners() {
     // handle click events
     // XXX no event delegation on iOS Safari :(
     var buttons = this.el.querySelectorAll('button');
@@ -58,9 +62,9 @@ export default klass($.extend({
       $.on(button, 'click', onClick, this);
     }, this);
   }
-}, Evented.prototype));
+}
 
-function updateSelectOptions(wrapper, values) {
+function updateSelectOptions(wrapper: HTMLElement, values: {[key: string]: string}) {
   wrapper.innerHTML = '';
   var options = document.createDocumentFragment();
   Object.keys(values).forEach(function(key) {
@@ -73,8 +77,8 @@ function updateSelectOptions(wrapper, values) {
   wrapper.appendChild(options);
 }
 
-function onClick(event) {
-  var value = event.target.name;
+function onClick(event: MouseEvent) {
+  var value = (<HTMLInputElement>event.target).name;
   if (this._value === value) {
     if (this.options.toggle) {
       value = null;

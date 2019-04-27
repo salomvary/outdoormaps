@@ -11,6 +11,7 @@ import Search from './search';
 import StateStore from './state-store';
 import Settings from './settings';
 import Tracks from './tracks';
+import { MapPlugin } from './map-plugin';
 
 // The default Icon.Default is incompatible with the AssetGraph build
 // due to rewritten urls
@@ -45,7 +46,18 @@ var europeBounds = [
   [65, 35] // ne
 ];
 
-var MapButton = L.Control.extend({
+type MapButtonOptions = {
+  className: string;
+  handler: () => void;
+} & L.ControlOptions
+
+export class MapButton extends L.Control {
+  options: MapButtonOptions
+
+  constructor(options: MapButtonOptions) {
+    super(options);
+  }
+
   onAdd() {
     var button = document.createElement('button');
     $.fastClick(button);
@@ -54,11 +66,11 @@ var MapButton = L.Control.extend({
     button.addEventListener('click', this.options.handler, false);
     return button;
   }
-});
+}
 
 export default class Map {
   options: StateStore
-  plugins: any[]
+  plugins: MapPlugin[]
   map?: L.Map
   layers: string[]
 
@@ -170,12 +182,16 @@ export default class Map {
     this.map.removeLayer(marker);
   }
 
-  createButton(className, position, handler, context) {
-    var button = new (<any>MapButton)({
+  createButton(
+    className: string,
+    position: L.ControlPosition,
+    handler: () => void,
+    context?: any
+  ) {
+    var button = new MapButton({
       className: 'map-button ' + className,
       position: position,
-      handler: handler.bind(context || this),
-      context: context
+      handler: handler.bind(context || this)
     });
     this.map.addControl(button);
     L.DomEvent.disableClickPropagation(button.getContainer());

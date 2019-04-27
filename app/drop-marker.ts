@@ -1,6 +1,7 @@
 import Location from './location';
 import Map from './map';
 import StateStore from './state-store';
+import { MapPlugin } from './map-plugin';
 
 export default class DropMarker implements MapPlugin {
   controller: Map

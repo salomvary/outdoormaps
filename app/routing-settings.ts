@@ -45,7 +45,7 @@ export default klass({
         values[routingService] = title;
         return values;
       }, {});
-    var buttons = new ButtonGroup(null, values)
+    var buttons = new ButtonGroup({values})
       .on('change', this.onRoutingServiceChange, this);
     container.appendChild(buttons.el);
     this.routingServiceButtons = buttons;
