@@ -1,5 +1,4 @@
 import $ from './util';
-import klass from 'klass';
 import * as L from 'leaflet';
 import RoutingPanel from './routing-panel';
 import RoutingSettings from './routing-settings';
@@ -7,6 +6,8 @@ import routingServices from './routing-services';
 import gpxExport from './gpx-export';
 
 import 'leaflet-routing-machine';
+import StateStore from './state-store';
+import Map, { MapButton } from './map';
 
 var routeStartIcon = L.divIcon({
   iconSize: [20, 20],
@@ -19,21 +20,34 @@ var routeWaypointIcon = L.divIcon({
 });
 
 var noOpItineraryBuilder = {
-  createContainer: function() {
+  createContainer() {
     return document.createElement('span');
   },
 
-  createStepsContainer: function() {
+  createStepsContainer() {
     return document.createElement('span');
   },
 
-  createStep: function() {
+  createStep() {
     return document.createElement('span');
   }
 };
 
-export default klass({
-  initialize: function(controller, options) {
+export default class Routing {
+  private controller: Map
+  private options: StateStore
+  private map: L.Map
+
+  private routingVehicle: string
+  private routingService: string
+  private panel: any
+  private settings: any
+  private button: MapButton
+  private routingControl: L.Routing.Control
+  private selectedRoute: L.Routing.IRoute
+  private active: boolean
+
+  constructor(controller: Map, options: StateStore) {
     this.controller = controller;
     this.options = options;
     this.routingVehicle = options.get('routingVehicle') || 'bike';
@@ -51,38 +65,38 @@ export default klass({
       routingService: this.routingService,
       onRoutingServiceChange: this.onRoutingServiceChange.bind(this)
     });
-  },
+  }
 
-  setMap: function(map) {
+  setMap(map: L.Map) {
     this.map = map;
     this.button = this.controller.createButton('directions', 'topleft',
       this.toggleRouting, this);
     if (this.options.get('routingActive')) {
       this.show();
     }
-  },
+  }
 
-  onMapClick: function(e) {
+  private onMapClick(e: L.LocationEvent) {
     this.addWaypoint(e.latlng);
-  },
+  }
 
-  onClear: function() {
+  private onClear() {
     this.panel.setStats({});
     this.selectedRoute = null;
     this.routingControl.setWaypoints([]);
-  },
+  }
 
-  onClose: function() {
+  private onClose() {
     this.hide();
-  },
+  }
 
-  onRouteSelected: function(event) {
+  private onRouteSelected(event: L.Routing.RouteSelectedEvent) {
     this.selectedRoute = event.route;
     this.panel.setStats(event.route.summary);
     this.options.save();
-  },
+  }
 
-  onContextMenu: function(i, event) {
+  private onContextMenu(i: number, event: L.LocationEvent) {
     var deleteButton = $.create('button', 'delete-button');
     $.on(deleteButton, 'click', this.onDeleteWaypointClick.bind(this, i));
     deleteButton.innerHTML = '&nbsp;';
@@ -91,57 +105,57 @@ export default klass({
       .setLatLng(event.latlng)
       .setContent(deleteButton)
       .openOn(this.map);
-  },
+  }
 
-  onDeleteWaypointClick: function(i) {
+  private onDeleteWaypointClick(i: number) {
     this.map.closePopup();
     this.removeWaypoint(i);
-  },
+  }
 
-  onExport: function() {
+  private onExport() {
     gpxExport(this.selectedRoute.coordinates);
-  },
+  }
 
-  onSettings: function() {
+  private onSettings() {
     this.settings.toggle();
-  },
+  }
 
-  onWaypointsChanged: function() {
+  private onWaypointsChanged() {
     this.saveWaypoints();
-  },
+  }
 
-  getVehicles: function() {
+  private getVehicles() {
     var vehicles = routingServices.get(this.routingService).vehicles;
     return Object.keys(vehicles)
       .reduce(function(acc, key) {
         acc[key] = vehicles[key].title;
         return acc;
       }, {});
-  },
+  }
 
-  onVehicleChange: function(value) {
+  private onVehicleChange(value: string) {
     this.routingVehicle = value;
     this.options.set('routingVehicle', this.routingVehicle);
     this.updateRoutingVehicle();
     this.routingControl.route();
-  },
+  }
 
-  onRoutingServiceChange: function(value) {
+  private onRoutingServiceChange(value: string) {
     this.routingService = value;
     this.options.set('routingService', this.routingService);
     this.updateRoutingService();
     this.routingControl.route();
-  },
+  }
 
-  toggleRouting: function() {
+  private toggleRouting() {
     if (!this.active) {
       this.show();
     } else {
       this.hide();
     }
-  },
+  }
 
-  show: function() {
+  private show() {
     if (!this.active) {
       this.active = true;
       this.togglePanel(true);
@@ -150,9 +164,9 @@ export default klass({
       this.options.set('routingActive', this.active);
       this.options.save();
     }
-  },
+  }
 
-  hide: function() {
+  private hide() {
     if (this.active) {
       this.active = false;
       this.togglePanel(false);
@@ -162,13 +176,13 @@ export default klass({
       this.options.set('routingActive', this.active);
       this.options.save();
     }
-  },
+  }
 
-  togglePanel: function(active) {
+  private togglePanel(active: boolean) {
     $.toggleClass(document.body, 'routing-panel-active', active);
-  },
+  }
 
-  addRoutingControl: function() {
+  private addRoutingControl() {
     var routingService = routingServices.get(this.routingService);
     var router = routingService.create(this.routingVehicle);
     this.routingControl = L.Routing.control({
@@ -182,22 +196,22 @@ export default klass({
     }).addTo(this.map);
     this.routingControl.on('routeselected', this.onRouteSelected, this);
     this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
-  },
+  }
 
-  updateRoutingVehicle: function() {
+  private updateRoutingVehicle() {
     var routingService = routingServices.get(this.routingService);
     var router = this.routingControl.getRouter();
     routingService.updateVehicle(router, this.routingVehicle);
-  },
+  }
 
-  updateRoutingService: function() {
+  private updateRoutingService() {
     var routingService = routingServices.get(this.routingService);
     var router = routingService.create(this.routingVehicle);
     // _router is a "private" property but updating it seems to be fine
-    this.routingControl._router = router;
-  },
+    (<any>(this.routingControl))._router = router;
+  }
 
-  createMarker: function(i, waypoint) {
+  private createMarker(i: number, waypoint: L.Routing.Waypoint) {
     return L.marker(waypoint.latLng, {
       icon: i === 0 ? routeStartIcon : routeWaypointIcon,
       draggable: true
@@ -207,28 +221,28 @@ export default klass({
         // Prevent adding a route point when a marker is clicked
         (<any>e).originalEvent.stopPropagation();
       });
-  },
+  }
 
-  removeWaypoint: function(i) {
+  private removeWaypoint(i: number) {
     this.routingControl.spliceWaypoints(i, 1);
-  },
+  }
 
-  addWaypoint: function(latlng) {
+  private addWaypoint(latlng: L.LatLng) {
     var currentWaypoints = this.routingControl.getWaypoints();
     // Sadly, the initial state is two waypoints with undefined latlng
     if (currentWaypoints.length > 0 && !currentWaypoints[0].latLng) {
       // Replace the first undefined one
-      this.routingControl.spliceWaypoints(0, 1, latlng);
+      this.routingControl.spliceWaypoints(0, 1, <any>latlng);
     } else if (currentWaypoints.length > 1 && !currentWaypoints[1].latLng) {
       // Replace the second undefined one
-      this.routingControl.spliceWaypoints(1, 1, latlng);
+      this.routingControl.spliceWaypoints(1, 1, <any>latlng);
     } else {
       // Apped third or later one
-      this.routingControl.spliceWaypoints(currentWaypoints.length, 0, latlng);
+      this.routingControl.spliceWaypoints(currentWaypoints.length, 0, <any>latlng);
     }
-  },
+  }
 
-  saveWaypoints: function() {
+  private saveWaypoints() {
     var waypoints = this.routingControl.getWaypoints()
       .map(function(waypoint) {
         return waypoint.latLng;
@@ -239,4 +253,4 @@ export default klass({
       });
     this.options.set('routingWaypoints', waypoints);
   }
-});
+}

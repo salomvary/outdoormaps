@@ -1,4 +1,4 @@
-import {Evented} from 'leaflet';
+import {Evented, LeafletEvent} from 'leaflet';
 import $ from './util';
 
 export interface SelectOptions {
@@ -6,10 +6,14 @@ export interface SelectOptions {
   toggle?: boolean;
 }
 
+export interface SelectChangeEvent extends LeafletEvent {
+  value: string;
+}
+
 export default class Select extends Evented {
   el: HTMLElement
   protected options: SelectOptions
-  private _value: string
+  protected _value: string
 
   constructor(el: HTMLElement, options?: SelectOptions) {
     super();
@@ -77,7 +81,7 @@ function updateSelectOptions(wrapper: HTMLElement, values: {[key: string]: strin
   wrapper.appendChild(options);
 }
 
-function onClick(event: MouseEvent) {
+function onClick(this: Select, event: MouseEvent) {
   var value = (<HTMLInputElement>event.target).name;
   if (this._value === value) {
     if (this.options.toggle) {

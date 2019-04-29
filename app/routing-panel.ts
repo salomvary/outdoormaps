@@ -1,9 +1,25 @@
 import $ from './util';
-import klass from 'klass';
-import Select from './select';
+import Select, {SelectChangeEvent} from './select';
+import * as L from 'leaflet';
 
-export default klass({
-  initialize: function(options) {
+interface RoutingPanelOptions {
+  vehicles: {[key: string]: string};
+  routingVehicle: string;
+  onClear: () => void;
+  onClose: () => void;
+  onExport: () => void;
+  onSettings: () => void;
+  onVehicleChange: (vehicle: string) => void;
+}
+
+export default class RoutingPanel {
+  private options: RoutingPanelOptions
+  private vehicles: {[key: string]: string}
+  private el: HTMLElement
+  private vehicleButtons: Select
+  private vehicleSelect: HTMLSelectElement
+
+  constructor(options: RoutingPanelOptions) {
     this.options = options;
     this.vehicles = options.vehicles;
     this.el = document.getElementById('routing-panel');
@@ -34,21 +50,21 @@ export default klass({
     this.vehicleSelect = this.el.querySelector('.routing-vehicle-select');
     $.on(this.vehicleSelect, 'change', this.onVehicleSelectChange, this);
     this.updateVehicleSelect();
-  },
+  }
 
-  onVehicleButtonsChange: function(event) {
+  private onVehicleButtonsChange(event: SelectChangeEvent) {
     var value = event.value;
     this.vehicleSelect.value = value;
     this.options.onVehicleChange(value);
-  },
+  }
 
-  onVehicleSelectChange: function(event) {
+  private onVehicleSelectChange(event: SelectChangeEvent) {
     var value = event.target.value;
     this.vehicleButtons.set(value);
     this.options.onVehicleChange(value);
-  },
+  }
 
-  setStats: function(stats) {
+  setStats(stats: L.Routing.IRouteSummary) {
     var distance = this.el.querySelector('.routing-panel-distance');
     distance.innerHTML = formatDistance(stats.totalDistance);
 
@@ -57,26 +73,26 @@ export default klass({
 
     var descent = this.el.querySelector('.routing-panel-descent');
     descent.innerHTML = formatElevation(stats.totalDescend);
-  },
+  }
 
-  setVehicles: function(vehicles) {
+  private setVehicles(vehicles: {[key: string]: string}) {
     this.vehicles = vehicles;
     this.updateVehicleSelect();
     this.updateVehicleButtons();
-  },
+  }
 
-  updateVehicleSelect: function() {
+  private updateVehicleSelect() {
     setSelectValues(this.vehicleSelect, this.vehicles);
     this.vehicleSelect.value = this.options.routingVehicle;
-  },
+  }
 
-  updateVehicleButtons: function() {
+  private updateVehicleButtons() {
     this.vehicleButtons.setValues(this.vehicles);
     this.vehicleButtons.set(this.options.routingVehicle);
   }
-});
+}
 
-function setSelectValues(select, values) {
+function setSelectValues(select: HTMLSelectElement, values: {[key: string]: string}) {
   select.innerHTML = '';
   var options = document.createDocumentFragment();
   Object.keys(values).forEach(function(key) {
@@ -88,7 +104,7 @@ function setSelectValues(select, values) {
   select.appendChild(options);
 }
 
-function formatDistance(meters) {
+function formatDistance(meters: number) {
   if (meters > 0) {
     return Math.round(meters / 1000) + ' km';
   } else {
@@ -96,7 +112,7 @@ function formatDistance(meters) {
   }
 }
 
-function formatElevation(meters) {
+function formatElevation(meters: number) {
   if (meters > 0) {
     return Math.round(meters) + ' m';
   } else {

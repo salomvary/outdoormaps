@@ -1,10 +1,20 @@
 import routingServices from './routing-services';
-import klass from 'klass';
 import $ from './util';
 import ButtonGroup from './button-group';
+import { SelectChangeEvent } from './select';
 
-export default klass({
-  initialize: function(options) {
+interface RoutingSettingsOptions {
+  routingService: string;
+  onRoutingServiceChange: (routingService: string) => void;
+}
+
+export default class RoutingSettings {
+  private options: RoutingSettingsOptions
+  private el: HTMLElement
+  private routingService: string
+  private routingServiceButtons: ButtonGroup;
+
+  constructor(options: RoutingSettingsOptions) {
     this.options = options;
     this.routingService = options.routingService;
     this.el = document.getElementById('routing-settings');
@@ -16,28 +26,28 @@ export default klass({
 
     this.createButtons();
     this.updateButtons();
-  },
+  }
 
-  toggle: function() {
+  toggle() {
     var show = this.el.style.display === 'none';
     if (show) {
       $.show(this.el);
     } else {
       $.hide(this.el);
     }
-  },
+  }
 
-  close: function() {
+  close() {
     $.hide(this.el);
-  },
+  }
 
-  onRoutingServiceChange: function(event) {
+  private onRoutingServiceChange(event: SelectChangeEvent) {
     this.routingService = event.value;
     this.options.onRoutingServiceChange(this.routingService);
     this.updateButtons();
-  },
+  }
 
-  createButtons: function() {
+  private createButtons() {
     var container = this.el.querySelector('.routing-services');
     var values = routingServices.keys()
       .reduce(function(values, routingService) {
@@ -49,12 +59,12 @@ export default klass({
       .on('change', this.onRoutingServiceChange, this);
     container.appendChild(buttons.el);
     this.routingServiceButtons = buttons;
-  },
+  }
 
-  updateButtons: function() {
+  private updateButtons() {
     this.routingServiceButtons.set(this.routingService);
 
     // XXX fix a strange Chrome issue that settings doesn't repaint
-    this.el.style.opacity = 1;
+    this.el.style.opacity = '1';
   }
-});
+}

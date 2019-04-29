@@ -1,5 +1,5 @@
 declare namespace fastclick {
-  function attach (el: HTMLElement, options?: {focus: boolean}): void;
+  function attach (el: Element, options?: {focus: boolean}): void;
 }
 
 declare module 'fastclick' {
