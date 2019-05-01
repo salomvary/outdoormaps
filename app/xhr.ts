@@ -1,6 +1,6 @@
 import $ from './util';
 
-interface AbortablePromise<T> extends Promise<T> {
+export interface AbortablePromise<T> extends Promise<T> {
   abort(): void;
 }
 

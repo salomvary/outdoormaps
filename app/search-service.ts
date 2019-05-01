@@ -1,8 +1,19 @@
-import {get} from './xhr';
+import * as L from 'leaflet';
+import { AbortablePromise, get } from './xhr';
 
 const baseUrl = '//nominatim.openstreetmap.org/search';
 
-export function search(query, options) {
+export interface SearchResult {
+  boundingbox: number[];
+  lon: number;
+  lat: number;
+  display_name: string;
+}
+
+export function search(
+  query: string, 
+  options: {bounds: L.LatLngBounds}
+): AbortablePromise<SearchResult> {
   var params = {
     addressdetails: 1,
     format: 'json',

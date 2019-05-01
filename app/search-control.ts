@@ -1,12 +1,27 @@
-import $ from './util';
 import * as L from 'leaflet';
+import $ from './util';
 
 const padding = 7;
 const attributionHeight = 16;
 const inputHeight = 40;
 
-export default L.Control.extend({
-  onAdd: function() {
+interface SearchControlOptions extends L.ControlOptions {
+  onInput: (val: string) => void;
+  onSubmit: (val: string) => void;
+  onSelect: (i: number) => void; 
+}
+
+export default class SearchControl extends L.Control {
+  private input: HTMLInputElement
+  private clearButton: HTMLInputElement
+  private results: HTMLElement
+  options: SearchControlOptions
+
+  constructor(options: SearchControlOptions) {
+    super(options)
+  }
+
+  onAdd() {
     var control = $.create('form', 'search-control');
     $.on(control, 'submit', this.onSubmit, this);
     L.DomEvent.disableClickPropagation(control);
@@ -40,62 +55,62 @@ export default L.Control.extend({
     this.adjustHeight();
 
     return control;
-  },
+  }
 
-  onFocus: function() {
+  private onFocus() {
     if (this.results.childNodes.length) {
       this.showResults();
     }
-  },
+  }
 
-  onBlur: function() {
+  private onBlur() {
     // hide results
     // make sure we can click on the list
     setTimeout(this.hideResults.bind(this), 100);
-  },
+  }
 
-  onInput: function() {
+  private onInput() {
     this.options.onInput(this.getVal());
-    this.toggleClearButton(this.input.value.length);
-  },
+    this.toggleClearButton(!!this.input.value.length);
+  }
 
-  onSubmit: function(event) {
+  private onSubmit(event: Event) {
     event.preventDefault();
     this.options.onSubmit(this.getVal());
-  },
+  }
 
-  onClear: function() {
+  private onClear() {
     this.input.value = '';
     this.input.focus();
     this.onInput();
-  },
+  }
 
-  onSelect: function(i, result) {
+  private onSelect(i: number, result: string) {
     this.input.value = result;
     this.options.onSelect(i);
     this.hideResults();
-  },
+  }
 
-  getVal: function() {
+  private getVal() {
     return this.input.value.trim();
-  },
+  }
 
-  toggleClearButton: function(on) {
+  private toggleClearButton(on?: boolean) {
     this.clearButton.style.visibility = on ? 'visible' : 'hidden';
-  },
+  }
 
-  adjustHeight: function() {
+  private adjustHeight() {
     var height = window.innerHeight - 3 * padding - inputHeight - attributionHeight;
     this.results.style.maxHeight = height + 'px';
-  },
+  }
 
-  setResults: function(results) {
+  setResults(results: string[] | string) {
     this.results.innerHTML = '';
     if (results) {
       if (typeof results == 'string') {
         results = [results];
       }
-      results.map(function(result, i) {
+      results.map(function(this: SearchControl, result, i) {
         var res = $.create('li', 'search-result');
         res.innerHTML = result;
         var select = this.onSelect.bind(this, i, result);
@@ -109,13 +124,13 @@ export default L.Control.extend({
     } else {
       this.hideResults();
     }
-  },
+  }
 
-  showResults: function() {
+  private showResults() {
     $.toggleClass(this.getContainer(), 'show-results', true);
-  },
+  }
 
-  hideResults: function() {
+  hideResults() {
     $.toggleClass(this.getContainer(), 'show-results', false);
   }
-});
+}

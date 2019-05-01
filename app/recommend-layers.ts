@@ -1,6 +1,9 @@
-import Layers from './layers';
+import Layers, { LayerMapType } from './layers';
+import Map from './map';
+import StateStore from './state-store';
+import { LatLng } from 'leaflet';
 
-export default function(controller, options) {
+export default function(controller: Map, options: StateStore) {
   if (!options.get('layers') && options.get('center')) {
     var recommended = recommend('hiking', options.get('center'));
     if (recommended) {
@@ -9,7 +12,7 @@ export default function(controller, options) {
   }
 }
 
-export function recommend(mapType, position) {
+export function recommend(mapType: LayerMapType, position: LatLng) {
   var layers = Layers.keys(mapType);
   if (layers.length > 1) {
     // if we have more than one layer available for the given

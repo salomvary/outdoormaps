@@ -1,26 +1,39 @@
-import klass from 'klass';
+import * as L from 'leaflet';
+import Map from './map';
 import SearchControl from './search-control';
-import {search} from './search-service';
+import { search, SearchResult } from './search-service';
+import StateStore from './state-store';
+import { AbortablePromise } from './xhr';
+import { MapPlugin } from './map-plugin';
 
-export default klass({
-  initialize: function(controller, options) {
+export default class Search implements MapPlugin {
+  private controller: Map
+  private options: StateStore
+  private map: L.Map
+  private control: SearchControl
+  private debouncedSearch: Function
+  private request: AbortablePromise<SearchResult> & {query?: string}
+  private results: SearchResult[]
+  private marker: L.Marker
+
+  constructor(controller: Map, options: StateStore) {
     this.controller = controller;
     this.options = options;
     this.debouncedSearch = debounce(this.search.bind(this));
-  },
+  }
 
-  setMap: function(map) {
+  setMap(map: L.Map) {
     this.map = map;
-    this.control = new (<any>SearchControl)({
+    this.control = new SearchControl({
       position: 'topright',
       onInput: this.onInput.bind(this),
       onSubmit: this.onSubmit.bind(this),
       onSelect: this.onSelect.bind(this)
     });
     map.addControl(this.control);
-  },
+  }
 
-  search: function(query) {
+  private search(query: string) {
     // search if we haven't searched yet
     if (!this.request || this.request.query !== query) {
       // if we have a pending request, abort it
@@ -34,9 +47,9 @@ export default klass({
       this.request.then(this.onSuccess.bind(this), this.onError.bind(this));
     }
     return this.request;
-  },
+  }
 
-  reset: function() {
+  private reset() {
     if (this.request) {
       this.request.abort();
     }
@@ -45,50 +58,50 @@ export default klass({
     if (this.marker) {
       this.removeMarker();
     }
-  },
+  }
 
-  showResult: function(result) {
+  private showResult(result: SearchResult) {
     this.setMarker({
       lat: result.lat,
-      lon: result.lon
+      lng: result.lon
     });
     this.map.fitBounds([
       [result.boundingbox[0], result.boundingbox[2]],
       [result.boundingbox[1], result.boundingbox[3]]
     ]);
-  },
+  }
 
-  setMarker: function(position) {
+  private setMarker(position: L.LatLngExpression) {
     if (this.marker) {
       this.marker.setLatLng(position);
     } else {
       this.marker = this.controller.addMarker(position);
     }
-  },
+  }
 
-  removeMarker: function() {
+  private removeMarker() {
     this.map.removeLayer(this.marker);
     this.marker = null;
-  },
+  }
 
-  onInput: function(val) {
+  private onInput(val: string) {
     if (val.length) {
       this.debouncedSearch(val);
     } else {
       this.reset();
     }
-  },
+  }
 
-  onSubmit: function(val) {
+  private onSubmit(val: string) {
     if (val.length) {
       this.search(val)
         .then(this.onSelect.bind(this, 0));
     } else {
       this.reset();
     }
-  },
+  }
 
-  onSelect: function(i) {
+  private onSelect(i: number) {
     if (i < this.results.length) {
       var result = this.results[i];
       this.showResult(result);
@@ -96,30 +109,30 @@ export default klass({
       // blur input, focus map so that it can be kb controlled
       this.map.getContainer().focus();
     }
-  },
+  }
 
-  onSuccess: function(results) {
+  onSuccess(results: SearchResult[]) {
     this.results = results;
     this.control.setResults(
       results.length ? results.map(formatResult) : 'No results');
-  },
+  }
 
-  onError: function(status) {
+  onError(status: number) {
     // zero is abort (user or programmatic)
     if (status !== 0) {
       this.results = [];
       this.control.setResults('Search failed :(');
     }
   }
-});
+}
 
-function formatResult(result) {
+function formatResult(result: SearchResult) {
   return result.display_name;
 }
 
-function debounce(fn) {
+function debounce<F extends Function>(fn: F): F {
   var timer = null;
-  return function() {
+  return <F><unknown>function() {
     var context = this, args = arguments;
     clearTimeout(timer);
     timer = setTimeout(function() {

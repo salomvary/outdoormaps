@@ -11,7 +11,7 @@ import Search from './search';
 import StateStore from './state-store';
 import Settings from './settings';
 import Tracks from './tracks';
-import { MapPlugin } from './map-plugin';
+import { MapPlugin, MapPluginConstructor, MapPluginFn } from './map-plugin';
 
 // The default Icon.Default is incompatible with the AssetGraph build
 // due to rewritten urls
@@ -26,7 +26,7 @@ L.Marker.prototype.options.icon = L.icon({
   shadowSize: [41, 41]
 });
 
-var plugins = [
+var plugins: (MapPluginConstructor|MapPluginFn)[] = [
   InitialLocation,
   RecommendLayers,
   DropMarker,
@@ -88,11 +88,13 @@ export default class Map {
     // initialize plugins sequentially and
     // asynchronously, collect them in this.plugins
     this.plugins = [];
-    chain(plugins.map(function(Plugin) {
-      return function() {
-        var plugin = new Plugin(this, this.options);
-        this.plugins.push(plugin);
-        return plugin.promise;
+    chain(plugins.map(function(this: Map, Plugin) {
+      return function(this: Map) {
+        var plugin: MapPlugin | Promise<void> = new (<any>Plugin)(this, this.options);
+        if ('setMap' in plugin) {
+          this.plugins.push(plugin);
+        }
+        return plugin;
       }.bind(this);
     }, this))
 

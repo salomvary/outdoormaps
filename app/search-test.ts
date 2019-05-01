@@ -6,6 +6,8 @@ import * as sinon from 'sinon';
 import Search from './search';
 import SearchControl from './search-control';
 import * as SearchService from './search-service';
+import StateStore from './state-store';
+import { LatLngBounds } from 'leaflet';
 
 use(sinonChai);
 
@@ -42,10 +44,13 @@ xdescribe('Search', function() {
     oneResult,
     clock;
 
+  const options: StateStore = <any>{};
+
+
   beforeEach(function() {
     map = new FakeMap();
     controller = new FakeController();
-    subject = new Search(controller);
+    subject = new Search(controller, options);
     subject.setMap(map);
     sandbox = sinon.createSandbox({useFakeServer: true});
     sandbox.stub(subject.control, 'setResults');
@@ -196,7 +201,7 @@ xdescribe('Search Service', function() {
       { display_name: 'bar' }
     ]));
     var success = sinon.spy();
-    var bounds = {
+    var bounds = <LatLngBounds>{
       toBBoxString: function() { return 'a,b,c,d'; }
     };
 
@@ -213,7 +218,7 @@ xdescribe('Search Service', function() {
   it('search failed', function() {
     var success = sinon.spy();
     var fail = sinon.spy();
-    var bounds = {
+    var bounds = <LatLngBounds>{
       toBBoxString: function() { return 'a,b,c,d'; }
     };
     var request = SearchService.search('hello', {
@@ -228,7 +233,7 @@ xdescribe('Search Service', function() {
   it('search aborted', function() {
     var success = sinon.spy();
     var fail = sinon.spy();
-    var bounds = {
+    var bounds = <LatLngBounds>{
       toBBoxString: function() { return 'a,b,c,d'; }
     };
     var request = SearchService.search('hello', {
