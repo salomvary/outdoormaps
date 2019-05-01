@@ -1,6 +1,6 @@
-import Layers, { LayerMapType } from './layers';
+import Layers, { LayerMapType, LayerConfig } from './layers';
 import $ from './util';
-import Select, { SelectOptions } from './select';
+import Select, { SelectOptions, SelectChangeEvent } from './select';
 import ButtonGroup from './button-group';
 import { MapPlugin } from './map-plugin';
 import Map from './map';
@@ -50,7 +50,7 @@ export default class Settings implements MapPlugin {
       this.toggleSettings, this);
   }
 
-  toggleSettings() {
+  private toggleSettings() {
     var show = document.body.className !== 'settings';
     $.toggleClass(document.body, 'settings', show);
     this.map[show ? 'on' : 'off']('moveend', updateAvailableLayers, this);
@@ -59,30 +59,30 @@ export default class Settings implements MapPlugin {
     }
   }
 
-  closeSettings() {
+  private closeSettings() {
     $.toggleClass(document.body, 'settings', false);
   }
 
-  setMapType(event) {
-    var type = event.value;
+  private setMapType(event: SelectChangeEvent) {
+    var type = <LayerMapType>event.value;
     var layerId = this.defaultLayers[type] || Layers.keys(type)[0].id;
     this.mapType = type;
     this.setLayers([layerId, this.overlay]);
   }
 
-  setMapLayer(event) {
+  private setMapLayer(event: SelectChangeEvent) {
     var id = event.value;
     this.defaultLayers[Layers.get(id).mapType] = id;
     this.setLayers([id, this.overlay]);
   }
 
-  setOverlay(event) {
+  private setOverlay(event: SelectChangeEvent) {
     var id = event.value,
       add = this.overlay !== id;
     this.setLayers([this.mapLayer, add && id]);
   }
 
-  setLayers(layerIds) {
+  private setLayers(layerIds: string[]) {
     this.mapLayer = layerIds[0];
     this.overlay = layerIds[1];
     this.controller.setLayers(layerIds.filter(Boolean));
@@ -102,7 +102,10 @@ export default class Settings implements MapPlugin {
       // only when it has more than one layer
       .filter(function(mapType) { return Layers.keys(mapType).length > 1; })
       // create button for each mapType with multiple layers
-      .reduce(function(layerButtons, mapType) {
+      .reduce(function(
+        layerButtons: { [mapType: string]: ButtonGroup; },
+        mapType: LayerMapType
+      ) {
         layerButtons[mapType] = layerButtonsFor({
           mapType: mapType,
           parent: container.querySelector('.map-layers'),
@@ -120,7 +123,7 @@ export default class Settings implements MapPlugin {
     });
   }
 
-  updateButtons() {
+  private updateButtons() {
     // set the active map type
     this.mapTypeButtons.set(this.mapType);
 
@@ -160,7 +163,7 @@ function layerButtonsFor(options: {
   return buttons;
 }
 
-function layersToOptions(layers) {
+function layersToOptions(layers: LayerConfig[]): {[id: string]: string} {
   return layers.reduce(function(options, layer) {
     options[layer.id] = layer.title;
     return options;

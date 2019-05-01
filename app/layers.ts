@@ -8,7 +8,7 @@ import 'proj4leaflet';
 
 export type LayerMapType = 'map' | 'hiking' | 'satellite' | 'overlay'
 
-interface LayerConfig {
+export interface LayerConfig {
   id?: string;
   url?: string;
   attribution?: string;
