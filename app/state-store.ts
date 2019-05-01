@@ -3,7 +3,7 @@ import * as L from 'leaflet';
 
 export interface State {
   bounds?: L.LatLngBoundsLiteral,
-  layers?: string[],
+  layers?: [string, string?],
   defaultLayers?: {[mapType: string]: string},
   routingService?: string,
   zoom?: number,
@@ -23,7 +23,7 @@ export default class StateStore {
   }
 
   set(key:'bounds', value: L.LatLngBoundsLiteral): void;
-  set(key:'layers', value: string[]): void;
+  set(key:'layers', value: [string, string?]): void;
   set(key:'defaultLayers', value: {[key: string]: string}): void;
   set(key:'center', value: L.LatLngLiteral): void;
   set(key:'position', value: L.LatLngLiteral): void;
@@ -43,7 +43,7 @@ export default class StateStore {
   }
 
   get(key: 'bounds'): L.LatLngBoundsLiteral;
-  get(key: 'layers'): string[];
+  get(key: 'layers'): [string, string?];
   get(key: 'defaultLayers'): {[key: string]: string};
   get(key: 'marker'): L.LatLngLiteral;
   get(key: 'center'): L.LatLngLiteral;

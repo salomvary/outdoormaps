@@ -8,30 +8,26 @@ import 'proj4leaflet';
 
 export type LayerMapType = 'map' | 'hiking' | 'satellite' | 'overlay'
 
-export interface LayerConfig {
+interface LayerConstructor {
+  new (url: string, options?: L.TileLayerOptions | L.WMSOptions): L.Layer;
+}
+
+export type LayerConfig = {
   id?: string;
   url?: string;
-  attribution?: string;
   title?: string;
+  klazz?: LayerConstructor;
   mapType: LayerMapType;
-  subdomains?: string | string[];
-  detectRetina?: boolean;
-  minZoom?: number;
-  maxZoom?: number;
-  maxNativeZoom?: number;
-  bounds?: L.LatLngBounds;
-  klazz?: typeof L.TileLayer | typeof L.Layer;
-  layers?: string;
-  folder?: (any) => any;
-  format?: string;
-  crs?: any;
-  continuousWorld?: boolean;
-}
+  folder?: (data: {z: number}) => string;
+  // Narrow down from LatLngBoundsExpression
+  bounds?: L.LatLngBounds
+} & (L.TileLayerOptions | L.WMSOptions)
 
 var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
-var layers: {[id: string]: LayerConfig} = {}, instances = {},
-  customOptions = ['title', 'klazz', 'mapType'];
+var layers: {[id: string]: LayerConfig} = {},
+  instances: {[id: string]: L.Layer} = {},
+  customOptions = ['id', 'url', 'title', 'klazz', 'mapType'];
 
 var Hungary = new L.LatLngBounds(
   new L.LatLng(48.6, 16), // sw
@@ -218,7 +214,6 @@ layers.catalonia = {
     '+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
     { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] }
   ),
-  continuousWorld: true,
   attribution: 'Institut Cartogràfic i Geològic de Catalunya -ICGC',
   detectRetina: isEnabled('detectRetina'),
   title: 'ICGC Catalonia (Spain)',
@@ -232,24 +227,17 @@ Object.keys(layers).forEach(function(id) {
   layers[id].id = id;
 });
 
-var getLeafletOptions = filterOptions.bind(null, false);
-var getCustomOptions = filterOptions.bind(null, true);
-
-function get(id) {
+function get(id: string): L.Layer {
   // lazy-load this to avoid initial metadata request if not used
   // (eg. L.BingLayer)
   if (!instances[id] && id in layers) {
     var Layer = layers[id].klazz || L.TileLayer;
-    instances[id] = new Layer(layers[id].url, getLeafletOptions(layers[id]));
-    // set custop properties after instantiating layers
-    // so that they don't interfere with constructors
-    // (eg. are not included in wms options)
-    $.extend(instances[id], getCustomOptions(layers[id]));
+    instances[id] = new Layer(layers[id].url, getLayerOptions(layers[id]));
   }
   return instances[id];
 }
 
-function keys(mapType?: LayerMapType) {
+function keys(mapType?: LayerMapType): LayerConfig[] {
   return Object.keys(layers)
     .map(function(key) {
       return layers[key];
@@ -259,14 +247,18 @@ function keys(mapType?: LayerMapType) {
     });
 }
 
-export default {get, keys};
+function mapTypeOf(id: string): LayerMapType {
+  return layers[id].mapType;
+}
 
-function filterOptions(isCustom, options) {
+export default {get, keys, mapTypeOf};
+
+function getLayerOptions(options: LayerConfig): L.TileLayerOptions | L.WMSOptions {
   return Object.keys(options)
-    .reduce(function(filtered, key) {
-      if ((customOptions.indexOf(key) !== -1) === isCustom) {
+    .reduce(function(filtered, key: keyof LayerConfig) {
+      if (customOptions.indexOf(key) === -1) {
         filtered[key] = options[key];
       }
       return filtered;
-    }, {});
+    }, <{[key: string]: any}>{});
 }

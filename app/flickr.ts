@@ -1,31 +1,45 @@
 import * as L from 'leaflet';
 import {get} from './xhr';
 
-// TODO: share code with panoramio.js
+interface Photo {
+  width_s: number;
+  longitude: number;
+  latitude: number
+}
 
-export default L.FeatureGroup.extend({
-  onAdd: function(map) {
+interface Data {
+  photos: {photo: Photo[]}
+}
+
+export default class Flickr extends L.FeatureGroup {
+  constructor (url: string, options: L.LayerOptions) {
+    super(null, options);
+  }
+
+  onAdd(map: L.Map) {
     map.on('moveend', this._update, this);
     this._map = map;
     // TODO: fix double-updating on map init
     this._update();
-  },
+    return this;
+  }
 
-  onRemove: function(map) {
+  onRemove(map: L.Map) {
     map.off('moveend', this._update, this);
     this.clearLayers();
-  },
+    return this;
+  }
 
-  _removeMarkers: function() {
+  private _removeMarkers() {
     this.getLayers()
       .filter(function(layer) {
         // keep markers with open popup
         return !this._map.hasLayer(layer.getPopup());
       }, this)
       .forEach(this.removeLayer, this);
-  },
+  }
 
-  _load: function(data) {
+  private _load(data: Data) {
     this._removeMarkers();
 
     data
@@ -50,9 +64,9 @@ export default L.FeatureGroup.extend({
         return marker;
       }, this)
       .forEach(this.addLayer, this);
-  },
+  }
 
-  _template: function(data) {
+  private _template(data: Photo) {
     var template =
       '<b class="title">{title}</b>' +
       '<a href="https://www.flickr.com/photos/{owner}/{id}" target="_blank">' +
@@ -63,9 +77,9 @@ export default L.FeatureGroup.extend({
       '</a>' +
       '<a class="owner" href="https://www.flickr.com/photos/{owner}" target="_blank">{ownername}</a>';
     return L.Util.template(template, data);
-  },
+  }
 
-  _update: function() {
+  private _update() {
     var bounds = this._map.getBounds();
     var size = this._map.getSize();
     var magic = 7500;
@@ -92,4 +106,4 @@ export default L.FeatureGroup.extend({
     })
       .then(this._load.bind(this));
   }
-});
+}

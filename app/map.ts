@@ -72,7 +72,7 @@ export default class Map {
   options: StateStore
   plugins: MapPlugin[]
   map?: L.Map
-  layers: string[]
+  layers: [string, string?]
 
   defaults = {
     bounds: europeBounds,
@@ -160,7 +160,7 @@ export default class Map {
     return state;
   }
 
-  setLayers(layers: string[]) {
+  setLayers(layers: [string, string?]) {
     var oldLayers = this.layers;
     this.layers = layers;
 
@@ -205,7 +205,7 @@ export default class Map {
     var layers = this.options.get('layers');
     if (layers) {
       var validLayers = Layers.keys().map(function(layer) { return layer.id; });
-      layers = layers.map(function(layer, i) {
+      layers = <[string, string?]>layers.map(function(this: Map, layer, i) {
         if (validLayers.indexOf(layer) === -1) {
           return this.defaults.layers[i];
         } else {

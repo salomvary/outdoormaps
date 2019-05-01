@@ -2,7 +2,7 @@ import Location from './location';
 import Map from './map';
 import StateStore, { State } from './state-store';
 import { MapPlugin } from './map-plugin';
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, LocationEvent, LatLngLiteral } from 'leaflet';
 
 export default class DropMarker implements MapPlugin {
   controller: Map
@@ -45,12 +45,12 @@ export default class DropMarker implements MapPlugin {
     }
   }
 
-  dropMarker(event) {
+  private dropMarker(event: LocationEvent) {
     this.setMarker(event.latlng);
     this.setLocation(event.latlng);
   }
 
-  setLocation(position) {
+  private setLocation(position: LatLngLiteral) {
     Location.set(buildLocation({
       layers: this.options.get('layers'),
       center: position,
@@ -82,6 +82,6 @@ function buildLocation(state: State) {
   ].join('/');
 }
 
-function roundCoordinate(coordinate) {
+function roundCoordinate(coordinate: number) {
   return Math.round(coordinate * 100000) / 100000;
 }

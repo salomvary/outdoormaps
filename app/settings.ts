@@ -33,7 +33,7 @@ export default class Settings implements MapPlugin {
     var layers = (options.get('layers') || controller.defaults.layers);
     this.mapLayer = layers[0];
     this.overlay = layers[1];
-    this.mapType = Layers.get(this.mapLayer).mapType;
+    this.mapType = Layers.mapTypeOf(this.mapLayer);
     this.defaultLayers = options.get('defaultLayers');
     if (!this.defaultLayers) {
       this.defaultLayers = {};
@@ -72,7 +72,7 @@ export default class Settings implements MapPlugin {
 
   private setMapLayer(event: SelectChangeEvent) {
     var id = event.value;
-    this.defaultLayers[Layers.get(id).mapType] = id;
+    this.defaultLayers[Layers.mapTypeOf(id)] = id;
     this.setLayers([id, this.overlay]);
   }
 
@@ -82,10 +82,10 @@ export default class Settings implements MapPlugin {
     this.setLayers([this.mapLayer, add && id]);
   }
 
-  private setLayers(layerIds: string[]) {
+  private setLayers(layerIds: [string, string?]) {
     this.mapLayer = layerIds[0];
     this.overlay = layerIds[1];
-    this.controller.setLayers(layerIds.filter(Boolean));
+    this.controller.setLayers(<[string, string?]>layerIds.filter(Boolean));
     this.options.set({defaultLayers: this.defaultLayers});
     this.updateButtons();
   }
@@ -103,6 +103,7 @@ export default class Settings implements MapPlugin {
       .filter(function(mapType) { return Layers.keys(mapType).length > 1; })
       // create button for each mapType with multiple layers
       .reduce(function(
+        this: Settings,
         layerButtons: { [mapType: string]: ButtonGroup; },
         mapType: LayerMapType
       ) {
@@ -167,7 +168,7 @@ function layersToOptions(layers: LayerConfig[]): {[id: string]: string} {
   return layers.reduce(function(options, layer) {
     options[layer.id] = layer.title;
     return options;
-  }, {});
+  }, <{[id: string]: string}>{});
 }
 
 function updateAvailableLayers() {
@@ -182,7 +183,7 @@ function updateAvailableLayers() {
   this.overlayButtons.setDisabled(disabledOverlays);
 }
 
-function getDisabledLayers(layers) {
+function getDisabledLayers(layers: LayerConfig[]) {
   var mapBounds = this.map.getBounds();
   return layers
     .filter(function(layer) {
