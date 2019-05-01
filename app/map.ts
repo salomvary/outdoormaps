@@ -8,7 +8,7 @@ import Router from './router';
 import Routing from './routing';
 import ShowPosition from './show-position';
 import Search from './search';
-import StateStore from './state-store';
+import StateStore, { State } from './state-store';
 import Settings from './settings';
 import Tracks from './tracks';
 import { MapPlugin, MapPluginConstructor, MapPluginFn } from './map-plugin';
@@ -123,7 +123,7 @@ export default class Map {
     }
 
     // set options
-    var defaults = {};
+    var defaults: State = {};
     Object.keys(this.defaults).forEach(function(k) {
       if (typeof this.options.get(k) == 'undefined') {
         defaults[k] = this.defaults[k];
@@ -140,7 +140,7 @@ export default class Map {
     this.options.save();
   }
 
-  private setState(state) {
+  private setState(state: State) {
     if (state.layers) {
       this.setLayers(state.layers);
     }
@@ -151,8 +151,8 @@ export default class Map {
     }
   }
 
-  private getState() {
-    var state = {
+  private getState(): State {
+    var state: State = {
       zoom: this.map.getZoom(),
       center: this.map.getCenter(),
       layers: this.layers

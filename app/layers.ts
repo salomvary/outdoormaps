@@ -19,7 +19,7 @@ interface LayerConfig {
   minZoom?: number;
   maxZoom?: number;
   maxNativeZoom?: number;
-  bounds?: any;
+  bounds?: L.LatLngBounds;
   klazz?: typeof L.TileLayer | typeof L.Layer;
   layers?: string;
   folder?: (any) => any;

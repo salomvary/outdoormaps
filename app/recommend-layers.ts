@@ -1,7 +1,7 @@
 import Layers, { LayerMapType } from './layers';
 import Map from './map';
 import StateStore from './state-store';
-import { LatLng } from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 
 export default function(controller: Map, options: StateStore) {
   if (!options.get('layers') && options.get('center')) {
@@ -12,7 +12,7 @@ export default function(controller: Map, options: StateStore) {
   }
 }
 
-export function recommend(mapType: LayerMapType, position: LatLng) {
+export function recommend(mapType: LayerMapType, position: LatLngExpression) {
   var layers = Layers.keys(mapType);
   if (layers.length > 1) {
     // if we have more than one layer available for the given

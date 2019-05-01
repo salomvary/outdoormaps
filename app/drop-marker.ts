@@ -1,7 +1,8 @@
 import Location from './location';
 import Map from './map';
-import StateStore from './state-store';
+import StateStore, { State } from './state-store';
 import { MapPlugin } from './map-plugin';
+import { LatLngExpression } from 'leaflet';
 
 export default class DropMarker implements MapPlugin {
   controller: Map
@@ -23,9 +24,9 @@ export default class DropMarker implements MapPlugin {
     }
   }
 
-  route(path) {
+  route(path: string) {
     var parts = path.split('/'),
-      state: {zoom?: number; marker?: {}; layers?: string[]; center?: {}} = {};
+      state: State = {};
 
     var layer = parts[0],
       lat = parseFloat(parts[1]),
@@ -57,7 +58,7 @@ export default class DropMarker implements MapPlugin {
     }));
   }
 
-  setMarker(position) {
+  setMarker(position: LatLngExpression) {
     if (!this.marker) {
       this.marker = this.controller.addMarker(position);
     } else {
@@ -72,7 +73,7 @@ export default class DropMarker implements MapPlugin {
   }
 }
 
-function buildLocation(state) {
+function buildLocation(state: State) {
   return [
     state.layers[0],
     roundCoordinate(state.center.lat),

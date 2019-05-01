@@ -186,7 +186,7 @@ export default class Routing {
     var routingService = routingServices.get(this.routingService);
     var router = routingService.create(this.routingVehicle);
     this.routingControl = L.Routing.control({
-      waypoints: this.options.get('routingWaypoints'),
+      waypoints: <L.LatLng[]>this.options.get('routingWaypoints'),
       router: router,
       // Hide itinerary for now (there is no better way)
       summaryTemplate: '',
