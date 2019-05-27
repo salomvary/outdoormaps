@@ -3,11 +3,13 @@ import Map from './map';
 import StateStore from './state-store';
 import { LatLngExpression } from 'leaflet';
 
-export default function(controller: Map, options: StateStore) {
-  if (!options.get('layers') && options.get('center')) {
-    var recommended = recommend('hiking', options.get('center'));
-    if (recommended) {
-      options.set('layers', [recommended]);
+export default class RecommendLayers {
+  constructor(controller: Map, options: StateStore) {
+    if (!options.get('layers') && options.get('center')) {
+      var recommended = recommend('hiking', options.get('center'));
+      if (recommended) {
+        options.set('layers', [recommended]);
+      }
     }
   }
 }

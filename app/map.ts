@@ -11,7 +11,7 @@ import Search from './search';
 import StateStore, { State } from './state-store';
 import Settings from './settings';
 import Tracks from './tracks';
-import { MapPlugin, MapPluginConstructor, MapPluginFn } from './map-plugin';
+import { MapPlugin, MapPluginConstructor } from './map-plugin';
 
 // The default Icon.Default is incompatible with the AssetGraph build
 // due to rewritten urls
@@ -26,7 +26,7 @@ L.Marker.prototype.options.icon = L.icon({
   shadowSize: [41, 41]
 });
 
-var plugins: (MapPluginConstructor|MapPluginFn)[] = [
+var plugins: MapPluginConstructor[] = [
   InitialLocation,
   RecommendLayers,
   DropMarker,
@@ -88,13 +88,13 @@ export default class Map {
     // initialize plugins sequentially and
     // asynchronously, collect them in this.plugins
     this.plugins = [];
-    chain(plugins.map(function(this: Map, Plugin) {
-      return function(this: Map) {
-        var plugin: MapPlugin | Promise<void> = new (<any>Plugin)(this, this.options);
-        if ('setMap' in plugin) {
-          this.plugins.push(plugin);
+    chain(plugins.map(function(this: Map, Plugin): () => Promise<void> | void {
+      return function(this: Map): Promise<void> | void {
+        var plugin = new Plugin(this, this.options);
+        this.plugins.push(plugin);
+        if (plugin.beforeMap) {
+          return plugin.beforeMap();
         }
-        return plugin;
       }.bind(this);
     }, this))
 
@@ -102,7 +102,7 @@ export default class Map {
       .then(this.pluginsInitialized.bind(this));
   }
 
-  private pluginsInitialized() {
+  private pluginsInitialized(this: Map) {
     // create map
     var map = this.map = new L.Map('map', {
       zoomControl: false
@@ -217,7 +217,7 @@ export default class Map {
   }
 }
 
-function chain(functions: (() => Promise<void>)[]) {
+function chain(functions: (() => Promise<void> | void)[]) {
   return functions.reduce(function(prev, fn) {
     return prev.then(fn);
   }, Promise.resolve());

@@ -2,17 +2,21 @@ import Location from './location';
 import Map from './map';
 import { MapPlugin } from './map-plugin';
 
-export default function router(controller: Map) {
-  const handlers = controller.plugins.filter(function(plugin) {
-    return plugin.route;
-  });
-  route(handlers);
-  Location.on('change', () => route(handlers), this);
+export default class Router {
+  protected handlers: MapPlugin[]
+
+  constructor(controller: Map) {
+    this.handlers = controller.plugins.filter(function(plugin) {
+      return plugin.route;
+    });
+    route.call(this);
+    Location.on('change', route, this);
+  }
 }
 
-function route(handlers: MapPlugin[]) {
+function route(this: Router) {
   var location = Location.get();
-  handlers.forEach(function(plugin) {
+  this.handlers.forEach(function(plugin) {
     return plugin.route(location);
   });
 }
