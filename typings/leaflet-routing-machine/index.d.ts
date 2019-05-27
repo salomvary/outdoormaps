@@ -9,6 +9,7 @@ declare module 'leaflet' {
       itineraryBuilder: Routing.ItineraryBuilder;
       createMarker?: (waypointIndex: number, waypoint: Waypoint, numberWaypoints: number) => Marker;
     }
+    // eslint-disable-next-line
     interface IRouteSummary {
       totalAscend: number;
       totalDescend: number;
