@@ -8,7 +8,7 @@ const inputHeight = 40;
 interface SearchControlOptions extends L.ControlOptions {
   onInput: (val: string) => void;
   onSubmit: (val: string) => void;
-  onSelect: (i: number) => void; 
+  onSelect: (i: number) => void;
 }
 
 export default class SearchControl extends L.Control {
@@ -18,7 +18,7 @@ export default class SearchControl extends L.Control {
   options: SearchControlOptions
 
   constructor(options: SearchControlOptions) {
-    super(options)
+    super(options);
   }
 
   onAdd() {
@@ -51,7 +51,7 @@ export default class SearchControl extends L.Control {
     this.toggleClearButton();
 
     // results
-    this.results = $.create('ul', 'search-results', control);
+    this.results = <HTMLUListElement>$.create('ul', 'search-results', control);
     this.adjustHeight();
 
     return control;
@@ -71,7 +71,7 @@ export default class SearchControl extends L.Control {
 
   private onInput() {
     this.options.onInput(this.getVal());
-    this.toggleClearButton(!!this.input.value.length);
+    this.toggleClearButton(this.input.value.length > 0);
   }
 
   private onSubmit(event: Event) {
@@ -104,7 +104,7 @@ export default class SearchControl extends L.Control {
     this.results.style.maxHeight = height + 'px';
   }
 
-  setResults(results: string[] | string) {
+  setResults(results: string | string[]) {
     this.results.innerHTML = '';
     if (results) {
       if (typeof results == 'string') {

@@ -1,20 +1,20 @@
 import * as L from 'leaflet';
 import Map from './map';
+import { MapPlugin } from './map-plugin';
 import SearchControl from './search-control';
 import { search, SearchResult } from './search-service';
 import StateStore from './state-store';
 import { AbortablePromise } from './xhr';
-import { MapPlugin } from './map-plugin';
 
 export default class Search implements MapPlugin {
   private controller: Map
   private options: StateStore
   private map: L.Map
-  private control: SearchControl
-  private debouncedSearch: Function
-  private request: AbortablePromise<SearchResult> & {query?: string}
-  private results: SearchResult[]
-  private marker: L.Marker
+  private control: SearchControl;
+  private debouncedSearch: (val: string) => void;
+  private request: AbortablePromise<SearchResult[]> & {query?: string}
+  private results: SearchResult[];
+  private marker?: L.Marker;
 
   constructor(controller: Map, options: StateStore) {
     this.controller = controller;
@@ -111,13 +111,13 @@ export default class Search implements MapPlugin {
     }
   }
 
-  onSuccess(results: SearchResult[]) {
+  private onSuccess(results: SearchResult[]) {
     this.results = results;
     this.control.setResults(
       results.length ? results.map(formatResult) : 'No results');
   }
 
-  onError(status: number) {
+  private onError(status: number) {
     // zero is abort (user or programmatic)
     if (status !== 0) {
       this.results = [];
@@ -132,7 +132,7 @@ function formatResult(result: SearchResult) {
 
 function debounce<F extends Function>(fn: F): F {
   var timer = null;
-  return <F><unknown>function() {
+  return <F><unknown> function() {
     var context = this, args = arguments;
     clearTimeout(timer);
     timer = setTimeout(function() {

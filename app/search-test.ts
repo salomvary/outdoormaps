@@ -201,7 +201,7 @@ xdescribe('Search Service', function() {
       { display_name: 'bar' }
     ]));
     var success = sinon.spy();
-    var bounds = <LatLngBounds>{
+    var bounds: LatLngBounds = <any>{
       toBBoxString: function() { return 'a,b,c,d'; }
     };
 
@@ -218,7 +218,7 @@ xdescribe('Search Service', function() {
   it('search failed', function() {
     var success = sinon.spy();
     var fail = sinon.spy();
-    var bounds = <LatLngBounds>{
+    var bounds: LatLngBounds = <any>{
       toBBoxString: function() { return 'a,b,c,d'; }
     };
     var request = SearchService.search('hello', {
@@ -233,7 +233,7 @@ xdescribe('Search Service', function() {
   it('search aborted', function() {
     var success = sinon.spy();
     var fail = sinon.spy();
-    var bounds = <LatLngBounds>{
+    var bounds: LatLngBounds = <any>{
       toBBoxString: function() { return 'a,b,c,d'; }
     };
     var request = SearchService.search('hello', {
