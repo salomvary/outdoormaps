@@ -133,6 +133,7 @@ function formatResult(result: SearchResult) {
 function debounce<F extends Function>(fn: F): F {
   var timer = null;
   return <F><unknown> function() {
+    // eslint-disable-next-line
     var context = this, args = arguments;
     clearTimeout(timer);
     timer = setTimeout(function() {

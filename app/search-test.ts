@@ -334,7 +334,6 @@ function click(element) {
 }
 
 function trigger(element, type) {
-  /* global Event: true, FocusEvent: true */
   var types = {
     focus: FocusEvent,
     blur: FocusEvent
