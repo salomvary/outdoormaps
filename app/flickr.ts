@@ -2,17 +2,18 @@ import * as L from 'leaflet';
 import {get} from './xhr';
 
 interface Photo {
+  // eslint-disable-next-line camelcase
   width_s: number;
   longitude: number;
-  latitude: number
+  latitude: number;
 }
 
 interface Data {
-  photos: {photo: Photo[]}
+  photos: {photo: Photo[]};
 }
 
 export default class Flickr extends L.FeatureGroup {
-  constructor (url: string, options: L.LayerOptions) {
+  constructor(url: string, options: L.LayerOptions) {
     super(null, options);
   }
 

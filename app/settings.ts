@@ -104,7 +104,7 @@ export default class Settings implements MapPlugin {
       // create button for each mapType with multiple layers
       .reduce(function(
         this: Settings,
-        layerButtons: { [mapType: string]: ButtonGroup; },
+        layerButtons: { [mapType: string]: ButtonGroup },
         mapType: LayerMapType
       ) {
         layerButtons[mapType] = layerButtonsFor({
@@ -165,10 +165,10 @@ function layerButtonsFor(options: {
 }
 
 function layersToOptions(layers: LayerConfig[]): {[id: string]: string} {
-  return layers.reduce(function(options, layer) {
+  return layers.reduce(function(options: {[id: string]: string}, layer) {
     options[layer.id] = layer.title;
     return options;
-  }, <{[id: string]: string}>{});
+  }, {});
 }
 
 function updateAvailableLayers() {

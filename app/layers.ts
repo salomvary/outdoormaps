@@ -1,5 +1,4 @@
 import * as L from 'leaflet';
-import $ from './util';
 import {isEnabled} from './flags';
 import Flickr from './flickr';
 import 'leaflet-plugins/layer/tile/Bing';
@@ -20,7 +19,7 @@ export type LayerConfig = {
   mapType: LayerMapType;
   folder?: (data: {z: number}) => string;
   // Narrow down from LatLngBoundsExpression
-  bounds?: L.LatLngBounds
+  bounds?: L.LatLngBounds;
 } & (L.TileLayerOptions | L.WMSOptions)
 
 var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
@@ -255,10 +254,10 @@ export default {get, keys, mapTypeOf};
 
 function getLayerOptions(options: LayerConfig): L.TileLayerOptions | L.WMSOptions {
   return Object.keys(options)
-    .reduce(function(filtered, key: keyof LayerConfig) {
+    .reduce(function(filtered: {[key: string]: any}, key: keyof LayerConfig) {
       if (customOptions.indexOf(key) === -1) {
         filtered[key] = options[key];
       }
       return filtered;
-    }, <{[key: string]: any}>{});
+    }, {});
 }

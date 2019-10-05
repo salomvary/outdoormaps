@@ -2,16 +2,16 @@ import $ from './util';
 import * as L from 'leaflet';
 
 export interface State {
-  bounds?: L.LatLngBoundsLiteral,
-  layers?: [string, string?],
-  defaultLayers?: {[mapType: string]: string},
-  routingService?: string,
-  zoom?: number,
-  center?: L.LatLngLiteral,
-  marker?: L.LatLngLiteral,
-  position?: L.LatLngLiteral,
-  routingVehicle?: string,
-  routingWaypoints?: L.LatLngLiteral[]
+  bounds?: L.LatLngBoundsLiteral;
+  layers?: [string, string?];
+  defaultLayers?: {[mapType: string]: string};
+  routingService?: string;
+  zoom?: number;
+  center?: L.LatLngLiteral;
+  marker?: L.LatLngLiteral;
+  position?: L.LatLngLiteral;
+  routingVehicle?: string;
+  routingWaypoints?: L.LatLngLiteral[];
 }
 
 export default class StateStore {
@@ -22,15 +22,15 @@ export default class StateStore {
     this.load();
   }
 
-  set(key:'bounds', value: L.LatLngBoundsLiteral): void;
-  set(key:'layers', value: [string, string?]): void;
-  set(key:'defaultLayers', value: {[key: string]: string}): void;
-  set(key:'center', value: L.LatLngLiteral): void;
-  set(key:'position', value: L.LatLngLiteral): void;
-  set(key:'routingVehicle', value: string): void;
-  set(key:'routingService', value: string): void;
-  set(key:'routingActive', value: boolean): void;
-  set(key:'routingWaypoints', value: L.LatLngLiteral[]): void;
+  set(key: 'bounds', value: L.LatLngBoundsLiteral): void;
+  set(key: 'layers', value: [string, string?]): void;
+  set(key: 'defaultLayers', value: {[key: string]: string}): void;
+  set(key: 'center', value: L.LatLngLiteral): void;
+  set(key: 'position', value: L.LatLngLiteral): void;
+  set(key: 'routingVehicle', value: string): void;
+  set(key: 'routingService', value: string): void;
+  set(key: 'routingActive', value: boolean): void;
+  set(key: 'routingWaypoints', value: L.LatLngLiteral[]): void;
   set(key: State): void;
 
   set(key: string | State, value?: any): void {
