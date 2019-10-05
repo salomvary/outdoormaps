@@ -1,7 +1,9 @@
 {
-  "name": "OutdoorMaps",
+  "name": "outdoormaps",
   "version": "0.0.1",
   "description": "Outdoor maps for mobile and desktop",
+  "private": true,
+  "license": "MIT",
   "dependencies": {
     "add-to-homescreen": "^3.2.6",
     "browser-jsonp": "^1.0.1",
