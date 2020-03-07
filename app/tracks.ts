@@ -1,4 +1,5 @@
-import GPX from 'leaflet-plugins/layer/vector/GPX';
+import * as L from 'leaflet';
+import 'leaflet-plugins/layer/vector/GPX';
 import { MapPlugin } from './map-plugin';
 
 var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)');
@@ -6,7 +7,7 @@ var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxuserco
 export default class Tracks implements MapPlugin {
   private map: L.Map
   private mapAvailable: Promise<void>
-  private track: GPX
+  private track: L.GPX
   private resolveMap: () => void
 
   constructor() {
@@ -27,7 +28,7 @@ export default class Tracks implements MapPlugin {
   }
 
   private loadTrack(url: string) {
-    var track = this.track = new GPX(url, {async: true});
+    var track = this.track = new L.GPX(url, {async: true});
     var trackLoaded = new Promise(track.on.bind(track, 'loaded'));
     this.mapAvailable
       .then(function() { return trackLoaded; })
