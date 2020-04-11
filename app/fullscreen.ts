@@ -10,6 +10,7 @@ export default class Fullscreen implements MapPlugin {
   private fullscreen: L.Control.Fullscreen;
 
   constructor(controller: Map, options: StateStore) {
+    if ((<any>navigator).standalone) { return; }
     this.controller = controller;
     this.options = options;
     this.fullscreen = new L.Control.Fullscreen({
@@ -21,6 +22,7 @@ export default class Fullscreen implements MapPlugin {
   }
 
   setMap(map: L.Map) {
+    if ((<any>navigator).standalone) { return; }
     map.addControl(this.fullscreen);
     // Prevent activating full screen when focus is somewhere else
     // eg. typing into an input. Adopted from:
