@@ -1,6 +1,7 @@
 @import url("/node_modules/add-to-homescreen/dist/style/addtohomescreen.css");
 @import url("/node_modules/leaflet/dist/leaflet.css");
 @import url("/node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css");
+@import url("/node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css");
 
 * {
   -moz-box-sizing: border-box;

@@ -2,6 +2,7 @@ import $ from './util';
 import Layers from './layers';
 import * as L from 'leaflet';
 import DropMarker from './drop-marker';
+import Fullscreen from './fullscreen';
 import InitialLocation from './initial-location';
 import RecommendLayers from './recommend-layers';
 import Router from './router';
@@ -35,7 +36,8 @@ var plugins: MapPluginConstructor[] = [
   Search,
   Tracks,
   Router,
-  Routing
+  Routing,
+  Fullscreen
 ];
 
 var stateEvents = 'moveend zoomend layeradd layerremove';
