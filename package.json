@@ -6,7 +6,8 @@
   "license": "MIT",
   "dependencies": {
     "@mapbox/corslite": "0.0.7",
-    "@mapbox/polyline": "^0.2.0",
+    "@mapbox/polyline": "^1.1.0",
+    "@salomvary/leaflet-minirouter": "0.0.2",
     "add-to-homescreen": "^3.2.6",
     "browser-jsonp": "^1.0.1",
     "fastclick": "^1.0.6",
@@ -15,7 +16,6 @@
     "leaflet": "^1.6.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet-plugins": "^3.3.1",
-    "leaflet-routing-machine": "^3.2.12",
     "lrm-graphhopper": "github:salomvary/lrm-graphhopper",
     "os-leaflet": "^1.0.0",
     "proj4leaflet": "^1.0.2"
@@ -24,7 +24,6 @@
     "@types/chai": "^4.2.10",
     "@types/file-saver": "^2.0.1",
     "@types/leaflet": "^1.5.10",
-    "@types/leaflet-routing-machine": "^3.2.1",
     "@types/mocha": "^5.2.7",
     "@types/proj4leaflet": "^1.0.5",
     "@types/sinon": "^7.5.2",

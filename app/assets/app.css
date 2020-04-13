@@ -1,6 +1,5 @@
 @import url("/node_modules/add-to-homescreen/dist/style/addtohomescreen.css");
 @import url("/node_modules/leaflet/dist/leaflet.css");
-@import url("/node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css");
 @import url("/node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css");
 
 * {
@@ -335,8 +334,13 @@ input, select {
   background-image: url(directions-active.svg), -moz-linear-gradient(top, #62C462, #51A351);
 }
 
+.leaflet-minirouter-delete-button,
 .delete-button {
   background-image: url(delete.svg);
+}
+
+.leaflet-minirouter-delete-button {
+  font-size: 0;
 }
 
 .close-button {

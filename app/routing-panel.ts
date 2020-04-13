@@ -1,6 +1,7 @@
 import $ from './util';
 import Select, {SelectChangeEvent} from './select';
 import * as L from 'leaflet';
+import { RouteSummary } from '@salomvary/leaflet-minirouter';
 
 interface RoutingPanelOptions {
   vehicles: {[key: string]: string};
@@ -64,7 +65,7 @@ export default class RoutingPanel {
     this.options.onVehicleChange(value);
   }
 
-  setStats(stats: L.Routing.IRouteSummary) {
+  setStats(stats: RouteSummary) {
     var distance = this.el.querySelector('.routing-panel-distance');
     distance.innerHTML = formatDistance(stats.totalDistance);
 

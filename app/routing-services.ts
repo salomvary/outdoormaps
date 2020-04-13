@@ -1,14 +1,11 @@
-import * as L from 'leaflet';
-
-import 'leaflet-routing-machine';
-import 'lrm-graphhopper';
+import { GraphHopper, Mapbox, Router } from '@salomvary/leaflet-minirouter';
 
 interface RoutingServiceConfig {
   id?: string;
   title: string;
   vehicles: {[id: string]: {title: string; [key: string]: string}};
-  create: (vehicle: string) => any;
-  updateVehicle: (router: any, vehicle: string) => void;
+  create: (vehicle: string) => Router;
+  updateVehicle: (router: Router, vehicle: string) => void;
 }
 
 var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
@@ -34,12 +31,12 @@ routingServices.mapbox = {
   },
   create: function(vehicle) {
     var profile = this.vehicles[vehicle].profile;
-    return L.Routing.mapbox(mapboxKey, {
+    return new Mapbox(mapboxKey, {
       profile: profile
     });
   },
-  updateVehicle: function(router, vehicle) {
-    router.options.profile = this.vehicles[vehicle].profile;
+  updateVehicle: function(router: Mapbox, vehicle) {
+    router.profile = this.vehicles[vehicle].profile;
   }
 };
 
@@ -61,7 +58,7 @@ routingServices.graphhopper = {
   },
   create: function(vehicle) {
     var vehicleParam = this.vehicles[vehicle].vehicle;
-    return L.Routing.graphHopper(graphHopperKey, {
+    return new GraphHopper(graphHopperKey, {
       urlParameters: {
         vehicle: vehicleParam
         // elevation: true,
@@ -69,9 +66,9 @@ routingServices.graphhopper = {
       }
     });
   },
-  updateVehicle: function(router, vehicle) {
+  updateVehicle: function(router: GraphHopper, vehicle) {
     var vehicleParam = this.vehicles[vehicle].vehicle;
-    router.options.urlParameters.vehicle = vehicleParam;
+    router.urlParameters.vehicle = vehicleParam;
   }
 };
 
@@ -80,7 +77,7 @@ Object.keys(routingServices).forEach(function(id) {
 });
 
 export default {
-  get(id) {
+  get(id: string) {
     return routingServices[id];
   },
   keys() {

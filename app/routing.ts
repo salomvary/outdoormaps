@@ -5,33 +5,19 @@ import RoutingSettings from './routing-settings';
 import routingServices from './routing-services';
 import gpxExport from './gpx-export';
 
-import 'leaflet-routing-machine';
+import {Layer as RoutingLayer, RouteSelectedEvent, Route} from '@salomvary/leaflet-minirouter';
 import StateStore from './state-store';
 import Map, { MapButton } from './map';
 
-var routeStartIcon = L.divIcon({
+const routeStartIcon = L.divIcon({
   iconSize: [20, 20],
   className: 'route-start-icon'
 });
 
-var routeWaypointIcon = L.divIcon({
+const routeWaypointIcon = L.divIcon({
   iconSize: [20, 20],
   className: 'route-waypoint-icon'
 });
-
-var noOpItineraryBuilder = {
-  createContainer() {
-    return document.createElement('span');
-  },
-
-  createStepsContainer() {
-    return document.createElement('span');
-  },
-
-  createStep() {
-    return document.createElement('span');
-  }
-};
 
 export default class Routing {
   private controller: Map
@@ -43,8 +29,8 @@ export default class Routing {
   private panel: any
   private settings: any
   private button: MapButton
-  private routingControl: L.Routing.Control
-  private selectedRoute: L.Routing.IRoute
+  private routingControl: RoutingLayer
+  private selectedRoute: Route
   private active: boolean
 
   constructor(controller: Map, options: StateStore) {
@@ -76,10 +62,6 @@ export default class Routing {
     }
   }
 
-  private onMapClick(e: L.LocationEvent) {
-    this.addWaypoint(e.latlng);
-  }
-
   private onClear() {
     this.panel.setStats({});
     this.selectedRoute = null;
@@ -90,26 +72,10 @@ export default class Routing {
     this.hide();
   }
 
-  private onRouteSelected(event: L.Routing.RouteSelectedEvent) {
+  private onRouteSelected(event: RouteSelectedEvent) {
     this.selectedRoute = event.route;
     this.panel.setStats(event.route.summary);
     this.options.save();
-  }
-
-  private onContextMenu(i: number, event: L.LocationEvent) {
-    var deleteButton = $.create('button', 'delete-button');
-    $.on(deleteButton, 'click', this.onDeleteWaypointClick.bind(this, i));
-    deleteButton.innerHTML = '&nbsp;';
-
-    L.popup({offset: [0, -2]})
-      .setLatLng(event.latlng)
-      .setContent(deleteButton)
-      .openOn(this.map);
-  }
-
-  private onDeleteWaypointClick(i: number) {
-    this.map.closePopup();
-    this.removeWaypoint(i);
   }
 
   private onExport() {
@@ -160,7 +126,6 @@ export default class Routing {
       this.active = true;
       this.togglePanel(true);
       this.addRoutingControl();
-      this.map.on('click', this.onMapClick, this);
       this.options.set('routingActive', this.active);
       this.options.save();
     }
@@ -172,7 +137,6 @@ export default class Routing {
       this.togglePanel(false);
       this.routingControl.remove();
       this.routingControl = null;
-      this.map.off('click', this.onMapClick, this);
       this.options.set('routingActive', this.active);
       this.options.save();
     }
@@ -185,14 +149,10 @@ export default class Routing {
   private addRoutingControl() {
     var routingService = routingServices.get(this.routingService);
     var router = routingService.create(this.routingVehicle);
-    this.routingControl = L.Routing.control({
-      waypoints: <L.LatLng[]> this.options.get('routingWaypoints'),
-      router: router,
-      // Hide itinerary for now (there is no better way)
-      summaryTemplate: '',
-      itineraryBuilder: noOpItineraryBuilder,
-      createMarker: this.createMarker.bind(this),
-      fitSelectedRoutes: false
+    this.routingControl = new RoutingLayer({
+      waypoints: this.options.get('routingWaypoints'),
+      router,
+      createMarker: this.createMarker
     }).addTo(this.map);
     this.routingControl.on('routeselected', this.onRouteSelected, this);
     this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
@@ -200,57 +160,29 @@ export default class Routing {
 
   private updateRoutingVehicle() {
     var routingService = routingServices.get(this.routingService);
-    var router = this.routingControl.getRouter();
+    var router = this.routingControl.router;
     routingService.updateVehicle(router, this.routingVehicle);
   }
 
   private updateRoutingService() {
     var routingService = routingServices.get(this.routingService);
     var router = routingService.create(this.routingVehicle);
-    // _router is a "private" property but updating it seems to be fine
-    (<any>(this.routingControl))._router = router;
-  }
-
-  private createMarker(i: number, waypoint: L.Routing.Waypoint) {
-    return L.marker(waypoint.latLng, {
-      icon: i === 0 ? routeStartIcon : routeWaypointIcon,
-      draggable: true
-    })
-      .on('contextmenu', this.onContextMenu.bind(this, i))
-      .on('click', function(e) {
-        // Prevent adding a route point when a marker is clicked
-        (<any>e).originalEvent.stopPropagation();
-      });
-  }
-
-  private removeWaypoint(i: number) {
-    this.routingControl.spliceWaypoints(i, 1);
-  }
-
-  private addWaypoint(latlng: L.LatLng) {
-    var currentWaypoints = this.routingControl.getWaypoints();
-    // Sadly, the initial state is two waypoints with undefined latlng
-    if (currentWaypoints.length > 0 && !currentWaypoints[0].latLng) {
-      // Replace the first undefined one
-      this.routingControl.spliceWaypoints(0, 1, <any>latlng);
-    } else if (currentWaypoints.length > 1 && !currentWaypoints[1].latLng) {
-      // Replace the second undefined one
-      this.routingControl.spliceWaypoints(1, 1, <any>latlng);
-    } else {
-      // Apped third or later one
-      this.routingControl.spliceWaypoints(currentWaypoints.length, 0, <any>latlng);
-    }
+    this.routingControl.router = router;
   }
 
   private saveWaypoints() {
-    var waypoints = this.routingControl.getWaypoints()
-      .map(function(waypoint) {
-        return waypoint.latLng;
-      })
-      // Empty state is two waypoints with null latLngs
-      .filter(function(latLngs) {
-        return !!latLngs;
-      });
+    var waypoints = this.routingControl.getWaypoints();
     this.options.set('routingWaypoints', waypoints);
+  }
+
+  private createMarker(
+    latLng: L.LatLngExpression,
+    options: L.MarkerOptions,
+    index: number
+  ): L.Marker {
+    return L.marker(latLng, {
+      ...options,
+      icon: index === 0 ? routeStartIcon : routeWaypointIcon
+    });
   }
 }
