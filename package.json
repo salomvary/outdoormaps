@@ -16,7 +16,6 @@
     "leaflet": "^1.6.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet-plugins": "^3.3.1",
-    "lrm-graphhopper": "github:salomvary/lrm-graphhopper",
     "os-leaflet": "^1.0.0",
     "proj4leaflet": "^1.0.2"
   },
