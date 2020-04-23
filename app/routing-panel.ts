@@ -1,6 +1,5 @@
 import $ from './util';
 import Select, {SelectChangeEvent} from './select';
-import * as L from 'leaflet';
 import { RouteSummary } from '@salomvary/leaflet-minirouter';
 
 interface RoutingPanelOptions {
