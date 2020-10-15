@@ -48,7 +48,10 @@ layers.map = {
 };
 
 layers.mapboxoutdoors = {
-  url: 'https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}@2x.png?access_token=' + mapboxKey,
+  url: 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}@2x?access_token=' + mapboxKey,
+  tileSize: 512,
+  maxZoom: 18,
+  zoomOffset: -1,
   attribution: '© Mapbox',
   title: 'Mapbox Outdoors',
   mapType: 'hiking'
