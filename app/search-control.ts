@@ -35,6 +35,7 @@ export default class SearchControl extends L.Control {
     $.on(input, 'input', this.onInput, this);
     $.on(input, 'focus', this.onFocus, this);
     $.on(input, 'blur', this.onBlur, this);
+    $.on(input, 'contextmenu', this.onContextMenu, this);
     $.fastClick(input, {focus: true});
 
     // hidden submit button
@@ -93,6 +94,10 @@ export default class SearchControl extends L.Control {
 
   private getVal() {
     return this.input.value.trim();
+  }
+
+  private onContextMenu(event: Event) {
+    event.stopPropagation();
   }
 
   private toggleClearButton(on?: boolean) {
