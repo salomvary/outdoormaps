@@ -52,6 +52,7 @@ export default class Search implements MapPlugin {
   private reset() {
     if (this.request) {
       this.request.abort();
+      delete this.request;
     }
     this.results = [];
     this.control.setResults(null);
