@@ -33,16 +33,21 @@ export default class Search implements MapPlugin {
     map.addControl(this.control);
   }
 
-  private search(query: string) {
+  private search(query: string): Promise<SearchResult[]> {
     // search if we haven't searched yet
     if (!this.request || this.request.query !== query) {
       // if we have a pending request, abort it
-      if (this.request) {
-        this.request.abort();
+      try {
+        if (this.request) {
+          this.request.abort();
+        }
+        this.request = search(query, {
+          bounds: this.map.getBounds()
+        });
+      } catch (e) {
+        this.onError(-1);
+        return Promise.reject(e);
       }
-      this.request = search(query, {
-        bounds: this.map.getBounds()
-      });
       this.request.query = query;
       this.request.then(this.onSuccess.bind(this), this.onError.bind(this));
     }
