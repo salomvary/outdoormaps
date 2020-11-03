@@ -36,6 +36,7 @@ export default class Search implements MapPlugin {
   private search(query: string): Promise<SearchResult[]> {
     // search if we haven't searched yet
     if (!this.request || this.request.query !== query) {
+      this.onSearch();
       // if we have a pending request, abort it
       try {
         if (this.request) {
@@ -45,7 +46,7 @@ export default class Search implements MapPlugin {
           bounds: this.map.getBounds()
         });
       } catch (e) {
-        this.onError(-1);
+        this.onError(e);
         return Promise.reject(e);
       }
       this.request.query = query;
@@ -117,17 +118,23 @@ export default class Search implements MapPlugin {
     }
   }
 
+  private onSearch() {
+    this.control.setResults('Searching...');
+  }
+
   private onSuccess(results: SearchResult[]) {
     this.results = results;
     this.control.setResults(
       results.length ? results.map(formatResult) : 'No results');
   }
 
-  private onError(status: number) {
-    // zero is abort (user or programmatic)
-    if (status !== 0) {
-      this.results = [];
+  private onError(status: number | Error) {
+    this.results = [];
+    if (this.request.isAborted) {
+      this.control.setResults('');
+    } else {
       this.control.setResults('Search failed :(');
+      window.console.error('Search failed', status);
     }
   }
 }

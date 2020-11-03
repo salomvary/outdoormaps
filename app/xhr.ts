@@ -2,6 +2,7 @@ import $ from './util';
 
 export interface AbortablePromise<T> extends Promise<T> {
   abort(): void;
+  isAborted: boolean;
 }
 
 export function get(url, options?): AbortablePromise<any> {
@@ -29,7 +30,11 @@ export function get(url, options?): AbortablePromise<any> {
   });
   // expose xhr.abort
   // TODO abort should clean up the promise
-  promise.abort = xhr.abort.bind(xhr);
+  promise.abort = () => {
+    xhr.abort();
+    promise.isAborted = false;
+  };
+  promise.isAborted = false;
   return promise;
 }
 
