@@ -2,9 +2,10 @@ language: node_js
 node_js:
   - 12
 script:
-- npm run lint
-- npm test
-- npm run build
+  - npm run lint
+  - npm run prettier:check
+  - npm test
+  - npm run build
 deploy:
   local_dir: dist
   provider: pages

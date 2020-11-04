@@ -1,24 +1,24 @@
 import $ from './util';
 import * as L from 'leaflet';
-import {getAccurateCurrentPosition} from './vendor/geolocation';
+import { getAccurateCurrentPosition } from './vendor/geolocation';
 import { MapPlugin } from './map-plugin';
 import Map, { MapButton } from './map';
 import StateStore from './state-store';
 
 var myLocationIcon = L.divIcon({
   iconSize: [20, 20],
-  className: 'my-location-icon'
+  className: 'my-location-icon',
 });
 
 export default class ShowPosition implements MapPlugin {
-  private controller: Map
-  private options: StateStore
-  private map: L.Map
-  private button: MapButton
-  private moved: boolean
-  private locating: boolean
-  private automoving: boolean
-  private marker: L.Marker
+  private controller: Map;
+  private options: StateStore;
+  private map: L.Map;
+  private button: MapButton;
+  private moved: boolean;
+  private locating: boolean;
+  private automoving: boolean;
+  private marker: L.Marker;
 
   constructor(controller: Map, options: StateStore) {
     this.controller = controller;
@@ -28,8 +28,12 @@ export default class ShowPosition implements MapPlugin {
   setMap(map: L.Map) {
     if (navigator.geolocation) {
       this.map = map;
-      this.button = this.controller.createButton('locate', 'topleft',
-        this.showCurrentPosition, this);
+      this.button = this.controller.createButton(
+        'locate',
+        'topleft',
+        this.showCurrentPosition,
+        this
+      );
       this.map.on('movestart zoomstart', this.viewChanged.bind(this));
     }
     if (this.options.get('position')) {
@@ -53,7 +57,8 @@ export default class ShowPosition implements MapPlugin {
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
         this.positionUpdate.bind(this, true),
-        {desiredAccuracy: 100, maxWait: 20000});
+        { desiredAccuracy: 100, maxWait: 20000 }
+      );
     }
   }
 
@@ -76,8 +81,10 @@ export default class ShowPosition implements MapPlugin {
       this.locating = false;
       $.toggleClass(this.button.getContainer(), 'busy-button', false);
     }
-    var center = new L.LatLng(position.coords.latitude,
-      position.coords.longitude);
+    var center = new L.LatLng(
+      position.coords.latitude,
+      position.coords.longitude
+    );
     this.showPosition(center);
   }
 
@@ -106,7 +113,7 @@ export default class ShowPosition implements MapPlugin {
       this.marker.setLatLng(position);
     } else {
       this.marker = this.controller.addMarker(position, {
-        icon: myLocationIcon
+        icon: myLocationIcon,
       });
     }
   }

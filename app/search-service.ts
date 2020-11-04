@@ -7,7 +7,8 @@ export interface SearchResult {
   boundingbox: [number, number, number, number];
   lon: number;
   lat: number;
-  'display_name': string;
+  // eslint-disable-next-line camelcase
+  display_name: string;
 }
 
 export function search(
@@ -19,15 +20,15 @@ export function search(
     format: 'json',
     limit: '15',
     viewboxlbrt: options.bounds.toBBoxString(),
-    q: query
+    q: query,
   };
   var url = baseUrl + '?' + encodeParams(params);
   return get(url);
 }
 
-function encodeParams(params: {[key: string]: string}) {
+function encodeParams(params: { [key: string]: string }) {
   return Object.keys(params)
-    .reduce(function(entries, key) {
+    .reduce(function (entries, key) {
       entries.push(key + '=' + encodeURIComponent(params[key]));
       return entries;
     }, [])

@@ -5,12 +5,12 @@ export default class ButtonGroup extends Select {
     var g = document.createElement('fieldset');
     g.className = 'control-group';
     render(g, options.values);
-    super(g, Object.assign(options, {values: undefined}));
+    super(g, Object.assign(options, { values: undefined }));
   }
 }
 
-function render(el: HTMLElement, values: {[key: string]: string}) {
-  Object.keys(values).forEach(function(key) {
+function render(el: HTMLElement, values: { [key: string]: string }) {
+  Object.keys(values).forEach(function (key) {
     var button = document.createElement('button');
     button.className = 'radio-btn';
     button.name = key;

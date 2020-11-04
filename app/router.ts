@@ -3,10 +3,10 @@ import Map from './map';
 import { MapPlugin } from './map-plugin';
 
 export default class Router {
-  protected handlers: MapPlugin[]
+  protected handlers: MapPlugin[];
 
   constructor(controller: Map) {
-    this.handlers = controller.plugins.filter(function(plugin) {
+    this.handlers = controller.plugins.filter(function (plugin) {
       return plugin.route;
     });
     route.call(this);
@@ -16,7 +16,7 @@ export default class Router {
 
 function route(this: Router) {
   var location = Location.get();
-  this.handlers.forEach(function(plugin) {
+  this.handlers.forEach(function (plugin) {
     return plugin.route(location);
   });
 }

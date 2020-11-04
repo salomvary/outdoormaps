@@ -9,9 +9,9 @@ interface RoutingSettingsOptions {
 }
 
 export default class RoutingSettings {
-  private options: RoutingSettingsOptions
-  private el: HTMLElement
-  private routingService: string
+  private options: RoutingSettingsOptions;
+  private el: HTMLElement;
+  private routingService: string;
   private routingServiceButtons: ButtonGroup;
 
   constructor(options: RoutingSettingsOptions) {
@@ -49,14 +49,18 @@ export default class RoutingSettings {
 
   private createButtons() {
     var container = this.el.querySelector('.routing-services');
-    var values = routingServices.keys()
-      .reduce(function(values, routingService) {
+    var values = routingServices
+      .keys()
+      .reduce(function (values, routingService) {
         var title = routingServices.get(routingService).title;
         values[routingService] = title;
         return values;
       }, {});
-    var buttons = new ButtonGroup({values})
-      .on('change', this.onRoutingServiceChange, this);
+    var buttons = new ButtonGroup({ values }).on(
+      'change',
+      this.onRoutingServiceChange,
+      this
+    );
     container.appendChild(buttons.el);
     this.routingServiceButtons = buttons;
   }

@@ -1,6 +1,6 @@
-@import url("/node_modules/add-to-homescreen/dist/style/addtohomescreen.css");
-@import url("/node_modules/leaflet/dist/leaflet.css");
-@import url("/node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css");
+@import url('/node_modules/add-to-homescreen/dist/style/addtohomescreen.css');
+@import url('/node_modules/leaflet/dist/leaflet.css');
+@import url('/node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css');
 
 * {
   -moz-box-sizing: border-box;
@@ -26,14 +26,14 @@ body {
 .map {
   position: absolute;
   left: 0;
-  top:0;
+  top: 0;
   width: 100%;
   bottom: 0;
 }
 
 .page {
   position: absolute;
-  top:0;
+  top: 0;
   right: 0;
   height: 100%;
   background: #cbd2d8;
@@ -60,7 +60,7 @@ header {
   padding: 8px;
   text-align: right;
   position: absolute;
-  top:0;
+  top: 0;
   right: 0;
   left: 0;
 }
@@ -94,7 +94,7 @@ select {
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border: 1px solid #CCC;
+  border: 1px solid #ccc;
   outline: none;
   margin: 0;
   color: #333;
@@ -107,7 +107,8 @@ button {
   background-position: 50% 50%;
 }
 
-input, select {
+input,
+select {
   font-size: 16px;
   padding: 4px;
 }
@@ -129,9 +130,12 @@ input, select {
   background-image: -webkit-linear-gradient(top, #8ea4c1, #4a6c9b);
   background-image: -moz-linear-gradient(top, #8ea4c1, #4a6c9b);
   border-color: #45505d;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .25), 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.25);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.25);
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .btn.active,
@@ -190,7 +194,7 @@ input, select {
 
 /*
  * Flat horizontal button group
- */ 
+ */
 .flat-btn {
   font: inherit;
 }
@@ -292,46 +296,59 @@ input, select {
 
 .map-button {
   width: 40px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-  background-color: #5BB75B;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  background-color: #5bb75b;
   background-size: 25px 25px, 100%;
 }
 
 .locate-button {
   background-image: url(arrow2x.png);
-  background-image: url(arrow2x.png), linear-gradient(top, #62C462, #51A351);
-  background-image: url(arrow2x.png), -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: url(arrow2x.png), -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: url(arrow2x.png), linear-gradient(top, #62c462, #51a351);
+  background-image: url(arrow2x.png),
+    -webkit-linear-gradient(top, #62c462, #51a351);
+  background-image: url(arrow2x.png),
+    -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .layers-button {
   background-image: url(layers.svg);
-  background-image: url(layers.svg), linear-gradient(top, #62C462, #51A351);
-  background-image: url(layers.svg), -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: url(layers.svg), -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: url(layers.svg), linear-gradient(top, #62c462, #51a351);
+  background-image: url(layers.svg),
+    -webkit-linear-gradient(top, #62c462, #51a351);
+  background-image: url(layers.svg), -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .busy-button {
   background-image: url(loading.gif);
-  background-image: url(loading.gif), linear-gradient(top, #62C462, #51A351);
-  background-image: url(loading.gif), -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: url(loading.gif), -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: url(loading.gif), linear-gradient(top, #62c462, #51a351);
+  background-image: url(loading.gif),
+    -webkit-linear-gradient(top, #62c462, #51a351);
+  background-image: url(loading.gif),
+    -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .directions-button {
   background-image: url(directions.svg);
-  background-image: url(directions.svg), linear-gradient(top, #62C462, #51A351);
-  background-image: url(directions.svg), -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: url(directions.svg), -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: url(directions.svg), linear-gradient(top, #62c462, #51a351);
+  background-image: url(directions.svg),
+    -webkit-linear-gradient(top, #62c462, #51a351);
+  background-image: url(directions.svg),
+    -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .directions-active-button {
   background-image: url(directions-active.svg);
-  background-image: url(directions-active.svg), linear-gradient(top, #62C462, #51A351);
-  background-image: url(directions-active.svg), -webkit-linear-gradient(top, #62C462, #51A351);
-  background-image: url(directions-active.svg), -moz-linear-gradient(top, #62C462, #51A351);
+  background-image: url(directions-active.svg),
+    linear-gradient(top, #62c462, #51a351);
+  background-image: url(directions-active.svg),
+    -webkit-linear-gradient(top, #62c462, #51a351);
+  background-image: url(directions-active.svg),
+    -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .leaflet-minirouter-delete-button,
@@ -366,7 +383,7 @@ input, select {
   box-shadow: 0 0 5px;
   border: 3px solid #fff;
   border-radius: 50%;
-  background: #5BB75B;
+  background: #5bb75b;
 }
 
 .route-waypoint-icon {
@@ -447,7 +464,7 @@ input, select {
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border: 1px solid #CCC;
+  border: 1px solid #ccc;
 
   border-top: 0;
   border-top-left-radius: 0;
@@ -461,7 +478,7 @@ input, select {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-top: 1px solid #CCC;
+  border-top: 1px solid #ccc;
   cursor: pointer;
 }
 
@@ -515,7 +532,7 @@ input, select {
  * Routing
  */
 
- /** Do not show itinerary for now */
+/** Do not show itinerary for now */
 .leaflet-routing-container {
   display: none;
 }

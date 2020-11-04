@@ -8,21 +8,21 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: './main.js',
-    publicPath: 'dist/'
+    publicPath: 'dist/',
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
         use: 'ts-loader',
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   devServer: {
-    port: 9000
-  }
+    port: 9000,
+  },
 };

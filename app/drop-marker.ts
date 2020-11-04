@@ -6,10 +6,10 @@ import { MapPlugin } from './map-plugin';
 import { LatLngExpression, LocationEvent, LatLngLiteral } from 'leaflet';
 
 export default class DropMarker implements MapPlugin {
-  controller: Map
-  options: StateStore
-  map: L.Map
-  private marker: L.Marker
+  controller: Map;
+  options: StateStore;
+  map: L.Map;
+  private marker: L.Marker;
 
   constructor(controller: Map, options: StateStore) {
     this.controller = controller;
@@ -37,7 +37,7 @@ export default class DropMarker implements MapPlugin {
     if (!(isNaN(lat) || isNaN(lng) || isNaN(zoom))) {
       state.marker = state.center = {
         lat: lat,
-        lng: lng
+        lng: lng,
       };
       state.zoom = zoom;
       state.layers = [layer];
@@ -52,11 +52,13 @@ export default class DropMarker implements MapPlugin {
   }
 
   private setLocation(position: LatLngLiteral) {
-    Location.set(buildLocation({
-      layers: this.options.get('layers'),
-      center: position,
-      zoom: this.map.getZoom()
-    }));
+    Location.set(
+      buildLocation({
+        layers: this.options.get('layers'),
+        center: position,
+        zoom: this.map.getZoom(),
+      })
+    );
   }
 
   setMarker(position: LatLngExpression) {
@@ -79,7 +81,7 @@ function buildLocation(state: State) {
     state.layers[0],
     roundCoordinate(state.center.lat),
     roundCoordinate(state.center.lng),
-    state.zoom
+    state.zoom,
   ].join('/');
 }
 

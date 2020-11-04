@@ -7,12 +7,12 @@ import StateStore from './state-store';
 import { AbortablePromise } from './xhr';
 
 export default class Search implements MapPlugin {
-  private controller: Map
-  private options: StateStore
-  private map: L.Map
+  private controller: Map;
+  private options: StateStore;
+  private map: L.Map;
   private control: SearchControl;
   private debouncedSearch: (val: string) => void;
-  private request: AbortablePromise<SearchResult[]> & {query?: string}
+  private request: AbortablePromise<SearchResult[]> & { query?: string };
   private results: SearchResult[];
   private marker?: L.Marker;
 
@@ -28,7 +28,7 @@ export default class Search implements MapPlugin {
       position: 'topright',
       onInput: this.onInput.bind(this),
       onSubmit: this.onSubmit.bind(this),
-      onSelect: this.onSelect.bind(this)
+      onSelect: this.onSelect.bind(this),
     });
     map.addControl(this.control);
   }
@@ -43,7 +43,7 @@ export default class Search implements MapPlugin {
           this.request.abort();
         }
         this.request = search(query, {
-          bounds: this.map.getBounds()
+          bounds: this.map.getBounds(),
         });
       } catch (e) {
         this.onError(e);
@@ -70,11 +70,11 @@ export default class Search implements MapPlugin {
   private showResult(result: SearchResult) {
     this.setMarker({
       lat: result.lat,
-      lng: result.lon
+      lng: result.lon,
     });
     this.map.fitBounds([
       [result.boundingbox[0], result.boundingbox[2]],
-      [result.boundingbox[1], result.boundingbox[3]]
+      [result.boundingbox[1], result.boundingbox[3]],
     ]);
   }
 
@@ -101,8 +101,7 @@ export default class Search implements MapPlugin {
 
   private onSubmit(val: string) {
     if (val.length) {
-      this.search(val)
-        .then(this.onSelect.bind(this, 0));
+      this.search(val).then(this.onSelect.bind(this, 0));
     } else {
       this.reset();
     }
@@ -125,7 +124,8 @@ export default class Search implements MapPlugin {
   private onSuccess(results: SearchResult[]) {
     this.results = results;
     this.control.setResults(
-      results.length ? results.map(formatResult) : 'No results');
+      results.length ? results.map(formatResult) : 'No results'
+    );
   }
 
   private onError(status: number | Error) {
@@ -146,12 +146,14 @@ function formatResult(result: SearchResult) {
 // eslint-disable-next-line @typescript-eslint/ban-types
 function debounce<F extends Function>(fn: F): F {
   var timer = null;
-  return <F><unknown> function() {
+  return <F>(<unknown>function () {
     // eslint-disable-next-line
-    var context = this, args = arguments;
+    var context = this,
+      // eslint-disable-next-line prefer-rest-params
+      args = arguments;
     clearTimeout(timer);
-    timer = setTimeout(function() {
+    timer = setTimeout(function () {
       fn.apply(context, args);
     }, 100);
-  };
+  });
 }

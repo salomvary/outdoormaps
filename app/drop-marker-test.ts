@@ -3,8 +3,8 @@ import DropMarker from './drop-marker';
 import Map from './map';
 import StateStore from './state-store';
 
-describe('DropMarker', function() {
-  it('sets up defaults', function() {
+describe('DropMarker', function () {
+  it('sets up defaults', function () {
     const controller: Map = <any>{};
     const options: StateStore = <any>{};
 

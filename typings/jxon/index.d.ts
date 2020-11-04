@@ -1,5 +1,5 @@
 declare namespace JXON {
-  function stringify (xmlObj: any): string;
+  function stringify(xmlObj: any): string;
 }
 
 declare module 'jxon' {

@@ -9,17 +9,17 @@ import StateStore from './state-store';
 import { LeafletEventHandlerFn } from 'leaflet';
 
 export default class Settings implements MapPlugin {
-  private controller: Map
-  private options: StateStore
-  private map: L.Map
+  private controller: Map;
+  private options: StateStore;
+  private map: L.Map;
 
-  private mapLayer: string
-  private overlay: string
-  private mapType: LayerMapType
-  private defaultLayers: {[mapType: string]: string}
-  private mapTypeButtons: Select
-  private layerButtons: { [mapType: string]: ButtonGroup }
-  private overlayButtons: ButtonGroup
+  private mapLayer: string;
+  private overlay: string;
+  private mapType: LayerMapType;
+  private defaultLayers: { [mapType: string]: string };
+  private mapTypeButtons: Select;
+  private layerButtons: { [mapType: string]: ButtonGroup };
+  private overlayButtons: ButtonGroup;
 
   constructor(controller: Map, options: StateStore) {
     this.controller = controller;
@@ -31,7 +31,7 @@ export default class Settings implements MapPlugin {
     $.fastClick(closeButton);
 
     // initial state
-    var layers = (options.get('layers') || controller.defaults.layers);
+    var layers = options.get('layers') || controller.defaults.layers;
     this.mapLayer = layers[0];
     this.overlay = layers[1];
     this.mapType = Layers.mapTypeOf(this.mapLayer);
@@ -47,8 +47,12 @@ export default class Settings implements MapPlugin {
 
   setMap(map: L.Map) {
     this.map = map;
-    this.controller.createButton('layers', 'topright',
-      this.toggleSettings, this);
+    this.controller.createButton(
+      'layers',
+      'topright',
+      this.toggleSettings,
+      this
+    );
   }
 
   private toggleSettings() {
@@ -87,41 +91,49 @@ export default class Settings implements MapPlugin {
     this.mapLayer = layerIds[0];
     this.overlay = layerIds[1];
     this.controller.setLayers(<[string, string?]>layerIds.filter(Boolean));
-    this.options.set({defaultLayers: this.defaultLayers});
+    this.options.set({ defaultLayers: this.defaultLayers });
     this.updateButtons();
   }
 
   private createButtons() {
     var container = document.querySelector('.map-types');
 
-    this.mapTypeButtons = new Select(container.querySelector('.map-type'))
-      .on('change', this.setMapType, this);
+    this.mapTypeButtons = new Select(container.querySelector('.map-type')).on(
+      'change',
+      this.setMapType,
+      this
+    );
 
     // create layer type selection for map types with multiple
     // layers
     this.layerButtons = (<LayerMapType[]>['hiking', 'satellite', 'map'])
       // only when it has more than one layer
-      .filter(function(mapType) { return Layers.keys(mapType).length > 1; })
+      .filter(function (mapType) {
+        return Layers.keys(mapType).length > 1;
+      })
       // create button for each mapType with multiple layers
-      .reduce(function(
-        this: Settings,
-        layerButtons: { [mapType: string]: ButtonGroup },
-        mapType: LayerMapType
-      ) {
-        layerButtons[mapType] = layerButtonsFor({
-          mapType: mapType,
-          parent: container.querySelector('.map-layers'),
-          handler: this.setMapLayer.bind(this)
-        });
-        return layerButtons;
-      }.bind(this), {});
+      .reduce(
+        function (
+          this: Settings,
+          layerButtons: { [mapType: string]: ButtonGroup },
+          mapType: LayerMapType
+        ) {
+          layerButtons[mapType] = layerButtonsFor({
+            mapType: mapType,
+            parent: container.querySelector('.map-layers'),
+            handler: this.setMapLayer.bind(this),
+          });
+          return layerButtons;
+        }.bind(this),
+        {}
+      );
 
     // overlay selection
     this.overlayButtons = layerButtonsFor({
       mapType: 'overlay',
-      options: {toggle: true},
+      options: { toggle: true },
       parent: container.querySelector('.map-overlays'),
-      handler: this.setOverlay.bind(this)
+      handler: this.setOverlay.bind(this),
     });
   }
 
@@ -130,7 +142,7 @@ export default class Settings implements MapPlugin {
     this.mapTypeButtons.set(this.mapType);
 
     // show/hide layer group
-    Object.keys(this.layerButtons).forEach(function(mapType) {
+    Object.keys(this.layerButtons).forEach(function (mapType) {
       var el = this.layerButtons[mapType].el;
       if (mapType === this.mapType) {
         $.show(el);
@@ -159,14 +171,15 @@ function layerButtonsFor(options: {
   mapType: LayerMapType;
 }) {
   var values = layersToOptions(Layers.keys(options.mapType));
-  var buttons = new ButtonGroup(Object.assign({}, options.options, {values}))
-    .on('change', options.handler);
+  var buttons = new ButtonGroup(
+    Object.assign({}, options.options, { values })
+  ).on('change', options.handler);
   options.parent.appendChild(buttons.el);
   return buttons;
 }
 
-function layersToOptions(layers: LayerConfig[]): {[id: string]: string} {
-  return layers.reduce(function(options: {[id: string]: string}, layer) {
+function layersToOptions(layers: LayerConfig[]): { [id: string]: string } {
+  return layers.reduce(function (options: { [id: string]: string }, layer) {
     options[layer.id] = layer.title;
     return options;
   }, {});
@@ -175,7 +188,10 @@ function layersToOptions(layers: LayerConfig[]): {[id: string]: string} {
 function updateAvailableLayers() {
   // for the active layer
   if (this.layerButtons[this.mapType]) {
-    var disabledLayers = getDisabledLayers.call(this, Layers.keys(this.mapType));
+    var disabledLayers = getDisabledLayers.call(
+      this,
+      Layers.keys(this.mapType)
+    );
     this.layerButtons[this.mapType].setDisabled(disabledLayers);
   }
 
@@ -187,8 +203,10 @@ function updateAvailableLayers() {
 function getDisabledLayers(layers: LayerConfig[]) {
   var mapBounds = this.map.getBounds();
   return layers
-    .filter(function(layer) {
+    .filter(function (layer) {
       return layer.bounds && !layer.bounds.contains(mapBounds);
     })
-    .map(function(layer) { return layer.id; });
+    .map(function (layer) {
+      return layer.id;
+    });
 }

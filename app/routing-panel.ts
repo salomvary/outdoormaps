@@ -1,9 +1,9 @@
 import $ from './util';
-import Select, {SelectChangeEvent} from './select';
+import Select, { SelectChangeEvent } from './select';
 import { RouteSummary } from '@salomvary/leaflet-minirouter';
 
 interface RoutingPanelOptions {
-  vehicles: {[key: string]: string};
+  vehicles: { [key: string]: string };
   routingVehicle: string;
   onClear: () => void;
   onClose: () => void;
@@ -13,11 +13,11 @@ interface RoutingPanelOptions {
 }
 
 export default class RoutingPanel {
-  private options: RoutingPanelOptions
-  private vehicles: {[key: string]: string}
-  private el: HTMLElement
-  private vehicleButtons: Select
-  private vehicleSelect: HTMLSelectElement
+  private options: RoutingPanelOptions;
+  private vehicles: { [key: string]: string };
+  private el: HTMLElement;
+  private vehicleButtons: Select;
+  private vehicleSelect: HTMLSelectElement;
 
   constructor(options: RoutingPanelOptions) {
     this.options = options;
@@ -37,13 +37,16 @@ export default class RoutingPanel {
     $.on(exportButton, 'click', this.options.onExport, this);
     $.fastClick(exportButton);
 
-    var settingsButton = this.el.querySelector('.routing-panel-settings-button');
+    var settingsButton = this.el.querySelector(
+      '.routing-panel-settings-button'
+    );
     $.on(settingsButton, 'click', this.options.onSettings, this);
     $.fastClick(settingsButton);
 
     // Buttons on large screens
-    this.vehicleButtons = new Select(this.el.querySelector('.routing-vehicle-buttons'))
-      .on('change', this.onVehicleButtonsChange, this);
+    this.vehicleButtons = new Select(
+      this.el.querySelector('.routing-vehicle-buttons')
+    ).on('change', this.onVehicleButtonsChange, this);
     this.updateVehicleButtons();
 
     // Select on small ones
@@ -75,7 +78,7 @@ export default class RoutingPanel {
     descent.innerHTML = formatElevation(stats.totalDescend);
   }
 
-  private setVehicles(vehicles: {[key: string]: string}) {
+  private setVehicles(vehicles: { [key: string]: string }) {
     this.vehicles = vehicles;
     this.updateVehicleSelect();
     this.updateVehicleButtons();
@@ -92,10 +95,13 @@ export default class RoutingPanel {
   }
 }
 
-function setSelectValues(select: HTMLSelectElement, values: {[key: string]: string}) {
+function setSelectValues(
+  select: HTMLSelectElement,
+  values: { [key: string]: string }
+) {
   select.innerHTML = '';
   var options = document.createDocumentFragment();
-  Object.keys(values).forEach(function(key) {
+  Object.keys(values).forEach(function (key) {
     var option = document.createElement('option');
     option.value = key;
     option.innerHTML = values[key];

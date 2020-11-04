@@ -32,11 +32,13 @@
     "assetgraph-builder": "^8.1.0",
     "chai": "^4.2.0",
     "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
     "imports-loader": "^0.8.0",
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^7.2.0",
     "mocha-webpack": "^2.0.0-beta.0",
+    "prettier": "^2.1.2",
     "sinon": "^9.2.0",
     "sinon-chai": "^3.5.0",
     "ts-loader": "^6.2.2",
@@ -50,6 +52,8 @@
     "test": "mocha-webpack --require jsdom-global/register 'app/*-test.ts'",
     "start": "webpack-dev-server",
     "lint": "eslint --ext .js,.ts .",
+    "prettier:write": "prettier --write .",
+    "prettier:check": "prettier --check .",
     "build": "buildProduction --precacheserviceworker --webpackconfig webpack.production.config.js --root . --outroot dist index.html"
   }
 }

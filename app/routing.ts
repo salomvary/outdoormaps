@@ -5,33 +5,37 @@ import RoutingSettings from './routing-settings';
 import routingServices from './routing-services';
 import gpxExport from './gpx-export';
 
-import {Layer as RoutingLayer, RouteSelectedEvent, Route} from '@salomvary/leaflet-minirouter';
+import {
+  Layer as RoutingLayer,
+  RouteSelectedEvent,
+  Route,
+} from '@salomvary/leaflet-minirouter';
 import StateStore from './state-store';
 import Map, { MapButton } from './map';
 
 const routeStartIcon = L.divIcon({
   iconSize: [20, 20],
-  className: 'route-start-icon'
+  className: 'route-start-icon',
 });
 
 const routeWaypointIcon = L.divIcon({
   iconSize: [20, 20],
-  className: 'route-waypoint-icon'
+  className: 'route-waypoint-icon',
 });
 
 export default class Routing {
-  private controller: Map
-  private options: StateStore
-  private map: L.Map
+  private controller: Map;
+  private options: StateStore;
+  private map: L.Map;
 
-  private routingVehicle: string
-  private routingService: string
-  private panel: any
-  private settings: any
-  private button: MapButton
-  private routingControl: RoutingLayer
-  private selectedRoute: Route
-  private active: boolean
+  private routingVehicle: string;
+  private routingService: string;
+  private panel: any;
+  private settings: any;
+  private button: MapButton;
+  private routingControl: RoutingLayer;
+  private selectedRoute: Route;
+  private active: boolean;
 
   constructor(controller: Map, options: StateStore) {
     this.controller = controller;
@@ -45,18 +49,22 @@ export default class Routing {
       onClose: this.onClose.bind(this),
       onExport: this.onExport.bind(this),
       onSettings: this.onSettings.bind(this),
-      onVehicleChange: this.onVehicleChange.bind(this)
+      onVehicleChange: this.onVehicleChange.bind(this),
     });
     this.settings = new RoutingSettings({
       routingService: this.routingService,
-      onRoutingServiceChange: this.onRoutingServiceChange.bind(this)
+      onRoutingServiceChange: this.onRoutingServiceChange.bind(this),
     });
   }
 
   setMap(map: L.Map) {
     this.map = map;
-    this.button = this.controller.createButton('directions', 'topleft',
-      this.toggleRouting, this);
+    this.button = this.controller.createButton(
+      'directions',
+      'topleft',
+      this.toggleRouting,
+      this
+    );
     if (this.options.get('routingActive')) {
       this.show();
     }
@@ -92,11 +100,10 @@ export default class Routing {
 
   private getVehicles() {
     var vehicles = routingServices.get(this.routingService).vehicles;
-    return Object.keys(vehicles)
-      .reduce(function(acc, key) {
-        acc[key] = vehicles[key].title;
-        return acc;
-      }, {});
+    return Object.keys(vehicles).reduce(function (acc, key) {
+      acc[key] = vehicles[key].title;
+      return acc;
+    }, {});
   }
 
   private onVehicleChange(value: string) {
@@ -152,7 +159,7 @@ export default class Routing {
     this.routingControl = new RoutingLayer({
       waypoints: this.options.get('routingWaypoints'),
       router,
-      createMarker: this.createMarker
+      createMarker: this.createMarker,
     }).addTo(this.map);
     this.routingControl.on('routeselected', this.onRouteSelected, this);
     this.routingControl.on('waypointschanged', this.onWaypointsChanged, this);
@@ -182,7 +189,7 @@ export default class Routing {
   ): L.Marker {
     return L.marker(latLng, {
       ...options,
-      icon: index === 0 ? routeStartIcon : routeWaypointIcon
+      icon: index === 0 ? routeStartIcon : routeWaypointIcon,
     });
   }
 }

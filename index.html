@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--
   Created by: Márton Salomváry
   Contact: salomvary@gmail.com twitter.com/salomvary
@@ -9,24 +9,42 @@
 <html>
   <head>
     <script type="text/javascript">
-      if (('outdoormaps.eu' == window.location.host) && (window.location.protocol != 'https:'))
+      if (
+        'outdoormaps.eu' == window.location.host &&
+        window.location.protocol != 'https:'
+      )
         window.location.protocol = 'https';
     </script>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" sizes="114x114" href="app/assets/apple-touch-icon-114x114.png">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="app/assets/apple-touch-icon-114x114.png"
+    />
     <link rel="canonical" href="https://outdoormaps.eu" />
     <title>Outdoor Maps</title>
     <!-- build:css assets/app.css -->
-    <link rel="stylesheet" href="app/assets/app.css">
+    <link rel="stylesheet" href="app/assets/app.css" />
     <!-- endbuild -->
-    <link rel="shortcut icon" href="app/assets/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="app/assets/favicon.ico" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="app/assets/favicon.ico"
+      type="image/x-icon"
+    />
+    <link rel="icon" href="app/assets/favicon.ico" type="image/x-icon" />
     <!-- chrome mobile home screen support -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="shortcut icon" sizes="114x114" href="app/assets/apple-touch-icon-114x114.png">
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link
+      rel="shortcut icon"
+      sizes="114x114"
+      href="app/assets/apple-touch-icon-114x114.png"
+    />
   </head>
   <body>
     <div id="map" class="map"></div>
@@ -47,7 +65,7 @@
         </div>
       </section>
     </div>
-    <div id="routing-settings" class="page" style="display:none">
+    <div id="routing-settings" class="page" style="display: none">
       <header>
         <button class="btn close-page-button">Close</button>
       </header>
@@ -60,25 +78,35 @@
       <span class="routing-panel-stats">
         <div class="routing-panel-distance">0 km</div>
         <div class="routing-panel-elevation">
-          +<span class="routing-panel-ascent">0 m</span>
-          -<span class="routing-panel-descent">0 m</span>
+          +<span class="routing-panel-ascent">0 m</span> -<span
+            class="routing-panel-descent"
+            >0 m</span
+          >
         </div>
       </span>
-      <span class="routing-vehicle-buttons flat-btn-group flat-horizontal-btn-group">
+      <span
+        class="routing-vehicle-buttons flat-btn-group flat-horizontal-btn-group"
+      >
       </span>
-      <select class="routing-vehicle-select">
-      </select>
-      <button class="routing-panel-settings-button settings-button">&nbsp;</button>
+      <select class="routing-vehicle-select"></select>
+      <button class="routing-panel-settings-button settings-button">
+        &nbsp;
+      </button>
       <button class="routing-panel-export-button export-button">&nbsp;</button>
       <button class="routing-panel-clear-button delete-button">&nbsp;</button>
       <button class="routing-panel-close-button close-button">&nbsp;</button>
     </div>
     <script src="dist/main.js"></script>
     <script>
-      var _gaq=[['_setAccount','UA-31870955-1'],['_trackPageview']];
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g,s)}(document,'script'));
+      var _gaq = [['_setAccount', 'UA-31870955-1'], ['_trackPageview']];
+      (function (d, t) {
+        var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+        g.src =
+          ('https:' == location.protocol ? '//ssl' : '//www') +
+          '.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g, s);
+      })(document, 'script');
     </script>
   </body>
 </html>

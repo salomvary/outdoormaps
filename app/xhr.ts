@@ -11,19 +11,19 @@ export function get(url, options?): AbortablePromise<any> {
   if (options.data) {
     url = url + '?' + encodeData(options.data);
   }
-  var promise: any = new Promise(function(resolve, reject) {
+  var promise: any = new Promise(function (resolve, reject) {
     xhr = $.extend(new XMLHttpRequest(), {
       timeout: 5000,
-      onload: function() {
+      onload: function () {
         if (xhr.status >= 200 && xhr.status < 300) {
           resolve(JSON.parse(xhr.responseText));
         } else {
           reject(xhr.status);
         }
       },
-      onerror: function() {
+      onerror: function () {
         reject(xhr.status);
-      }
+      },
     });
     xhr.open('GET', url, true);
     xhr.send();
@@ -40,7 +40,7 @@ export function get(url, options?): AbortablePromise<any> {
 
 function encodeData(data) {
   return Object.keys(data)
-    .map(function(key) {
+    .map(function (key) {
       return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
     })
     .join('&');

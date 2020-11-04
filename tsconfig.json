@@ -9,15 +9,8 @@
     "target": "es5",
     "allowJs": true,
     "checkJs": true,
-    "typeRoots": [
-      "./typings",
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./typings", "./node_modules/@types"]
   },
-  "include": [
-    "app/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["app/**/*"],
+  "exclude": ["node_modules"]
 }

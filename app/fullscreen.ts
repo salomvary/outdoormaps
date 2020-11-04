@@ -5,24 +5,28 @@ import StateStore from './state-store';
 import 'leaflet-fullscreen';
 
 export default class Fullscreen implements MapPlugin {
-  private controller: Map
-  private options: StateStore
+  private controller: Map;
+  private options: StateStore;
   private fullscreen: L.Control.Fullscreen;
 
   constructor(controller: Map, options: StateStore) {
-    if ((<any>navigator).standalone) { return; }
+    if ((<any>navigator).standalone) {
+      return;
+    }
     this.controller = controller;
     this.options = options;
     this.fullscreen = new L.Control.Fullscreen({
       title: {
-        'false': 'View Fullscreen (press f)',
-        'true': 'Exit Fullscreen (press f)'
-      }
+        false: 'View Fullscreen (press f)',
+        true: 'Exit Fullscreen (press f)',
+      },
     });
   }
 
   setMap(map: L.Map) {
-    if ((<any>navigator).standalone) { return; }
+    if ((<any>navigator).standalone) {
+      return;
+    }
     map.addControl(this.fullscreen);
     // Prevent activating full screen when focus is somewhere else
     // eg. typing into an input. Adopted from:
@@ -44,7 +48,9 @@ export default class Fullscreen implements MapPlugin {
   }
 
   private onKeyDown(e: KeyboardEvent) {
-    if (e.altKey || e.ctrlKey || e.metaKey) { return; }
+    if (e.altKey || e.ctrlKey || e.metaKey) {
+      return;
+    }
 
     if (e.code === 'KeyF') {
       this.controller.map.toggleFullscreen();

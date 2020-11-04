@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 export interface State {
   bounds?: L.LatLngBoundsLiteral;
   layers?: [string, string?];
-  defaultLayers?: {[mapType: string]: string};
+  defaultLayers?: { [mapType: string]: string };
   routingService?: string;
   zoom?: number;
   center?: L.LatLngLiteral;
@@ -15,7 +15,7 @@ export interface State {
 }
 
 export default class StateStore {
-  private properties: State
+  private properties: State;
 
   constructor() {
     this.properties = {};
@@ -24,7 +24,7 @@ export default class StateStore {
 
   set(key: 'bounds', value: L.LatLngBoundsLiteral): void;
   set(key: 'layers', value: [string, string?]): void;
-  set(key: 'defaultLayers', value: {[key: string]: string}): void;
+  set(key: 'defaultLayers', value: { [key: string]: string }): void;
   set(key: 'center', value: L.LatLngLiteral): void;
   set(key: 'position', value: L.LatLngLiteral): void;
   set(key: 'routingVehicle', value: string): void;
@@ -44,7 +44,7 @@ export default class StateStore {
 
   get(key: 'bounds'): L.LatLngBoundsLiteral;
   get(key: 'layers'): [string, string?];
-  get(key: 'defaultLayers'): {[key: string]: string};
+  get(key: 'defaultLayers'): { [key: string]: string };
   get(key: 'marker'): L.LatLngLiteral;
   get(key: 'center'): L.LatLngLiteral;
   get(key: 'position'): L.LatLngLiteral;

@@ -12,10 +12,10 @@ interface SearchControlOptions extends L.ControlOptions {
 }
 
 export default class SearchControl extends L.Control {
-  private input: HTMLInputElement
-  private clearButton: HTMLInputElement
-  private results: HTMLElement
-  options: SearchControlOptions
+  private input: HTMLInputElement;
+  private clearButton: HTMLInputElement;
+  private results: HTMLElement;
+  options: SearchControlOptions;
 
   constructor(options: SearchControlOptions) {
     super(options);
@@ -28,7 +28,9 @@ export default class SearchControl extends L.Control {
     var wrapper = $.create('span', 'search-input-wrapper', control);
 
     // input
-    var input = this.input = <HTMLInputElement>$.create('input', 'search-input', wrapper);
+    var input = (this.input = <HTMLInputElement>(
+      $.create('input', 'search-input', wrapper)
+    ));
     // TODO use type=search and remove generated "clear" button
     input.type = 'text';
     input.placeholder = 'Search';
@@ -36,7 +38,7 @@ export default class SearchControl extends L.Control {
     $.on(input, 'focus', this.onFocus, this);
     $.on(input, 'blur', this.onBlur, this);
     $.on(input, 'contextmenu', this.onContextMenu, this);
-    $.fastClick(input, {focus: true});
+    $.fastClick(input, { focus: true });
 
     // hidden submit button
     // (needed on iOS to be able to submit from sw keyboard)
@@ -44,7 +46,9 @@ export default class SearchControl extends L.Control {
     submitButton.innerHTML = 'Search';
 
     // clear button
-    var clear = this.clearButton = <HTMLInputElement>$.create('button', 'search-clear', wrapper);
+    var clear = (this.clearButton = <HTMLInputElement>(
+      $.create('button', 'search-clear', wrapper)
+    ));
     clear.type = 'button';
     clear.innerHTML = '✕';
     $.on(clear, 'click', this.onClear, this);
@@ -109,7 +113,8 @@ export default class SearchControl extends L.Control {
   }
 
   private adjustHeight() {
-    var height = window.innerHeight - 3 * padding - inputHeight - attributionHeight;
+    var height =
+      window.innerHeight - 3 * padding - inputHeight - attributionHeight;
     this.results.style.maxHeight = height + 'px';
   }
 
@@ -119,7 +124,7 @@ export default class SearchControl extends L.Control {
       if (typeof results == 'string') {
         results = [results];
       }
-      results.map(function(this: SearchControl, result, i) {
+      results.map(function (this: SearchControl, result, i) {
         var res = $.create('li', 'search-result');
         res.innerHTML = result;
         var select = this.onSelect.bind(this, i, result);

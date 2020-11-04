@@ -1,11 +1,11 @@
 import * as L from 'leaflet';
-import {isEnabled} from './flags';
+import { isEnabled } from './flags';
 import Flickr from './flickr';
 import 'leaflet-plugins/layer/tile/Bing';
 import 'proj4leaflet';
 // import 'os-leaflet';
 
-export type LayerMapType = 'map' | 'hiking' | 'satellite' | 'overlay'
+export type LayerMapType = 'map' | 'hiking' | 'satellite' | 'overlay';
 
 interface LayerConstructor {
   new (url: string, options?: L.TileLayerOptions | L.WMSOptions): L.Layer;
@@ -17,26 +17,30 @@ export type LayerConfig = {
   title?: string;
   klazz?: LayerConstructor;
   mapType: LayerMapType;
-  folder?: (data: {z: number}) => string;
+  folder?: (data: { z: number }) => string;
   // Narrow down from LatLngBoundsExpression
   bounds?: L.LatLngBounds;
-} & (L.TileLayerOptions | L.WMSOptions)
+} & (L.TileLayerOptions | L.WMSOptions);
 
-var mapboxKey = 'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
+var mapboxKey =
+  'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
-var layers: {[id: string]: LayerConfig} = {},
-  instances: {[id: string]: L.Layer} = {},
+var layers: { [id: string]: LayerConfig } = {},
+  instances: { [id: string]: L.Layer } = {},
   customOptions = ['id', 'url', 'title', 'klazz', 'mapType'];
 
 var Hungary = new L.LatLngBounds(
   new L.LatLng(48.6, 16), // sw
-  new L.LatLng(45.6, 23.2)); // ne
+  new L.LatLng(45.6, 23.2)
+); // ne
 
 layers.mapboxstreets = {
-  url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' + mapboxKey,
+  url:
+    'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}@2x?access_token=' +
+    mapboxKey,
   attribution: '© Mapbox',
   title: 'Mapbox Streets',
-  mapType: 'map'
+  mapType: 'map',
 };
 
 layers.map = {
@@ -44,26 +48,29 @@ layers.map = {
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: isEnabled('detectRetina'),
   title: 'OpenStreetMap',
-  mapType: 'map'
+  mapType: 'map',
 };
 
 layers.mapboxoutdoors = {
-  url: 'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}@2x?access_token=' + mapboxKey,
+  url:
+    'https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}@2x?access_token=' +
+    mapboxKey,
   tileSize: 512,
   maxZoom: 18,
   zoomOffset: -1,
   attribution: '© Mapbox',
   title: 'Mapbox Outdoors',
-  mapType: 'hiking'
+  mapType: 'hiking',
 };
 
 layers.opencyclemap = {
-  url: 'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=0050a9bf53204806a4a9af0a4c5e03f7',
+  url:
+    'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=0050a9bf53204806a4a9af0a4c5e03f7',
   subdomains: 'abc',
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: isEnabled('detectRetina'),
   title: 'OpenCycleMap',
-  mapType: 'hiking'
+  mapType: 'hiking',
 };
 
 layers.wanderkarte = {
@@ -75,9 +82,7 @@ layers.wanderkarte = {
   detectRetina: isEnabled('detectRetina'),
   title: 'Wanderkarte (Central Europe)',
   mapType: 'hiking',
-  bounds: new L.LatLngBounds(
-    new L.LatLng(27.4, -32),
-    new L.LatLng(58, 23))
+  bounds: new L.LatLngBounds(new L.LatLng(27.4, -32), new L.LatLng(58, 23)),
 };
 
 layers.turistautak = {
@@ -89,14 +94,14 @@ layers.turistautak = {
   detectRetina: isEnabled('detectRetina'),
   title: 'Turistautak.hu (Hungary)',
   mapType: 'hiking',
-  bounds: Hungary
+  bounds: Hungary,
 };
 
 layers.satellite = {
   klazz: (<any>L).BingLayer,
   url: 'AugCQhyydetxyavzoAQjcWuElUpYz2r49p15Kol7MUZEHnAW9umPiQWiki5CsUuz',
   detectRetina: true,
-  mapType: 'satellite'
+  mapType: 'satellite',
 };
 
 layers.bergfex = {
@@ -107,42 +112,46 @@ layers.bergfex = {
   detectRetina: isEnabled('detectRetina'),
   title: 'bergfex (Austria)',
   mapType: 'hiking',
-  folder: function(data) {
+  folder: function (data) {
     return data.z <= 15 ? '512px' : 'standard';
   },
   bounds: new L.LatLngBounds(
     new L.LatLng(46.3, 9.3), // sw
-    new L.LatLng(49, 17.3)) // ne
+    new L.LatLng(49, 17.3)
+  ), // ne
 };
 
 layers.bgtopovj = {
   klazz: L.TileLayer.WMS,
   detectRetina: isEnabled('detectRetina'),
-  attribution: '<a href="http://web.uni-plovdiv.bg/vedrin/index_en.html">Map data: Uni-Plovdiv</a>',
+  attribution:
+    '<a href="http://web.uni-plovdiv.bg/vedrin/index_en.html">Map data: Uni-Plovdiv</a>',
   url: 'http://www.kade.si/cgi-bin/mapserv',
   layers: 'BGtopoVJ-raster-v3.00',
   title: 'BGtopoVJ (Bulgaria)',
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(40, 20), // sw
-    new L.LatLng(44, 29)) // ne
+    new L.LatLng(44, 29)
+  ), // ne
 };
 
 layers.flickr = {
   klazz: Flickr,
   title: 'Flickr',
-  mapType: 'overlay'
+  mapType: 'overlay',
 };
 
 layers.strava = {
-  url: 'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
+  url:
+    'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
   subdomains: ['a', 'b', 'c'],
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
   detectRetina: true,
   title: 'Strava Heatmap',
   mapType: 'overlay',
   maxNativeZoom: 14,
-  maxZoom: 21
+  maxZoom: 21,
 };
 
 layers.forumaps = {
@@ -150,7 +159,7 @@ layers.forumaps = {
   maxZoom: 15,
   attribution: '© <a href="http://www.4umaps.eu/">4UMaps.eu</a>',
   title: '4UMaps.eu',
-  mapType: 'hiking'
+  mapType: 'hiking',
 };
 
 layers.lines = {
@@ -162,7 +171,7 @@ layers.lines = {
   detectRetina: isEnabled('detectRetina'),
   title: 'Turistautak.hu',
   mapType: 'overlay',
-  bounds: Hungary
+  bounds: Hungary,
 };
 
 // FIXME this is currently broken due to library changes,
@@ -182,26 +191,27 @@ layers.opentopomap = {
   attribution: '© <a href="http://opentopomap.org/">OpenTopoMap</a>',
   detectRetina: isEnabled('detectRetina'),
   title: 'OpenTopoMap (Europe)',
-  mapType: 'hiking'
+  mapType: 'hiking',
 };
 
 layers.opensnowmapBase = {
   url: 'https://www.opensnowmap.org/base_snow_map/{z}/{x}/{y}.png',
   maxZoom: 18,
-  attribution: '© <a href="http://opensnowmap.org">opensnowmap.org</a> CC-BY-SA',
+  attribution:
+    '© <a href="http://opensnowmap.org">opensnowmap.org</a> CC-BY-SA',
   detectRetina: isEnabled('detectRetina'),
   title: 'OpenSnowMap (Base)',
-  mapType: 'hiking'
+  mapType: 'hiking',
 };
 
 layers.opensnowmapPiste = {
   url: 'http://www.opensnowmap.org/tiles-pistes/{z}/{x}/{y}.png',
   maxZoom: 18,
-  attribution: '© <a href="http://opensnowmap.org">opensnowmap.org</a> CC-BY-SA',
+  attribution:
+    '© <a href="http://opensnowmap.org">opensnowmap.org</a> CC-BY-SA',
   detectRetina: isEnabled('detectRetina'),
   title: 'OpenSnowMap (Piste)',
-  mapType: 'overlay'
-
+  mapType: 'overlay',
 };
 
 // Source:
@@ -222,10 +232,11 @@ layers.catalonia = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(42.9, 0.04),
-    new L.LatLng(40.52, 3.41))
+    new L.LatLng(40.52, 3.41)
+  ),
 };
 
-Object.keys(layers).forEach(function(id) {
+Object.keys(layers).forEach(function (id) {
   layers[id].id = id;
 });
 
@@ -241,10 +252,10 @@ function get(id: string): L.Layer {
 
 function keys(mapType?: LayerMapType): LayerConfig[] {
   return Object.keys(layers)
-    .map(function(key) {
+    .map(function (key) {
       return layers[key];
     })
-    .filter(function(layer) {
+    .filter(function (layer) {
       return !mapType || layer.mapType === mapType;
     });
 }
@@ -253,14 +264,19 @@ function mapTypeOf(id: string): LayerMapType {
   return layers[id].mapType;
 }
 
-export default {get, keys, mapTypeOf};
+export default { get, keys, mapTypeOf };
 
-function getLayerOptions(options: LayerConfig): L.TileLayerOptions | L.WMSOptions {
-  return Object.keys(options)
-    .reduce(function(filtered: {[key: string]: any}, key: keyof LayerConfig) {
-      if (customOptions.indexOf(key) === -1) {
-        filtered[key] = options[key];
-      }
-      return filtered;
-    }, {});
+function getLayerOptions(
+  options: LayerConfig
+): L.TileLayerOptions | L.WMSOptions {
+  return Object.keys(options).reduce(function (
+    filtered: { [key: string]: any },
+    key: keyof LayerConfig
+  ) {
+    if (customOptions.indexOf(key) === -1) {
+      filtered[key] = options[key];
+    }
+    return filtered;
+  },
+  {});
 }

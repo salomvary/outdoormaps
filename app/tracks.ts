@@ -2,18 +2,22 @@ import * as L from 'leaflet';
 import 'leaflet-plugins/layer/vector/GPX';
 import { MapPlugin } from './map-plugin';
 
-var DROPBOX_URL = new RegExp('https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)');
+var DROPBOX_URL = new RegExp(
+  'https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)'
+);
 
 export default class Tracks implements MapPlugin {
-  private map: L.Map
-  private mapAvailable: Promise<void>
-  private track: L.GPX
-  private resolveMap: () => void
+  private map: L.Map;
+  private mapAvailable: Promise<void>;
+  private track: L.GPX;
+  private resolveMap: () => void;
 
   constructor() {
-    this.mapAvailable = new Promise(function(resolve: () => void) {
-      this.resolveMap = resolve;
-    }.bind(this));
+    this.mapAvailable = new Promise(
+      function (resolve: () => void) {
+        this.resolveMap = resolve;
+      }.bind(this)
+    );
   }
 
   route(path: string) {
@@ -28,10 +32,12 @@ export default class Tracks implements MapPlugin {
   }
 
   private loadTrack(url: string) {
-    var track = this.track = new L.GPX(url, {async: true});
+    var track = (this.track = new L.GPX(url, { async: true }));
     var trackLoaded = new Promise(track.on.bind(track, 'loaded'));
     this.mapAvailable
-      .then(function() { return trackLoaded; })
+      .then(function () {
+        return trackLoaded;
+      })
       .then(this.showTrack.bind(this));
   }
 
@@ -41,9 +47,7 @@ export default class Tracks implements MapPlugin {
   }
 
   private showTrack(event) {
-    this.map
-      .fitBounds(event.target.getBounds())
-      .addLayer(this.track);
+    this.map.fitBounds(event.target.getBounds()).addLayer(this.track);
   }
 
   private hideTrack() {

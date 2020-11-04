@@ -1,7 +1,7 @@
 # Outdoor Maps for Mobile and Desktop
 
 This project is a lightweight web based viewer for the best free online map
-services. 
+services.
 
 Launch http://outdoormaps.eu.
 

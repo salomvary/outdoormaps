@@ -1,8 +1,8 @@
-import {Evented, LeafletEvent} from 'leaflet';
+import { Evented, LeafletEvent } from 'leaflet';
 import $ from './util';
 
 export interface SelectOptions {
-  values?: {[key: string]: string};
+  values?: { [key: string]: string };
   toggle?: boolean;
 }
 
@@ -11,9 +11,9 @@ export interface SelectChangeEvent extends LeafletEvent {
 }
 
 export default class Select extends Evented {
-  el: HTMLElement
-  protected options: SelectOptions
-  protected _value: string
+  el: HTMLElement;
+  protected options: SelectOptions;
+  protected _value: string;
 
   constructor(el: HTMLElement, options?: SelectOptions) {
     super();
@@ -29,7 +29,7 @@ export default class Select extends Evented {
 
   protected update(value: string) {
     var buttons = this.el.querySelectorAll('button');
-    $.eachNode(buttons, function(button) {
+    $.eachNode(buttons, function (button) {
       var active = button.name === value;
       $.toggleClass(button, 'active', active);
     });
@@ -44,7 +44,7 @@ export default class Select extends Evented {
     this.update(value);
   }
 
-  setValues(values: {[key: string]: string}) {
+  setValues(values: { [key: string]: string }) {
     updateSelectOptions(this.el, values);
     this.setupListeners();
     this.update(this._value);
@@ -53,7 +53,7 @@ export default class Select extends Evented {
   setDisabled(values: string[]) {
     values = values || [];
     var buttons = this.el.querySelectorAll('button');
-    $.eachNode(buttons, function(button) {
+    $.eachNode(buttons, function (button) {
       button.disabled = values.indexOf(button.name) > -1;
     });
   }
@@ -62,16 +62,23 @@ export default class Select extends Evented {
     // handle click events
     // XXX no event delegation on iOS Safari :(
     var buttons = this.el.querySelectorAll('button');
-    $.eachNode(buttons, function(button) {
-      $.on(button, 'click', onClick, this);
-    }, this);
+    $.eachNode(
+      buttons,
+      function (button) {
+        $.on(button, 'click', onClick, this);
+      },
+      this
+    );
   }
 }
 
-function updateSelectOptions(wrapper: HTMLElement, values: {[key: string]: string}) {
+function updateSelectOptions(
+  wrapper: HTMLElement,
+  values: { [key: string]: string }
+) {
   wrapper.innerHTML = '';
   var options = document.createDocumentFragment();
-  Object.keys(values).forEach(function(key) {
+  Object.keys(values).forEach(function (key) {
     var button = document.createElement('button');
     button.name = key;
     button.className = 'flat-btn';
@@ -90,6 +97,6 @@ function onClick(this: Select, event: MouseEvent) {
       return;
     }
   }
-  this.fire('change', {value: value});
+  this.fire('change', { value: value });
   this.set(value);
 }
