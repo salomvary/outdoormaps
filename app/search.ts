@@ -22,7 +22,7 @@ export default class Search implements MapPlugin {
     this.debouncedSearch = debounce(this.search.bind(this));
   }
 
-  setMap(map: L.Map) {
+  setMap(map: L.Map): void {
     this.map = map;
     this.control = new SearchControl({
       position: 'topright',
