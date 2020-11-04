@@ -5,18 +5,21 @@ export interface AbortablePromise<T> extends Promise<T> {
   isAborted: boolean;
 }
 
-export function get(url, options?): AbortablePromise<any> {
+export function get<T = any>(
+  url: string,
+  options?: { data?: { [key: string]: string | number | boolean } }
+): AbortablePromise<T> {
   options = options || {};
-  let xhr;
+  let xhr: XMLHttpRequest;
   if (options.data) {
     url = url + '?' + encodeData(options.data);
   }
-  const promise: any = new Promise(function (resolve, reject) {
+  const promise = new Promise(function (resolve, reject) {
     xhr = $.extend(new XMLHttpRequest(), {
       timeout: 5000,
       onload: function () {
         if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(JSON.parse(xhr.responseText));
+          resolve(JSON.parse(xhr.responseText) as T);
         } else {
           reject(xhr.status);
         }
@@ -27,7 +30,7 @@ export function get(url, options?): AbortablePromise<any> {
     });
     xhr.open('GET', url, true);
     xhr.send();
-  });
+  }) as AbortablePromise<T>;
   // expose xhr.abort
   // TODO abort should clean up the promise
   promise.abort = () => {
@@ -38,7 +41,7 @@ export function get(url, options?): AbortablePromise<any> {
   return promise;
 }
 
-function encodeData(data) {
+function encodeData(data: { [key: string]: string | number | boolean }) {
   return Object.keys(data)
     .map(function (key) {
       return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);

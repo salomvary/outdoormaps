@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import fastClick from 'fastclick';
 
 export default {
-  extend: function (dst, src) {
+  extend: function (dst: any, src: any): any {
     if (src) {
       for (const k in src) {
         dst[k] = src[k];
@@ -11,21 +11,25 @@ export default {
     return dst;
   },
 
-  show: function (el) {
+  show: function (el: HTMLElement): void {
     el.style.display = 'block';
   },
 
-  hide: function (el) {
+  hide: function (el: HTMLElement): void {
     el.style.display = 'none';
   },
 
-  eachNode: function (nodeList, fn, context?) {
+  eachNode: function <T extends Node>(
+    nodeList: NodeListOf<T>,
+    fn: (node: T) => void,
+    context?: any
+  ) {
     for (let i = 0; i < nodeList.length; i++) {
       fn.call(context, nodeList[i]);
     }
   },
 
-  toggleClass: function (el, className, enable) {
+  toggleClass: function (el: HTMLElement, className: string, enable: boolean) {
     const classes = el.className.split(/\s+/),
       index = classes.indexOf(className);
     if (index > -1) {
@@ -37,7 +41,12 @@ export default {
     el.className = classes.join(' ');
   },
 
-  on: function (el, event, func, context?) {
+  on: function (
+    el: EventTarget,
+    event: string,
+    func: (e: Event) => void,
+    context?: any
+  ) {
     el.addEventListener(event, func.bind(context), false);
   },
 

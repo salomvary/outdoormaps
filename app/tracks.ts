@@ -46,7 +46,7 @@ export default class Tracks implements MapPlugin {
     this.resolveMap();
   }
 
-  private showTrack(event) {
+  private showTrack(event: any) {
     this.map.fitBounds(event.target.getBounds()).addLayer(this.track);
   }
 

@@ -55,7 +55,7 @@ export default class RoutingSettings {
         const title = routingServices.get(routingService).title;
         values[routingService] = title;
         return values;
-      }, {});
+      }, {} as {[key: string]: string});
     const buttons = new ButtonGroup({ values }).on(
       'change',
       this.onRoutingServiceChange,

@@ -1,16 +1,28 @@
 // copied from
 // github:gwilson/getAccurateCurrentPosition/master#geo.js
+/**
+ * @param {*} geolocationSuccess
+ * @param {*} geolocationError
+ * @param {*} geoprogress
+ * @param {*} options
+ */
 export function getAccurateCurrentPosition(
   geolocationSuccess,
   geolocationError,
   geoprogress,
   options
 ) {
+  /**
+   * @type {*}
+   */
   var lastCheckedPosition;
   var locationEventCount = 0;
 
   options = options || {};
 
+  /**
+   * @param {*} position
+   */
   var checkLocation = function (position) {
     lastCheckedPosition = position;
     ++locationEventCount;
@@ -33,12 +45,18 @@ export function getAccurateCurrentPosition(
     foundPosition(lastCheckedPosition);
   };
 
+  /**
+   * @param {*} error
+   */
   var onError = function (error) {
     clearTimeout(timerID);
     navigator.geolocation.clearWatch(watchID);
     geolocationError(error);
   };
 
+  /**
+   * @param {*} position
+   */
   var foundPosition = function (position) {
     geolocationSuccess(position);
   };

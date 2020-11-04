@@ -47,7 +47,7 @@ const plugins: MapPluginConstructor[] = [
 const stateEvents = 'moveend zoomend layeradd layerremove';
 
 // Neither geographically nor politically correct ;)
-const europeBounds = [
+const europeBounds: L.LatLngBoundsLiteral = [
   [35, -15], // sw
   [65, 35], // ne
 ];
@@ -80,7 +80,7 @@ export default class Map {
   map?: L.Map;
   layers: [string, string?];
 
-  defaults = {
+  defaults: State = {
     bounds: europeBounds,
     layers: ['mapboxstreets'],
     routingService: 'mapbox',
@@ -131,9 +131,10 @@ export default class Map {
 
     // set options
     const defaults: State = {};
-    Object.keys(this.defaults).forEach(function (k) {
-      if (typeof this.options.get(k) == 'undefined') {
-        defaults[k] = this.defaults[k];
+    Object.keys(this.defaults).forEach(function (this: Map, k: keyof State) {
+      if (typeof (this.options as any).get(k) == 'undefined') {
+        const newLocal = this.defaults[k];
+        (defaults as any)[k] = newLocal;
       }
     }, this);
     this.options.set(defaults);
@@ -186,7 +187,7 @@ export default class Map {
     return L.marker(position, options).addTo(this.map);
   }
 
-  removeMarker(marker) {
+  removeMarker(marker: L.Layer) {
     this.map.removeLayer(marker);
   }
 

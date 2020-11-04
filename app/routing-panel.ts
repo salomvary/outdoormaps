@@ -61,8 +61,8 @@ export default class RoutingPanel {
     this.options.onVehicleChange(value);
   }
 
-  private onVehicleSelectChange(event: SelectChangeEvent) {
-    const value = event.target.value;
+  private onVehicleSelectChange(event: InputEvent) {
+    const value = (event.target as HTMLSelectElement).value;
     this.vehicleButtons.set(value);
     this.options.onVehicleChange(value);
   }

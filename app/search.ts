@@ -145,7 +145,7 @@ function formatResult(result: SearchResult) {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function debounce<F extends Function>(fn: F): F {
-  let timer = null;
+  let timer: null | NodeJS.Timeout = null;
   return <F>(<unknown>function () {
     // eslint-disable-next-line
     var context = this,

@@ -12,6 +12,7 @@ export interface State {
   position?: L.LatLngLiteral;
   routingVehicle?: string;
   routingWaypoints?: L.LatLngLiteral[];
+  routingActive?: boolean;
 }
 
 export default class StateStore {
@@ -26,18 +27,19 @@ export default class StateStore {
   set(key: 'layers', value: [string, string?]): void;
   set(key: 'defaultLayers', value: { [key: string]: string }): void;
   set(key: 'center', value: L.LatLngLiteral): void;
-  set(key: 'position', value: L.LatLngLiteral): void;
+  set(key: 'position', value: L.LatLngExpression): void;
   set(key: 'routingVehicle', value: string): void;
   set(key: 'routingService', value: string): void;
   set(key: 'routingActive', value: boolean): void;
   set(key: 'routingWaypoints', value: L.LatLngLiteral[]): void;
+  set(key: 'zoom', value: number): void;
   set(key: State): void;
 
-  set(key: string | State, value?: any): void {
+  set(key: any, value?: any): void {
     if (typeof key === 'object') {
       $.extend(this.properties, key);
     } else {
-      this.properties[key] = value;
+      (this.properties as any)[key] = value;
     }
     this.save();
   }
@@ -52,9 +54,10 @@ export default class StateStore {
   get(key: 'routingService'): string;
   get(key: 'routingActive'): boolean;
   get(key: 'routingWaypoints'): L.LatLngLiteral[];
+  get(key: 'zoom'): number;
   get(): State;
 
-  get(key?: string) {
+  get(key?: keyof State) {
     return key ? this.properties[key] : this.properties;
   }
 
@@ -78,7 +81,7 @@ export default class StateStore {
   }
 }
 
-function reviver(k, v) {
+function reviver(k: string, v: any) {
   if (v.lat && v.lng) {
     return new L.LatLng(v.lat, v.lng);
   } else {

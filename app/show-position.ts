@@ -70,13 +70,13 @@ export default class ShowPosition implements MapPlugin {
     }
   }
 
-  positionError(error) {
+  positionError(error: Error) {
     this.locating = false;
     $.toggleClass(this.button.getContainer(), 'busy-button', false);
     alert('Could not get your position: ' + error.message);
   }
 
-  positionUpdate(progress, position) {
+  positionUpdate(progress: boolean, position: Position) {
     if (!progress) {
       this.locating = false;
       $.toggleClass(this.button.getContainer(), 'busy-button', false);
@@ -88,7 +88,7 @@ export default class ShowPosition implements MapPlugin {
     this.showPosition(center);
   }
 
-  showPosition(center) {
+  showPosition(center: L.LatLngExpression) {
     // update marker position
     this.setMarker(center);
 
@@ -108,7 +108,7 @@ export default class ShowPosition implements MapPlugin {
     this.options.save();
   }
 
-  setMarker(position) {
+  setMarker(position: L.LatLngExpression) {
     if (this.marker) {
       this.marker.setLatLng(position);
     } else {

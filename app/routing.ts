@@ -103,7 +103,7 @@ export default class Routing {
     return Object.keys(vehicles).reduce(function (acc, key) {
       acc[key] = vehicles[key].title;
       return acc;
-    }, {});
+    }, {} as { [key: string]: string });
   }
 
   private onVehicleChange(value: string) {

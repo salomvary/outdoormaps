@@ -9,7 +9,7 @@ import { saveAs } from 'file-saver';
  *
  * @param {LatLng[]} coordinates
  */
-export default function gpxExport(coordinates) {
+export default function gpxExport(coordinates: L.LatLng[]) {
   const trackPoints = coordinates.map(function (coordinate) {
     return {
       $lat: coordinate.lat,

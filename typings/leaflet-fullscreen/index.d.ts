@@ -8,11 +8,11 @@ declare module 'leaflet' {
           | L.ControlOptions
           | { title?: { false?: string; true?: string } }
       );
-      toggleFullscreen();
+      toggleFullscreen(): void;
     }
   }
 
   interface Map {
-    toggleFullscreen();
+    toggleFullscreen(): void;
   }
 }

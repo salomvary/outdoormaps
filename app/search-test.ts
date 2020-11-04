@@ -32,18 +32,23 @@ const FakeMarker = function () {
 
 const FakeController = function () {
   this.addMarker = sinon.spy(function () {
-    return new FakeMarker();
+    return new (FakeMarker as any)();
   });
 };
 
 xdescribe('Search', function () {
-  let map, sandbox, subject, controller, oneResult, clock;
+  let map: any,
+    sandbox: any,
+    subject: any,
+    controller: any,
+    oneResult: any,
+    clock: any;
 
   const options: StateStore = <any>{};
 
   beforeEach(function () {
-    map = new FakeMap();
-    controller = new FakeController();
+    map = new (FakeMap as any)();
+    controller = new (FakeController as any)();
     subject = new Search(controller, options);
     subject.setMap(map);
     sandbox = sinon.createSandbox({ useFakeServer: true });
@@ -175,7 +180,7 @@ xdescribe('Search', function () {
 });
 
 xdescribe('Search Service', function () {
-  let server;
+  let server: any;
 
   beforeEach(function () {
     server = sinon.fakeServer.create();
@@ -244,7 +249,7 @@ xdescribe('Search Service', function () {
 });
 
 xdescribe('Search Control', function () {
-  let clock, subject, container;
+  let clock: any, subject: any, container: any;
 
   beforeEach(function () {
     subject = new (<any>SearchControl)({
@@ -323,13 +328,13 @@ xdescribe('Search Control', function () {
   });
 });
 
-function click(element) {
+function click(element: HTMLElement) {
   const event = new MouseEvent('click');
   element.dispatchEvent(event);
 }
 
-function trigger(element, type) {
-  const types = {
+function trigger(element: HTMLElement, type: string) {
+  const types: { [type: string]: typeof UIEvent } = {
     focus: FocusEvent,
     blur: FocusEvent,
   };

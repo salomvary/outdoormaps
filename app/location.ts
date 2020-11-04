@@ -1,7 +1,7 @@
 import $ from './util';
 import { Evented } from 'leaflet';
 
-let currentHash;
+let currentHash: string;
 
 const Location = $.extend(
   {
@@ -9,7 +9,7 @@ const Location = $.extend(
       return window.location.hash.substring(1);
     },
 
-    set: function (hash) {
+    set: function (hash: string) {
       currentHash = hash;
       window.location.hash = hash;
     },
