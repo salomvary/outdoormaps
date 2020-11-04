@@ -70,7 +70,11 @@ export default class SearchControl extends L.Control {
     setTimeout(this.hideResults.bind(this), 100);
   }
 
-  private onInput() {
+  private onInput(e?: InputEvent) {
+    if (e) {
+      // Prevent entering full screen when someone types "f"
+      e.stopPropagation();
+    }
     this.options.onInput(this.getVal());
     this.toggleClearButton(this.input.value.length > 0);
   }
