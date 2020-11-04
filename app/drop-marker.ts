@@ -1,3 +1,4 @@
+import * as L from 'leaflet';
 import Location from './location';
 import Map from './map';
 import StateStore, { State } from './state-store';

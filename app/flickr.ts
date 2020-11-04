@@ -90,7 +90,6 @@ export default class Flickr extends L.FeatureGroup {
     var limit = Math.max(10, Math.min(100, Math.round(size.x * size.y / magic)));
 
     // https://www.flickr.com/services/api/flickr.photos.search.html
-    /* eslint-disable @typescript-eslint/camelcase */
     get('https://api.flickr.com/services/rest/', {
       data: {
         api_key: '779cc4e1c13263c15115435e538212d5',

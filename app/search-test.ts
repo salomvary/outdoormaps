@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import { expect, use } from 'chai';
 import * as sinonChai from 'sinon-chai';
 import * as sinon from 'sinon';

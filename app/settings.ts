@@ -1,3 +1,4 @@
+import * as L from 'leaflet';
 import Layers, { LayerMapType, LayerConfig } from './layers';
 import $ from './util';
 import Select, { SelectOptions, SelectChangeEvent } from './select';

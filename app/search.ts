@@ -143,6 +143,7 @@ function formatResult(result: SearchResult) {
   return result.display_name;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 function debounce<F extends Function>(fn: F): F {
   var timer = null;
   return <F><unknown> function() {
