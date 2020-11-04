@@ -2,7 +2,7 @@ import Select, { SelectOptions } from './select';
 
 export default class ButtonGroup extends Select {
   constructor(options: SelectOptions) {
-    var g = document.createElement('fieldset');
+    const g = document.createElement('fieldset');
     g.className = 'control-group';
     render(g, options.values);
     super(g, Object.assign(options, { values: undefined }));
@@ -11,7 +11,7 @@ export default class ButtonGroup extends Select {
 
 function render(el: HTMLElement, values: { [key: string]: string }) {
   Object.keys(values).forEach(function (key) {
-    var button = document.createElement('button');
+    const button = document.createElement('button');
     button.className = 'radio-btn';
     button.name = key;
     button.innerHTML = values[key];

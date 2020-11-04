@@ -8,7 +8,7 @@ describe('ShowPosition', function () {
     const controller: Map = <any>{};
     const options: StateStore = <any>{};
 
-    var subject = new ShowPosition(controller, options);
+    const subject = new ShowPosition(controller, options);
     assert.ok(subject);
   });
 });

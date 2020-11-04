@@ -99,7 +99,7 @@ export default class Routing {
   }
 
   private getVehicles() {
-    var vehicles = routingServices.get(this.routingService).vehicles;
+    const vehicles = routingServices.get(this.routingService).vehicles;
     return Object.keys(vehicles).reduce(function (acc, key) {
       acc[key] = vehicles[key].title;
       return acc;
@@ -154,8 +154,8 @@ export default class Routing {
   }
 
   private addRoutingControl() {
-    var routingService = routingServices.get(this.routingService);
-    var router = routingService.create(this.routingVehicle);
+    const routingService = routingServices.get(this.routingService);
+    const router = routingService.create(this.routingVehicle);
     this.routingControl = new RoutingLayer({
       waypoints: this.options.get('routingWaypoints'),
       router,
@@ -166,19 +166,19 @@ export default class Routing {
   }
 
   private updateRoutingVehicle() {
-    var routingService = routingServices.get(this.routingService);
-    var router = this.routingControl.router;
+    const routingService = routingServices.get(this.routingService);
+    const router = this.routingControl.router;
     routingService.updateVehicle(router, this.routingVehicle);
   }
 
   private updateRoutingService() {
-    var routingService = routingServices.get(this.routingService);
-    var router = routingService.create(this.routingVehicle);
+    const routingService = routingServices.get(this.routingService);
+    const router = routingService.create(this.routingVehicle);
     this.routingControl.router = router;
   }
 
   private saveWaypoints() {
-    var waypoints = this.routingControl.getWaypoints();
+    const waypoints = this.routingControl.getWaypoints();
     this.options.set('routingWaypoints', waypoints);
   }
 

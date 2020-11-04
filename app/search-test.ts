@@ -9,7 +9,7 @@ import { LatLngBounds } from 'leaflet';
 
 use(sinonChai);
 
-var FakeMap = function () {
+const FakeMap = function () {
   this.addControl = sinon.spy();
   this.fitBounds = sinon.spy();
   this.getBounds = function () {
@@ -26,18 +26,18 @@ var FakeMap = function () {
   };
 };
 
-var FakeMarker = function () {
+const FakeMarker = function () {
   this.setLatLng = sinon.spy();
 };
 
-var FakeController = function () {
+const FakeController = function () {
   this.addMarker = sinon.spy(function () {
     return new FakeMarker();
   });
 };
 
 xdescribe('Search', function () {
-  var map, sandbox, subject, controller, oneResult, clock;
+  let map, sandbox, subject, controller, oneResult, clock;
 
   const options: StateStore = <any>{};
 
@@ -175,7 +175,7 @@ xdescribe('Search', function () {
 });
 
 xdescribe('Search Service', function () {
-  var server;
+  let server;
 
   beforeEach(function () {
     server = sinon.fakeServer.create();
@@ -191,32 +191,32 @@ xdescribe('Search Service', function () {
       /.*&q=hello$/,
       JSON.stringify([{ display_name: 'foo' }, { display_name: 'bar' }])
     );
-    var success = sinon.spy();
-    var bounds: LatLngBounds = <any>{
+    const success = sinon.spy();
+    const bounds: LatLngBounds = <any>{
       toBBoxString: function () {
         return 'a,b,c,d';
       },
     };
 
-    var request = SearchService.search('hello', {
+    const request = SearchService.search('hello', {
       bounds: bounds,
     });
     request.then(success);
     server.respond();
     expect(success).called;
-    var results = success.args[0][0];
+    const results = success.args[0][0];
     expect(results[1].display_name).equal('bar');
   });
 
   it('search failed', function () {
-    var success = sinon.spy();
-    var fail = sinon.spy();
-    var bounds: LatLngBounds = <any>{
+    const success = sinon.spy();
+    const fail = sinon.spy();
+    const bounds: LatLngBounds = <any>{
       toBBoxString: function () {
         return 'a,b,c,d';
       },
     };
-    var request = SearchService.search('hello', {
+    const request = SearchService.search('hello', {
       bounds: bounds,
     });
     request.then(success, fail);
@@ -226,14 +226,14 @@ xdescribe('Search Service', function () {
   });
 
   it('search aborted', function () {
-    var success = sinon.spy();
-    var fail = sinon.spy();
-    var bounds: LatLngBounds = <any>{
+    const success = sinon.spy();
+    const fail = sinon.spy();
+    const bounds: LatLngBounds = <any>{
       toBBoxString: function () {
         return 'a,b,c,d';
       },
     };
-    var request = SearchService.search('hello', {
+    const request = SearchService.search('hello', {
       bounds: bounds,
     });
     request.then(success, fail);
@@ -244,7 +244,7 @@ xdescribe('Search Service', function () {
 });
 
 xdescribe('Search Control', function () {
-  var clock, subject, container;
+  let clock, subject, container;
 
   beforeEach(function () {
     subject = new (<any>SearchControl)({
@@ -263,7 +263,7 @@ xdescribe('Search Control', function () {
     sinon.spy(subject, 'showResults');
     subject.setResults(['foo', 'bar']);
 
-    var items = container.querySelectorAll('.search-result');
+    const items = container.querySelectorAll('.search-result');
     expect(items).length(2);
     expect(items[0].innerHTML).contain('foo');
     expect(items[1].innerHTML).contain('bar');
@@ -274,7 +274,7 @@ xdescribe('Search Control', function () {
     sinon.spy(subject, 'showResults');
     subject.setResults('hello');
 
-    var items = container.querySelectorAll('.search-result');
+    const items = container.querySelectorAll('.search-result');
     expect(items).length(1);
     expect(items[0].innerHTML).contain('hello');
     expect(subject.showResults).called;
@@ -285,7 +285,7 @@ xdescribe('Search Control', function () {
     subject.setResults(['foo', 'bar']);
     subject.setResults();
 
-    var items = container.querySelectorAll('.search-result');
+    const items = container.querySelectorAll('.search-result');
     expect(items).length(0);
     expect(subject.hideResults).called;
   });
@@ -301,14 +301,14 @@ xdescribe('Search Control', function () {
   it('select result', function () {
     subject.setResults(['foo', 'bar']);
 
-    var item = container.querySelector('.search-result:first-child');
+    const item = container.querySelector('.search-result:first-child');
     click(item);
     expect(subject.options.onSelect).calledWith(0);
     expect(subject.input.value).equals('foo');
   });
 
   it('input', function () {
-    var input = container.querySelector('input');
+    const input = container.querySelector('input');
     input.value = 'foo';
     trigger(input, 'input');
     expect(subject.options.onInput).calledWith('foo');
@@ -316,7 +316,7 @@ xdescribe('Search Control', function () {
 
   it('blur', function () {
     sinon.spy(subject, 'hideResults');
-    var input = container.querySelector('input');
+    const input = container.querySelector('input');
     trigger(input, 'blur');
     clock.tick(50);
     expect(subject.hideResults).called;
@@ -324,16 +324,16 @@ xdescribe('Search Control', function () {
 });
 
 function click(element) {
-  var event = new MouseEvent('click');
+  const event = new MouseEvent('click');
   element.dispatchEvent(event);
 }
 
 function trigger(element, type) {
-  var types = {
+  const types = {
     focus: FocusEvent,
     blur: FocusEvent,
   };
-  var Type = types[type] || Event;
-  var event = new Type(type);
+  const Type = types[type] || Event;
+  const event = new Type(type);
   element.dispatchEvent(event);
 }

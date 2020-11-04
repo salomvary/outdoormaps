@@ -22,14 +22,14 @@ export type LayerConfig = {
   bounds?: L.LatLngBounds;
 } & (L.TileLayerOptions | L.WMSOptions);
 
-var mapboxKey =
+const mapboxKey =
   'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
-var layers: { [id: string]: LayerConfig } = {},
+const layers: { [id: string]: LayerConfig } = {},
   instances: { [id: string]: L.Layer } = {},
   customOptions = ['id', 'url', 'title', 'klazz', 'mapType'];
 
-var Hungary = new L.LatLngBounds(
+const Hungary = new L.LatLngBounds(
   new L.LatLng(48.6, 16), // sw
   new L.LatLng(45.6, 23.2)
 ); // ne
@@ -244,7 +244,7 @@ function get(id: string): L.Layer {
   // lazy-load this to avoid initial metadata request if not used
   // (eg. L.BingLayer)
   if (!instances[id] && id in layers) {
-    var Layer = layers[id].klazz || L.TileLayer;
+    const Layer = layers[id].klazz || L.TileLayer;
     instances[id] = new Layer(layers[id].url, getLayerOptions(layers[id]));
   }
   return instances[id];

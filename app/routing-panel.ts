@@ -25,19 +25,19 @@ export default class RoutingPanel {
     this.el = document.getElementById('routing-panel');
 
     // Event handlers
-    var clearButton = this.el.querySelector('.routing-panel-clear-button');
+    const clearButton = this.el.querySelector('.routing-panel-clear-button');
     $.on(clearButton, 'click', this.options.onClear, this);
     $.fastClick(clearButton);
 
-    var closeButton = this.el.querySelector('.routing-panel-close-button');
+    const closeButton = this.el.querySelector('.routing-panel-close-button');
     $.on(closeButton, 'click', this.options.onClose, this);
     $.fastClick(closeButton);
 
-    var exportButton = this.el.querySelector('.routing-panel-export-button');
+    const exportButton = this.el.querySelector('.routing-panel-export-button');
     $.on(exportButton, 'click', this.options.onExport, this);
     $.fastClick(exportButton);
 
-    var settingsButton = this.el.querySelector(
+    const settingsButton = this.el.querySelector(
       '.routing-panel-settings-button'
     );
     $.on(settingsButton, 'click', this.options.onSettings, this);
@@ -56,25 +56,25 @@ export default class RoutingPanel {
   }
 
   private onVehicleButtonsChange(event: SelectChangeEvent) {
-    var value = event.value;
+    const value = event.value;
     this.vehicleSelect.value = value;
     this.options.onVehicleChange(value);
   }
 
   private onVehicleSelectChange(event: SelectChangeEvent) {
-    var value = event.target.value;
+    const value = event.target.value;
     this.vehicleButtons.set(value);
     this.options.onVehicleChange(value);
   }
 
   setStats(stats: RouteSummary) {
-    var distance = this.el.querySelector('.routing-panel-distance');
+    const distance = this.el.querySelector('.routing-panel-distance');
     distance.innerHTML = formatDistance(stats.totalDistance);
 
-    var ascent = this.el.querySelector('.routing-panel-ascent');
+    const ascent = this.el.querySelector('.routing-panel-ascent');
     ascent.innerHTML = formatElevation(stats.totalAscend);
 
-    var descent = this.el.querySelector('.routing-panel-descent');
+    const descent = this.el.querySelector('.routing-panel-descent');
     descent.innerHTML = formatElevation(stats.totalDescend);
   }
 
@@ -100,9 +100,9 @@ function setSelectValues(
   values: { [key: string]: string }
 ) {
   select.innerHTML = '';
-  var options = document.createDocumentFragment();
+  const options = document.createDocumentFragment();
   Object.keys(values).forEach(function (key) {
-    var option = document.createElement('option');
+    const option = document.createElement('option');
     option.value = key;
     option.innerHTML = values[key];
     options.appendChild(option);

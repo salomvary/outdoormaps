@@ -10,13 +10,13 @@ new Map();
 
 // check for application cache updates
 if ('serviceWorker' in navigator) {
-  var sw = navigator.serviceWorker.getRegistration();
+  const sw = navigator.serviceWorker.getRegistration();
   if (sw) {
     // See https://github.com/GoogleChromeLabs/sw-precache/blob/master/demo/app/js/service-worker-registration.js
     sw.then(function (reg) {
       if (reg) {
         reg.onupdatefound = function () {
-          var installingWorker = reg.installing;
+          const installingWorker = reg.installing;
 
           installingWorker.onstatechange = function () {
             if (

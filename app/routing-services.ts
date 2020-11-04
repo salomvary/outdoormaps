@@ -8,11 +8,11 @@ interface RoutingServiceConfig {
   updateVehicle: (router: Router, vehicle: string) => void;
 }
 
-var mapboxKey =
+const mapboxKey =
   'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
-var graphHopperKey = 'cd462023-b872-4db6-b5cd-aad62847c8b7';
+const graphHopperKey = 'cd462023-b872-4db6-b5cd-aad62847c8b7';
 
-var routingServices: { [id: string]: RoutingServiceConfig } = {};
+const routingServices: { [id: string]: RoutingServiceConfig } = {};
 
 routingServices.mapbox = {
   title: 'MapBox',
@@ -31,7 +31,7 @@ routingServices.mapbox = {
     },
   },
   create: function (vehicle) {
-    var profile = this.vehicles[vehicle].profile;
+    const profile = this.vehicles[vehicle].profile;
     return new Mapbox(mapboxKey, {
       profile: profile,
     });
@@ -58,7 +58,7 @@ routingServices.graphhopper = {
     },
   },
   create: function (vehicle) {
-    var vehicleParam = this.vehicles[vehicle].vehicle;
+    const vehicleParam = this.vehicles[vehicle].vehicle;
     return new GraphHopper(graphHopperKey, {
       urlParameters: {
         vehicle: vehicleParam,
@@ -68,7 +68,7 @@ routingServices.graphhopper = {
     });
   },
   updateVehicle: function (router: GraphHopper, vehicle) {
-    var vehicleParam = this.vehicles[vehicle].vehicle;
+    const vehicleParam = this.vehicles[vehicle].vehicle;
     router.urlParameters.vehicle = vehicleParam;
   },
 };

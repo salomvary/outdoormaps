@@ -15,14 +15,14 @@ export function search(
   query: string,
   options: { bounds: L.LatLngBounds }
 ): AbortablePromise<SearchResult[]> {
-  var params = {
+  const params = {
     addressdetails: '1',
     format: 'json',
     limit: '15',
     viewboxlbrt: options.bounds.toBBoxString(),
     q: query,
   };
-  var url = baseUrl + '?' + encodeParams(params);
+  const url = baseUrl + '?' + encodeParams(params);
   return get(url);
 }
 

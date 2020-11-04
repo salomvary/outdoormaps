@@ -15,7 +15,7 @@ export default class Router {
 }
 
 function route(this: Router) {
-  var location = Location.get();
+  const location = Location.get();
   this.handlers.forEach(function (plugin) {
     return plugin.route(location);
   });

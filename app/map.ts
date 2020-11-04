@@ -31,7 +31,7 @@ L.Marker.prototype.options.icon = L.icon({
   shadowSize: [41, 41],
 });
 
-var plugins: MapPluginConstructor[] = [
+const plugins: MapPluginConstructor[] = [
   InitialLocation,
   RecommendLayers,
   DropMarker,
@@ -44,10 +44,10 @@ var plugins: MapPluginConstructor[] = [
   Fullscreen,
 ];
 
-var stateEvents = 'moveend zoomend layeradd layerremove';
+const stateEvents = 'moveend zoomend layeradd layerremove';
 
 // Neither geographically nor politically correct ;)
-var europeBounds = [
+const europeBounds = [
   [35, -15], // sw
   [65, 35], // ne
 ];
@@ -65,7 +65,7 @@ export class MapButton extends L.Control {
   }
 
   onAdd() {
-    var button = document.createElement('button');
+    const button = document.createElement('button');
     $.fastClick(button);
     button.className = this.options.className + '-button';
     button.type = 'button';
@@ -97,7 +97,7 @@ export default class Map {
     chain(
       plugins.map(function (this: Map, Plugin): () => Promise<void> | void {
         return function (this: Map): Promise<void> | void {
-          var plugin = new Plugin(this, this.options);
+          const plugin = new Plugin(this, this.options);
           this.plugins.push(plugin);
           if (plugin.beforeMap) {
             return plugin.beforeMap();
@@ -111,7 +111,7 @@ export default class Map {
 
   private pluginsInitialized(this: Map) {
     // create map
-    var map = (this.map = new L.Map('map', {
+    const map = (this.map = new L.Map('map', {
       zoomControl: false,
     }));
     map.addControl(L.control.scale({ imperial: false }));
@@ -130,7 +130,7 @@ export default class Map {
     }
 
     // set options
-    var defaults: State = {};
+    const defaults: State = {};
     Object.keys(this.defaults).forEach(function (k) {
       if (typeof this.options.get(k) == 'undefined') {
         defaults[k] = this.defaults[k];
@@ -159,7 +159,7 @@ export default class Map {
   }
 
   private getState(): State {
-    var state: State = {
+    const state: State = {
       zoom: this.map.getZoom(),
       center: this.map.getCenter(),
       layers: this.layers,
@@ -168,7 +168,7 @@ export default class Map {
   }
 
   setLayers(layers: [string, string?]) {
-    var oldLayers = this.layers;
+    const oldLayers = this.layers;
     this.layers = layers;
 
     if (oldLayers) {
@@ -196,7 +196,7 @@ export default class Map {
     handler: () => void,
     context?: any
   ) {
-    var button = new MapButton({
+    const button = new MapButton({
       className: 'map-button ' + className,
       position: position,
       handler: handler.bind(context || this),
@@ -208,9 +208,9 @@ export default class Map {
 
   private validateLayers() {
     // Remove layers from config if they no longer exist
-    var layers = this.options.get('layers');
+    let layers = this.options.get('layers');
     if (layers) {
-      var validLayers = Layers.keys().map(function (layer) {
+      const validLayers = Layers.keys().map(function (layer) {
         return layer.id;
       });
       layers = <[string, string?]>layers.map(function (this: Map, layer, i) {

@@ -26,12 +26,12 @@ export default class Settings implements MapPlugin {
     this.options = options;
 
     // event handlers
-    var closeButton = document.getElementById('close-button');
+    const closeButton = document.getElementById('close-button');
     $.on(closeButton, 'click', this.closeSettings, this);
     $.fastClick(closeButton);
 
     // initial state
-    var layers = options.get('layers') || controller.defaults.layers;
+    const layers = options.get('layers') || controller.defaults.layers;
     this.mapLayer = layers[0];
     this.overlay = layers[1];
     this.mapType = Layers.mapTypeOf(this.mapLayer);
@@ -56,7 +56,7 @@ export default class Settings implements MapPlugin {
   }
 
   private toggleSettings() {
-    var show = document.body.className !== 'settings';
+    const show = document.body.className !== 'settings';
     $.toggleClass(document.body, 'settings', show);
     this.map[show ? 'on' : 'off']('moveend', updateAvailableLayers, this);
     if (show) {
@@ -69,20 +69,20 @@ export default class Settings implements MapPlugin {
   }
 
   private setMapType(event: SelectChangeEvent) {
-    var type = <LayerMapType>event.value;
-    var layerId = this.defaultLayers[type] || Layers.keys(type)[0].id;
+    const type = <LayerMapType>event.value;
+    const layerId = this.defaultLayers[type] || Layers.keys(type)[0].id;
     this.mapType = type;
     this.setLayers([layerId, this.overlay]);
   }
 
   private setMapLayer(event: SelectChangeEvent) {
-    var id = event.value;
+    const id = event.value;
     this.defaultLayers[Layers.mapTypeOf(id)] = id;
     this.setLayers([id, this.overlay]);
   }
 
   private setOverlay(event: SelectChangeEvent) {
-    var id = event.value,
+    const id = event.value,
       add = this.overlay !== id;
     this.setLayers([this.mapLayer, add && id]);
   }
@@ -96,7 +96,7 @@ export default class Settings implements MapPlugin {
   }
 
   private createButtons() {
-    var container = document.querySelector('.map-types');
+    const container = document.querySelector('.map-types');
 
     this.mapTypeButtons = new Select(container.querySelector('.map-type')).on(
       'change',
@@ -143,7 +143,7 @@ export default class Settings implements MapPlugin {
 
     // show/hide layer group
     Object.keys(this.layerButtons).forEach(function (mapType) {
-      var el = this.layerButtons[mapType].el;
+      const el = this.layerButtons[mapType].el;
       if (mapType === this.mapType) {
         $.show(el);
       } else {
@@ -170,8 +170,8 @@ function layerButtonsFor(options: {
   handler: LeafletEventHandlerFn;
   mapType: LayerMapType;
 }) {
-  var values = layersToOptions(Layers.keys(options.mapType));
-  var buttons = new ButtonGroup(
+  const values = layersToOptions(Layers.keys(options.mapType));
+  const buttons = new ButtonGroup(
     Object.assign({}, options.options, { values })
   ).on('change', options.handler);
   options.parent.appendChild(buttons.el);
@@ -188,7 +188,7 @@ function layersToOptions(layers: LayerConfig[]): { [id: string]: string } {
 function updateAvailableLayers() {
   // for the active layer
   if (this.layerButtons[this.mapType]) {
-    var disabledLayers = getDisabledLayers.call(
+    const disabledLayers = getDisabledLayers.call(
       this,
       Layers.keys(this.mapType)
     );
@@ -196,12 +196,12 @@ function updateAvailableLayers() {
   }
 
   // for overlays
-  var disabledOverlays = getDisabledLayers.call(this, Layers.keys('overlay'));
+  const disabledOverlays = getDisabledLayers.call(this, Layers.keys('overlay'));
   this.overlayButtons.setDisabled(disabledOverlays);
 }
 
 function getDisabledLayers(layers: LayerConfig[]) {
-  var mapBounds = this.map.getBounds();
+  const mapBounds = this.map.getBounds();
   return layers
     .filter(function (layer) {
       return layer.bounds && !layer.bounds.contains(mapBounds);

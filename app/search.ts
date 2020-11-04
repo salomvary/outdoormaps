@@ -109,7 +109,7 @@ export default class Search implements MapPlugin {
 
   private onSelect(i: number) {
     if (i < this.results.length) {
-      var result = this.results[i];
+      const result = this.results[i];
       this.showResult(result);
       this.control.hideResults();
       // blur input, focus map so that it can be kb controlled
@@ -145,7 +145,7 @@ function formatResult(result: SearchResult) {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function debounce<F extends Function>(fn: F): F {
-  var timer = null;
+  let timer = null;
   return <F>(<unknown>function () {
     // eslint-disable-next-line
     var context = this,

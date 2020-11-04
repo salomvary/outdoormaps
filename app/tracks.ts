@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import 'leaflet-plugins/layer/vector/GPX';
 import { MapPlugin } from './map-plugin';
 
-var DROPBOX_URL = new RegExp(
+const DROPBOX_URL = new RegExp(
   'https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)'
 );
 
@@ -21,7 +21,7 @@ export default class Tracks implements MapPlugin {
   }
 
   route(path: string) {
-    var trackUrl = parseLocation(path);
+    const trackUrl = parseLocation(path);
     if (this.track) {
       this.hideTrack();
     }
@@ -32,8 +32,8 @@ export default class Tracks implements MapPlugin {
   }
 
   private loadTrack(url: string) {
-    var track = (this.track = new L.GPX(url, { async: true }));
-    var trackLoaded = new Promise(track.on.bind(track, 'loaded'));
+    const track = (this.track = new L.GPX(url, { async: true }));
+    const trackLoaded = new Promise(track.on.bind(track, 'loaded'));
     this.mapAvailable
       .then(function () {
         return trackLoaded;
@@ -57,7 +57,7 @@ export default class Tracks implements MapPlugin {
 }
 
 function parseLocation(path: string) {
-  var match = DROPBOX_URL.exec(path);
+  const match = DROPBOX_URL.exec(path);
   return match && dropboxUrl(match[1], match[2]);
 }
 

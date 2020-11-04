@@ -5,7 +5,7 @@ import { MapPlugin } from './map-plugin';
 import Map, { MapButton } from './map';
 import StateStore from './state-store';
 
-var myLocationIcon = L.divIcon({
+const myLocationIcon = L.divIcon({
   iconSize: [20, 20],
   className: 'my-location-icon',
 });
@@ -44,7 +44,7 @@ export default class ShowPosition implements MapPlugin {
   showCurrentPosition() {
     this.moved = false;
     // show the last known position, if any
-    var lastPosition = this.options.get('position');
+    const lastPosition = this.options.get('position');
     if (lastPosition) {
       this.showPosition(lastPosition);
     }
@@ -81,7 +81,7 @@ export default class ShowPosition implements MapPlugin {
       this.locating = false;
       $.toggleClass(this.button.getContainer(), 'busy-button', false);
     }
-    var center = new L.LatLng(
+    const center = new L.LatLng(
       position.coords.latitude,
       position.coords.longitude
     );

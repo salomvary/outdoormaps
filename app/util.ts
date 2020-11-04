@@ -4,7 +4,7 @@ import fastClick from 'fastclick';
 export default {
   extend: function (dst, src) {
     if (src) {
-      for (var k in src) {
+      for (const k in src) {
         dst[k] = src[k];
       }
     }
@@ -20,13 +20,13 @@ export default {
   },
 
   eachNode: function (nodeList, fn, context?) {
-    for (var i = 0; i < nodeList.length; i++) {
+    for (let i = 0; i < nodeList.length; i++) {
       fn.call(context, nodeList[i]);
     }
   },
 
   toggleClass: function (el, className, enable) {
-    var classes = el.className.split(/\s+/),
+    const classes = el.className.split(/\s+/),
       index = classes.indexOf(className);
     if (index > -1) {
       classes.splice(index, 1);

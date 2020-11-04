@@ -19,17 +19,17 @@ export default class DropMarker implements MapPlugin {
   setMap(map: L.Map) {
     this.map = map;
     map.on('contextmenu', this.dropMarker, this);
-    var marker = this.options.get('marker');
+    const marker = this.options.get('marker');
     if (marker) {
       this.setMarker(marker);
     }
   }
 
   route(path: string) {
-    var parts = path.split('/'),
+    const parts = path.split('/'),
       state: State = {};
 
-    var layer = parts[0],
+    const layer = parts[0],
       lat = parseFloat(parts[1]),
       lng = parseFloat(parts[2]),
       zoom = parseInt(parts[3], 10);

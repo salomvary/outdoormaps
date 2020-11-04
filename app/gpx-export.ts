@@ -10,14 +10,14 @@ import { saveAs } from 'file-saver';
  * @param {LatLng[]} coordinates
  */
 export default function gpxExport(coordinates) {
-  var trackPoints = coordinates.map(function (coordinate) {
+  const trackPoints = coordinates.map(function (coordinate) {
     return {
       $lat: coordinate.lat,
       $lon: coordinate.lng,
     };
   });
 
-  var gpx = {
+  const gpx = {
     gpx: {
       $xmlns: 'http://www.topografix.com/GPX/1/1',
       '$xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -32,8 +32,8 @@ export default function gpxExport(coordinates) {
     },
   };
 
-  var gpxData = JXON.stringify(gpx);
-  var blob = new Blob(
+  const gpxData = JXON.stringify(gpx);
+  const blob = new Blob(
     ['<?xml version="1.0" encoding="utf-8"?>', '\n', gpxData],
     {
       type: 'application/gpx+xml;charset=utf-8',

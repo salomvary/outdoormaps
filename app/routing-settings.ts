@@ -20,7 +20,7 @@ export default class RoutingSettings {
     this.el = document.getElementById('routing-settings');
 
     // event handlers
-    var closeButton = this.el.querySelector('.close-page-button');
+    const closeButton = this.el.querySelector('.close-page-button');
     $.on(closeButton, 'click', this.close, this);
     $.fastClick(closeButton);
 
@@ -29,7 +29,7 @@ export default class RoutingSettings {
   }
 
   toggle() {
-    var show = this.el.style.display === 'none';
+    const show = this.el.style.display === 'none';
     if (show) {
       $.show(this.el);
     } else {
@@ -48,15 +48,15 @@ export default class RoutingSettings {
   }
 
   private createButtons() {
-    var container = this.el.querySelector('.routing-services');
-    var values = routingServices
+    const container = this.el.querySelector('.routing-services');
+    const values = routingServices
       .keys()
       .reduce(function (values, routingService) {
-        var title = routingServices.get(routingService).title;
+        const title = routingServices.get(routingService).title;
         values[routingService] = title;
         return values;
       }, {});
-    var buttons = new ButtonGroup({ values }).on(
+    const buttons = new ButtonGroup({ values }).on(
       'change',
       this.onRoutingServiceChange,
       this

@@ -45,14 +45,14 @@ export default class Flickr extends L.FeatureGroup {
 
     data.photos.photo
       .map(function (photo) {
-        var icon = L.divIcon({
+        const icon = L.divIcon({
           iconSize: [16, 16],
           iconAnchor: [8, 8],
           popupAnchor: [0, -10],
           className: 'flickr-icon',
         });
 
-        var marker = L.marker([photo.latitude, photo.longitude], {
+        const marker = L.marker([photo.latitude, photo.longitude], {
           icon: icon,
         }).bindPopup(this._template(photo), {
           maxWidth: photo.width_s,
@@ -67,7 +67,7 @@ export default class Flickr extends L.FeatureGroup {
   }
 
   private _template(data: Photo) {
-    var template =
+    const template =
       '<b class="title">{title}</b>' +
       '<a href="https://www.flickr.com/photos/{owner}/{id}" target="_blank">' +
       '<img class="photo" src="{url_s}" alt="{title}" width="{width_s}" height="{height_s}">' +
@@ -80,13 +80,13 @@ export default class Flickr extends L.FeatureGroup {
   }
 
   private _update() {
-    var bounds = this._map.getBounds();
-    var size = this._map.getSize();
-    var magic = 7500;
+    const bounds = this._map.getBounds();
+    const size = this._map.getSize();
+    const magic = 7500;
 
     // Limit is proportional to map size on the screen:
     // ~15 on mobile screens, ~100 on large desktop screens
-    var limit = Math.max(
+    const limit = Math.max(
       10,
       Math.min(100, Math.round((size.x * size.y) / magic))
     );

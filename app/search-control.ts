@@ -22,13 +22,13 @@ export default class SearchControl extends L.Control {
   }
 
   onAdd() {
-    var control = $.create('form', 'search-control');
+    const control = $.create('form', 'search-control');
     $.on(control, 'submit', this.onSubmit, this);
     L.DomEvent.disableClickPropagation(control);
-    var wrapper = $.create('span', 'search-input-wrapper', control);
+    const wrapper = $.create('span', 'search-input-wrapper', control);
 
     // input
-    var input = (this.input = <HTMLInputElement>(
+    const input = (this.input = <HTMLInputElement>(
       $.create('input', 'search-input', wrapper)
     ));
     // TODO use type=search and remove generated "clear" button
@@ -42,11 +42,11 @@ export default class SearchControl extends L.Control {
 
     // hidden submit button
     // (needed on iOS to be able to submit from sw keyboard)
-    var submitButton = $.create('button', 'search-button', wrapper);
+    const submitButton = $.create('button', 'search-button', wrapper);
     submitButton.innerHTML = 'Search';
 
     // clear button
-    var clear = (this.clearButton = <HTMLInputElement>(
+    const clear = (this.clearButton = <HTMLInputElement>(
       $.create('button', 'search-clear', wrapper)
     ));
     clear.type = 'button';
@@ -113,7 +113,7 @@ export default class SearchControl extends L.Control {
   }
 
   private adjustHeight() {
-    var height =
+    const height =
       window.innerHeight - 3 * padding - inputHeight - attributionHeight;
     this.results.style.maxHeight = height + 'px';
   }
@@ -125,9 +125,9 @@ export default class SearchControl extends L.Control {
         results = [results];
       }
       results.map(function (this: SearchControl, result, i) {
-        var res = $.create('li', 'search-result');
+        const res = $.create('li', 'search-result');
         res.innerHTML = result;
-        var select = this.onSelect.bind(this, i, result);
+        const select = this.onSelect.bind(this, i, result);
         $.on(res, 'click', select);
         $.fastClick(res);
         this.results.appendChild(res);

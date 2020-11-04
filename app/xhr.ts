@@ -7,11 +7,11 @@ export interface AbortablePromise<T> extends Promise<T> {
 
 export function get(url, options?): AbortablePromise<any> {
   options = options || {};
-  var xhr;
+  let xhr;
   if (options.data) {
     url = url + '?' + encodeData(options.data);
   }
-  var promise: any = new Promise(function (resolve, reject) {
+  const promise: any = new Promise(function (resolve, reject) {
     xhr = $.extend(new XMLHttpRequest(), {
       timeout: 5000,
       onload: function () {

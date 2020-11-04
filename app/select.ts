@@ -28,9 +28,9 @@ export default class Select extends Evented {
   }
 
   protected update(value: string) {
-    var buttons = this.el.querySelectorAll('button');
+    const buttons = this.el.querySelectorAll('button');
     $.eachNode(buttons, function (button) {
-      var active = button.name === value;
+      const active = button.name === value;
       $.toggleClass(button, 'active', active);
     });
   }
@@ -52,7 +52,7 @@ export default class Select extends Evented {
 
   setDisabled(values: string[]) {
     values = values || [];
-    var buttons = this.el.querySelectorAll('button');
+    const buttons = this.el.querySelectorAll('button');
     $.eachNode(buttons, function (button) {
       button.disabled = values.indexOf(button.name) > -1;
     });
@@ -61,7 +61,7 @@ export default class Select extends Evented {
   private setupListeners() {
     // handle click events
     // XXX no event delegation on iOS Safari :(
-    var buttons = this.el.querySelectorAll('button');
+    const buttons = this.el.querySelectorAll('button');
     $.eachNode(
       buttons,
       function (button) {
@@ -77,9 +77,9 @@ function updateSelectOptions(
   values: { [key: string]: string }
 ) {
   wrapper.innerHTML = '';
-  var options = document.createDocumentFragment();
+  const options = document.createDocumentFragment();
   Object.keys(values).forEach(function (key) {
-    var button = document.createElement('button');
+    const button = document.createElement('button');
     button.name = key;
     button.className = 'flat-btn';
     button.innerHTML = values[key];
@@ -89,7 +89,7 @@ function updateSelectOptions(
 }
 
 function onClick(this: Select, event: MouseEvent) {
-  var value = (<HTMLInputElement>event.target).name;
+  let value = (<HTMLInputElement>event.target).name;
   if (this._value === value) {
     if (this.options.toggle) {
       value = null;
