@@ -78,9 +78,9 @@ export default class DropMarker implements MapPlugin {
 
 function buildLocation(state: State) {
   return [
-    state.layers[0],
-    roundCoordinate(state.center.lat),
-    roundCoordinate(state.center.lng),
+    state.layers![0],
+    roundCoordinate(state.center!.lat),
+    roundCoordinate(state.center!.lng),
     state.zoom,
   ].join('/');
 }

@@ -52,7 +52,7 @@ export default class ShowPosition implements MapPlugin {
     // update the position
     if (!this.locating) {
       this.locating = true;
-      $.toggleClass(this.button.getContainer(), 'busy-button', true);
+      $.toggleClass(this.button.getContainer()!, 'busy-button', true);
       getAccurateCurrentPosition(
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
@@ -72,14 +72,14 @@ export default class ShowPosition implements MapPlugin {
 
   positionError(error: Error) {
     this.locating = false;
-    $.toggleClass(this.button.getContainer(), 'busy-button', false);
+    $.toggleClass(this.button.getContainer()!, 'busy-button', false);
     alert('Could not get your position: ' + error.message);
   }
 
   positionUpdate(progress: boolean, position: Position) {
     if (!progress) {
       this.locating = false;
-      $.toggleClass(this.button.getContainer(), 'busy-button', false);
+      $.toggleClass(this.button.getContainer()!, 'busy-button', false);
     }
     const center = new L.LatLng(
       position.coords.latitude,

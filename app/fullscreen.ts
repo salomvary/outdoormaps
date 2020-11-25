@@ -52,7 +52,7 @@ export default class Fullscreen implements MapPlugin {
       return;
     }
 
-    if (e.code === 'KeyF') {
+    if (e.code === 'KeyF' && this.controller.map) {
       this.controller.map.toggleFullscreen();
     }
   }

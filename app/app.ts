@@ -18,20 +18,22 @@ if ('serviceWorker' in navigator) {
         reg.onupdatefound = function () {
           const installingWorker = reg.installing;
 
-          installingWorker.onstatechange = function () {
-            if (
-              installingWorker.state === 'installed' &&
-              navigator.serviceWorker.controller
-            ) {
+          if (installingWorker) {
+            installingWorker.onstatechange = function () {
               if (
-                window.confirm(
-                  'A new version of Outdoor Maps is available. Load update?'
-                )
+                installingWorker.state === 'installed' &&
+                navigator.serviceWorker.controller
               ) {
-                window.location.reload();
+                if (
+                  window.confirm(
+                    'A new version of Outdoor Maps is available. Load update?'
+                  )
+                ) {
+                  window.location.reload();
+                }
               }
-            }
-          };
+            };
+          }
         };
       }
     });

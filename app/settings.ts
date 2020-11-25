@@ -14,7 +14,7 @@ export default class Settings implements MapPlugin {
   private map: L.Map;
 
   private mapLayer: string;
-  private overlay: string;
+  private overlay: string | undefined;
   private mapType: LayerMapType;
   private defaultLayers: { [mapType: string]: string };
   private mapTypeButtons: Select;
@@ -26,7 +26,7 @@ export default class Settings implements MapPlugin {
     this.options = options;
 
     // event handlers
-    const closeButton = document.getElementById('close-button');
+    const closeButton = document.getElementById('close-button')!;
     $.on(closeButton, 'click', this.closeSettings, this);
     $.fastClick(closeButton);
 
@@ -84,7 +84,7 @@ export default class Settings implements MapPlugin {
   private setOverlay(event: SelectChangeEvent) {
     const id = event.value,
       add = this.overlay !== id;
-    this.setLayers([this.mapLayer, add && id]);
+    this.setLayers([this.mapLayer, add ? id : undefined]);
   }
 
   private setLayers(layerIds: [string, string?]) {
@@ -96,9 +96,9 @@ export default class Settings implements MapPlugin {
   }
 
   private createButtons() {
-    const container = document.querySelector('.map-types');
+    const container = document.querySelector<HTMLElement>('.map-types')!;
 
-    this.mapTypeButtons = new Select(container.querySelector('.map-type')).on(
+    this.mapTypeButtons = new Select(container.querySelector('.map-type')!).on(
       'change',
       this.setMapType,
       this
@@ -120,7 +120,7 @@ export default class Settings implements MapPlugin {
         ) {
           layerButtons[mapType] = layerButtonsFor({
             mapType: mapType,
-            parent: container.querySelector('.map-layers'),
+            parent: container.querySelector<HTMLElement>('.map-layers')!,
             handler: this.setMapLayer.bind(this),
           });
           return layerButtons;
@@ -132,7 +132,7 @@ export default class Settings implements MapPlugin {
     this.overlayButtons = layerButtonsFor({
       mapType: 'overlay',
       options: { toggle: true },
-      parent: container.querySelector('.map-overlays'),
+      parent: container.querySelector<HTMLElement>('.map-overlays')!,
       handler: this.setOverlay.bind(this),
     });
   }
@@ -157,10 +157,10 @@ export default class Settings implements MapPlugin {
     }
 
     // set the active overlay
-    this.overlayButtons.set(this.overlay);
+    this.overlayButtons.set(this.overlay || null);
 
     // XXX fix a strange Chrome issue that settings doesn't repaint
-    document.getElementById('settings').style.opacity = '1';
+    document.getElementById('settings')!.style.opacity = '1';
   }
 }
 

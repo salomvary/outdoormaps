@@ -4,7 +4,7 @@ export default class ButtonGroup extends Select {
   constructor(options: SelectOptions) {
     const g = document.createElement('fieldset');
     g.className = 'control-group';
-    render(g, options.values);
+    render(g, options.values || {});
     super(g, Object.assign(options, { values: undefined }));
   }
 }

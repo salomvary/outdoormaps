@@ -11,11 +11,11 @@ export interface SelectChangeEvent extends LeafletEvent {
 }
 
 export default class Select extends Evented {
-  el: HTMLElement;
+  el: Element;
   protected options: SelectOptions;
-  protected _value: string;
+  protected _value: string | null;
 
-  constructor(el: HTMLElement, options?: SelectOptions) {
+  constructor(el: Element, options?: SelectOptions) {
     super();
     this.el = el;
     this.options = options || {};
@@ -27,7 +27,7 @@ export default class Select extends Evented {
     this.setupListeners();
   }
 
-  protected update(value: string) {
+  protected update(value: string | null) {
     const buttons = this.el.querySelectorAll('button');
     $.eachNode(buttons, function (button) {
       const active = button.name === value;
@@ -39,7 +39,7 @@ export default class Select extends Evented {
     return this._value;
   }
 
-  set(value: string) {
+  set(value: string | null) {
     this._value = value;
     this.update(value);
   }
@@ -73,7 +73,7 @@ export default class Select extends Evented {
 }
 
 function updateSelectOptions(
-  wrapper: HTMLElement,
+  wrapper: Element,
   values: { [key: string]: string }
 ) {
   wrapper.innerHTML = '';
@@ -89,7 +89,7 @@ function updateSelectOptions(
 }
 
 function onClick(this: Select, event: MouseEvent) {
-  let value = (<HTMLInputElement>event.target).name;
+  let value: string | null = (<HTMLInputElement>event.target).name;
   if (this._value === value) {
     if (this.options.toggle) {
       value = null;

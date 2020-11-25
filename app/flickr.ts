@@ -14,7 +14,7 @@ interface Data {
 
 export default class Flickr extends L.FeatureGroup {
   constructor(url: string, options: L.LayerOptions) {
-    super(null, options);
+    super(undefined, options);
   }
 
   onAdd(map: L.Map) {

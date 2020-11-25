@@ -11,10 +11,9 @@ interface LayerConstructor {
   new (url: string, options?: L.TileLayerOptions | L.WMSOptions): L.Layer;
 }
 
-export type LayerConfig = {
-  id?: string;
-  url?: string;
-  title?: string;
+type LayerConfigNoId = {
+  url: string;
+  title: string;
   klazz?: LayerConstructor;
   mapType: LayerMapType;
   folder?: (data: { z: number }) => string;
@@ -22,10 +21,12 @@ export type LayerConfig = {
   bounds?: L.LatLngBounds;
 } & (L.TileLayerOptions | L.WMSOptions);
 
+export type LayerConfig = LayerConfigNoId & { id: string };
+
 const mapboxKey =
   'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
-const layers: { [id: string]: LayerConfig } = {},
+const layers: { [id: string]: LayerConfigNoId } = {},
   instances: { [id: string]: L.Layer } = {},
   customOptions = ['id', 'url', 'title', 'klazz', 'mapType'];
 
@@ -101,6 +102,7 @@ layers.satellite = {
   klazz: (<any>L).BingLayer,
   url: 'AugCQhyydetxyavzoAQjcWuElUpYz2r49p15Kol7MUZEHnAW9umPiQWiki5CsUuz',
   detectRetina: true,
+  title: 'Bing Satellite',
   mapType: 'satellite',
 };
 
@@ -137,6 +139,7 @@ layers.bgtopovj = {
 };
 
 layers.flickr = {
+  url: '', // Unused
   klazz: Flickr,
   title: 'Flickr',
   mapType: 'overlay',
@@ -251,13 +254,11 @@ function get(id: string): L.Layer {
 }
 
 function keys(mapType?: LayerMapType): LayerConfig[] {
-  return Object.keys(layers)
-    .map(function (key) {
-      return layers[key];
-    })
-    .filter(function (layer) {
+  return Object.values(layers as { [id: string]: LayerConfig }).filter(
+    function (layer) {
       return !mapType || layer.mapType === mapType;
-    });
+    }
+  );
 }
 
 function mapTypeOf(id: string): LayerMapType {
@@ -267,7 +268,7 @@ function mapTypeOf(id: string): LayerMapType {
 export default { get, keys, mapTypeOf };
 
 function getLayerOptions(
-  options: LayerConfig
+  options: LayerConfigNoId
 ): L.TileLayerOptions | L.WMSOptions {
   return Object.keys(options).reduce(function (
     filtered: { [key: string]: any },

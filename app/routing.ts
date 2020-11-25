@@ -33,8 +33,8 @@ export default class Routing {
   private panel: any;
   private settings: any;
   private button: MapButton;
-  private routingControl: RoutingLayer;
-  private selectedRoute: Route;
+  private routingControl: any;
+  private selectedRoute: Route | null;
   private active: boolean;
 
   constructor(controller: Map, options: StateStore) {
@@ -87,7 +87,9 @@ export default class Routing {
   }
 
   private onExport() {
-    gpxExport(this.selectedRoute.coordinates);
+    if (this.selectedRoute) {
+      gpxExport(this.selectedRoute.coordinates);
+    }
   }
 
   private onSettings() {

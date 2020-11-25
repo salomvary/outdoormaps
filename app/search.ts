@@ -12,7 +12,7 @@ export default class Search implements MapPlugin {
   private map: L.Map;
   private control: SearchControl;
   private debouncedSearch: (val: string) => void;
-  private request: AbortablePromise<SearchResult[]> & { query?: string };
+  private request?: AbortablePromise<SearchResult[]> & { query?: string };
   private results: SearchResult[];
   private marker?: L.Marker;
 
@@ -87,8 +87,10 @@ export default class Search implements MapPlugin {
   }
 
   private removeMarker() {
-    this.map.removeLayer(this.marker);
-    this.marker = null;
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+      this.marker = undefined;
+    }
   }
 
   private onInput(val: string) {
@@ -130,7 +132,7 @@ export default class Search implements MapPlugin {
 
   private onError(status: number | Error) {
     this.results = [];
-    if (this.request.isAborted) {
+    if (this.request!.isAborted) {
       this.control.setResults('');
     } else {
       this.control.setResults('Search failed :(');
@@ -151,7 +153,7 @@ function debounce<F extends Function>(fn: F): F {
     var context = this,
       // eslint-disable-next-line prefer-rest-params
       args = arguments;
-    clearTimeout(timer);
+    timer && clearTimeout(timer);
     timer = setTimeout(function () {
       fn.apply(context, args);
     }, 100);

@@ -111,7 +111,7 @@ export default class Map {
 
   private pluginsInitialized(this: Map) {
     // create map
-    const map = (this.map = new L.Map('map', {
+    const map = (this.map! = new L.Map('map', {
       zoomControl: false,
     }));
     map.addControl(L.control.scale({ imperial: false }));
@@ -120,7 +120,7 @@ export default class Map {
     // tell plugins about the map instance
     this.plugins.forEach(function (plugin) {
       if (plugin.setMap) {
-        plugin.setMap(this.map);
+        plugin.setMap(this.map!);
       }
     }, this);
 
@@ -153,16 +153,16 @@ export default class Map {
       this.setLayers(state.layers);
     }
     if (state.center && state.zoom !== undefined) {
-      this.map.setView(state.center, state.zoom /*FIXME , true*/);
+      this.map!.setView(state.center, state.zoom /*FIXME , true*/);
     } else if (state.bounds) {
-      this.map.fitBounds(state.bounds);
+      this.map!.fitBounds(state.bounds);
     }
   }
 
   private getState(): State {
     const state: State = {
-      zoom: this.map.getZoom(),
-      center: this.map.getCenter(),
+      zoom: this.map!.getZoom(),
+      center: this.map!.getCenter(),
       layers: this.layers,
     };
     return state;
@@ -174,21 +174,21 @@ export default class Map {
 
     if (oldLayers) {
       oldLayers.forEach(function (layer) {
-        this.map.removeLayer(Layers.get(layer));
+        layer && this.map!.removeLayer(Layers.get(layer));
       }, this);
     }
 
     layers.forEach(function (layer) {
-      this.map.addLayer(Layers.get(layer));
+      layer && this.map!.addLayer(Layers.get(layer));
     }, this);
   }
 
   addMarker(position: L.LatLngExpression, options?: L.MarkerOptions) {
-    return L.marker(position, options).addTo(this.map);
+    return L.marker(position, options).addTo(this.map!);
   }
 
   removeMarker(marker: L.Layer) {
-    this.map.removeLayer(marker);
+    this.map!.removeLayer(marker);
   }
 
   createButton(
@@ -202,8 +202,8 @@ export default class Map {
       position: position,
       handler: handler.bind(context || this),
     });
-    this.map.addControl(button);
-    L.DomEvent.disableClickPropagation(button.getContainer());
+    this.map!.addControl(button);
+    L.DomEvent.disableClickPropagation(button.getContainer()!);
     return button;
   }
 
@@ -215,8 +215,8 @@ export default class Map {
         return layer.id;
       });
       layers = <[string, string?]>layers.map(function (this: Map, layer, i) {
-        if (validLayers.indexOf(layer) === -1) {
-          return this.defaults.layers[i];
+        if (!layer || validLayers.indexOf(layer) === -1) {
+          return this.defaults.layers![i];
         } else {
           return layer;
         }

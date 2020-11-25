@@ -17,10 +17,10 @@ export default class RoutingSettings {
   constructor(options: RoutingSettingsOptions) {
     this.options = options;
     this.routingService = options.routingService;
-    this.el = document.getElementById('routing-settings');
+    this.el = document.getElementById('routing-settings')!;
 
     // event handlers
-    const closeButton = this.el.querySelector('.close-page-button');
+    const closeButton = this.el.querySelector('.close-page-button')!;
     $.on(closeButton, 'click', this.close, this);
     $.fastClick(closeButton);
 
@@ -48,7 +48,7 @@ export default class RoutingSettings {
   }
 
   private createButtons() {
-    const container = this.el.querySelector('.routing-services');
+    const container = this.el.querySelector('.routing-services')!;
     const values = routingServices
       .keys()
       .reduce(function (values, routingService) {

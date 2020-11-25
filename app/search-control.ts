@@ -34,7 +34,7 @@ export default class SearchControl extends L.Control {
     // TODO use type=search and remove generated "clear" button
     input.type = 'text';
     input.placeholder = 'Search';
-    $.on(input, 'input', this.onInput, this);
+    $.on(input, 'input', this.onInput as any, this);
     $.on(input, 'focus', this.onFocus, this);
     $.on(input, 'blur', this.onBlur, this);
     $.on(input, 'contextmenu', this.onContextMenu, this);
@@ -118,7 +118,7 @@ export default class SearchControl extends L.Control {
     this.results.style.maxHeight = height + 'px';
   }
 
-  setResults(results: string | string[]) {
+  setResults(results: string | string[] | null) {
     this.results.innerHTML = '';
     if (results) {
       if (typeof results == 'string') {
@@ -141,10 +141,10 @@ export default class SearchControl extends L.Control {
   }
 
   private showResults() {
-    $.toggleClass(this.getContainer(), 'show-results', true);
+    $.toggleClass(this.getContainer()!, 'show-results', true);
   }
 
   hideResults() {
-    $.toggleClass(this.getContainer(), 'show-results', false);
+    $.toggleClass(this.getContainer()!, 'show-results', false);
   }
 }

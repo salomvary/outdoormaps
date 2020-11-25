@@ -9,7 +9,7 @@ const DROPBOX_URL = new RegExp(
 export default class Tracks implements MapPlugin {
   private map: L.Map;
   private mapAvailable: Promise<void>;
-  private track: L.GPX;
+  private track: L.GPX | null;
   private resolveMap: () => void;
 
   constructor() {
@@ -47,11 +47,15 @@ export default class Tracks implements MapPlugin {
   }
 
   private showTrack(event: any) {
-    this.map.fitBounds(event.target.getBounds()).addLayer(this.track);
+    if (this.track) {
+      this.map.fitBounds(event.target.getBounds()).addLayer(this.track);
+    }
   }
 
   private hideTrack() {
-    this.map.removeLayer(this.track);
+    if (this.track) {
+      this.map.removeLayer(this.track);
+    }
     this.track = null;
   }
 }

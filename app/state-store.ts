@@ -69,6 +69,7 @@ export default class StateStore {
       } catch (e) {
         /* parse error, ignore it */
         window.console.error('Error parsing localStorage', e);
+        properties = {};
       }
       $.extend(this.properties, properties);
     }

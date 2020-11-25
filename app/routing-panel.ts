@@ -22,35 +22,37 @@ export default class RoutingPanel {
   constructor(options: RoutingPanelOptions) {
     this.options = options;
     this.vehicles = options.vehicles;
-    this.el = document.getElementById('routing-panel');
+    this.el = document.getElementById('routing-panel')!;
 
     // Event handlers
-    const clearButton = this.el.querySelector('.routing-panel-clear-button');
+    const clearButton = this.el.querySelector('.routing-panel-clear-button')!;
     $.on(clearButton, 'click', this.options.onClear, this);
     $.fastClick(clearButton);
 
-    const closeButton = this.el.querySelector('.routing-panel-close-button');
+    const closeButton = this.el.querySelector('.routing-panel-close-button')!;
     $.on(closeButton, 'click', this.options.onClose, this);
     $.fastClick(closeButton);
 
-    const exportButton = this.el.querySelector('.routing-panel-export-button');
+    const exportButton = this.el.querySelector('.routing-panel-export-button')!;
     $.on(exportButton, 'click', this.options.onExport, this);
     $.fastClick(exportButton);
 
     const settingsButton = this.el.querySelector(
       '.routing-panel-settings-button'
-    );
+    )!;
     $.on(settingsButton, 'click', this.options.onSettings, this);
     $.fastClick(settingsButton);
 
     // Buttons on large screens
     this.vehicleButtons = new Select(
-      this.el.querySelector('.routing-vehicle-buttons')
+      this.el.querySelector('.routing-vehicle-buttons')!
     ).on('change', this.onVehicleButtonsChange, this);
     this.updateVehicleButtons();
 
     // Select on small ones
-    this.vehicleSelect = this.el.querySelector('.routing-vehicle-select');
+    this.vehicleSelect = this.el.querySelector<HTMLSelectElement>(
+      '.routing-vehicle-select'
+    )!;
     $.on(this.vehicleSelect, 'change', this.onVehicleSelectChange, this);
     this.updateVehicleSelect();
   }
@@ -68,13 +70,13 @@ export default class RoutingPanel {
   }
 
   setStats(stats: RouteSummary) {
-    const distance = this.el.querySelector('.routing-panel-distance');
+    const distance = this.el.querySelector('.routing-panel-distance')!;
     distance.innerHTML = formatDistance(stats.totalDistance);
 
-    const ascent = this.el.querySelector('.routing-panel-ascent');
+    const ascent = this.el.querySelector('.routing-panel-ascent')!;
     ascent.innerHTML = formatElevation(stats.totalAscend);
 
-    const descent = this.el.querySelector('.routing-panel-descent');
+    const descent = this.el.querySelector('.routing-panel-descent')!;
     descent.innerHTML = formatElevation(stats.totalDescend);
   }
 
@@ -110,16 +112,16 @@ function setSelectValues(
   select.appendChild(options);
 }
 
-function formatDistance(meters: number) {
-  if (meters > 0) {
+function formatDistance(meters: number | undefined) {
+  if (meters && meters > 0) {
     return Math.round(meters / 1000) + ' km';
   } else {
     return '0 km';
   }
 }
 
-function formatElevation(meters: number) {
-  if (meters > 0) {
+function formatElevation(meters: number | undefined) {
+  if (meters && meters > 0) {
     return Math.round(meters) + ' m';
   } else {
     return '0 m';
