@@ -72,7 +72,7 @@ export default class Search implements MapPlugin {
     if (result.boundingbox) {
       this.map.fitBounds(result.boundingbox);
     } else {
-      this.map.panTo(result.center);
+      this.map.setView(result.center, 16);
     }
   }
 
