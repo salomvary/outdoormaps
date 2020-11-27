@@ -2,9 +2,9 @@ import * as L from 'leaflet';
 import Map from './map';
 import { MapPlugin } from './map-plugin';
 import SearchControl from './search-control';
-import { search, SearchResult } from './search-service';
+import { mapbox as search, SearchResult } from './search-service';
 import StateStore from './state-store';
-import { AbortablePromise } from './xhr';
+import { AbortSignal } from './xhr';
 
 export default class Search implements MapPlugin {
   private controller: Map;
@@ -12,7 +12,7 @@ export default class Search implements MapPlugin {
   private map: L.Map;
   private control: SearchControl;
   private debouncedSearch: (val: string) => void;
-  private request?: AbortablePromise<SearchResult[]> & { query?: string };
+  private request?: [Promise<SearchResult[]>, AbortSignal] & { query?: string };
   private results: SearchResult[];
   private marker?: L.Marker;
 
@@ -40,7 +40,7 @@ export default class Search implements MapPlugin {
       // if we have a pending request, abort it
       try {
         if (this.request) {
-          this.request.abort();
+          this.request[1].abort();
         }
         this.request = search(query, {
           bounds: this.map.getBounds(),
@@ -50,14 +50,14 @@ export default class Search implements MapPlugin {
         return Promise.reject(e);
       }
       this.request.query = query;
-      this.request.then(this.onSuccess.bind(this), this.onError.bind(this));
+      this.request[0].then(this.onSuccess.bind(this), this.onError.bind(this));
     }
-    return this.request;
+    return this.request[0];
   }
 
   private reset() {
     if (this.request) {
-      this.request.abort();
+      this.request[1].abort();
       delete this.request;
     }
     this.results = [];
@@ -68,14 +68,12 @@ export default class Search implements MapPlugin {
   }
 
   private showResult(result: SearchResult) {
-    this.setMarker({
-      lat: result.lat,
-      lng: result.lon,
-    });
-    this.map.fitBounds([
-      [result.boundingbox[0], result.boundingbox[2]],
-      [result.boundingbox[1], result.boundingbox[3]],
-    ]);
+    this.setMarker(result.center);
+    if (result.boundingbox) {
+      this.map.fitBounds(result.boundingbox);
+    } else {
+      this.map.panTo(result.center);
+    }
   }
 
   private setMarker(position: L.LatLngExpression) {
@@ -132,7 +130,7 @@ export default class Search implements MapPlugin {
 
   private onError(status: number | Error) {
     this.results = [];
-    if (this.request!.isAborted) {
+    if (this.request![1].isAborted) {
       this.control.setResults('');
     } else {
       this.control.setResults('Search failed :(');

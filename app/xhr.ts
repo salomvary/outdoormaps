@@ -1,14 +1,43 @@
 import $ from './util';
 
-export interface AbortablePromise<T> extends Promise<T> {
+export interface AbortSignal {
   abort(): void;
   isAborted: boolean;
 }
 
-export function get<T = any>(
+interface GetOptions {
+  data?: {
+    [key: string]: string | number | boolean;
+  };
+}
+
+export function get<T = any>(url: string, options?: GetOptions): Promise<T> {
+  const [promise] = getWithXhr<T>(url, options);
+  return promise;
+}
+
+export function getWithSignal<T>(
   url: string,
-  options?: { data?: { [key: string]: string | number | boolean } }
-): AbortablePromise<T> {
+  options?: GetOptions
+): [Promise<T>, AbortSignal] {
+  const [promise, getXhr] = getWithXhr(url, options);
+  // expose xhr.abort
+  // TODO abort should clean up the promise
+  const signal = {
+    isAborted: false,
+    abort() {
+      getXhr().abort();
+      this.isAborted = false;
+    },
+  };
+
+  return [promise, signal];
+}
+
+export function getWithXhr<T = any>(
+  url: string,
+  options?: GetOptions
+): [Promise<T>, () => XMLHttpRequest] {
   options = options || {};
   let xhr: XMLHttpRequest;
   if (options.data) {
@@ -30,15 +59,9 @@ export function get<T = any>(
     });
     xhr.open('GET', url, true);
     xhr.send();
-  }) as AbortablePromise<T>;
-  // expose xhr.abort
-  // TODO abort should clean up the promise
-  promise.abort = () => {
-    xhr.abort();
-    promise.isAborted = false;
-  };
-  promise.isAborted = false;
-  return promise;
+  }) as Promise<T>;
+
+  return [promise, () => xhr];
 }
 
 function encodeData(data: { [key: string]: string | number | boolean }) {

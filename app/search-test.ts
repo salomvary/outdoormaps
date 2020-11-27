@@ -78,7 +78,7 @@ xdescribe('Search', function () {
     sandbox.stub(SearchService, 'search').returns(Promise.resolve(oneResult));
     subject.onInput('hello');
     clock.tick(120);
-    expect(SearchService.search).called;
+    expect(SearchService.nominatim).called;
     expect(subject.control.setResults).calledWith(['foo']);
   });
 
@@ -86,7 +86,7 @@ xdescribe('Search', function () {
     sandbox.stub(SearchService, 'search').returns(Promise.reject(500));
     subject.onInput('hello');
     clock.tick(120);
-    expect(SearchService.search).called;
+    expect(SearchService.nominatim).called;
     expect(subject.control.setResults).calledWith('Search failed :(');
   });
 
@@ -94,14 +94,14 @@ xdescribe('Search', function () {
     sandbox.stub(SearchService, 'search').returns(Promise.reject(0));
     subject.onInput('hello');
     clock.tick(120);
-    expect(SearchService.search).called;
+    expect(SearchService.nominatim).called;
     expect(subject.control.setResults).not.called;
   });
 
   it('search & show on submit', function () {
     sandbox.stub(SearchService, 'search').returns(Promise.resolve(oneResult));
     subject.onSubmit('hello');
-    expect(SearchService.search).called;
+    expect(SearchService.nominatim).called;
     expect(controller.addMarker).called;
     expect(map.fitBounds).called;
   });
@@ -111,7 +111,7 @@ xdescribe('Search', function () {
       return Promise.resolve([]);
     });
     subject.onSubmit('hello');
-    expect(SearchService.search).called;
+    expect(SearchService.nominatim).called;
     expect(controller.addMarker).not.called;
     expect(map.fitBounds).not.called;
   });
@@ -120,7 +120,7 @@ xdescribe('Search', function () {
     sandbox.stub(SearchService, 'search').returns(Promise.resolve(oneResult));
     subject.onInput('hello');
     subject.onSubmit('hello');
-    expect(SearchService.search).calledOnce;
+    expect(SearchService.nominatim).calledOnce;
     expect(controller.addMarker).called;
     expect(map.fitBounds).called;
   });
@@ -203,7 +203,7 @@ xdescribe('Search Service', function () {
       },
     };
 
-    const request = SearchService.search('hello', {
+    const [request] = SearchService.nominatim('hello', {
       bounds: bounds,
     });
     request.then(success);
@@ -221,7 +221,7 @@ xdescribe('Search Service', function () {
         return 'a,b,c,d';
       },
     };
-    const request = SearchService.search('hello', {
+    const [request] = SearchService.nominatim('hello', {
       bounds: bounds,
     });
     request.then(success, fail);
@@ -238,11 +238,11 @@ xdescribe('Search Service', function () {
         return 'a,b,c,d';
       },
     };
-    const request = SearchService.search('hello', {
+    const [request, signal] = SearchService.nominatim('hello', {
       bounds: bounds,
     });
     request.then(success, fail);
-    request.abort();
+    signal.abort();
     expect(success).not.called;
     expect(fail).calledWith(0);
   });

@@ -3,6 +3,7 @@ import { isEnabled } from './flags';
 import Flickr from './flickr';
 import 'leaflet-plugins/layer/tile/Bing';
 import 'proj4leaflet';
+import { mapboxKey } from './config';
 // import 'os-leaflet';
 
 export type LayerMapType = 'map' | 'hiking' | 'satellite' | 'overlay';
@@ -22,9 +23,6 @@ type LayerConfigNoId = {
 } & (L.TileLayerOptions | L.WMSOptions);
 
 export type LayerConfig = LayerConfigNoId & { id: string };
-
-const mapboxKey =
-  'pk.eyJ1Ijoic2Fsb212YXJ5IiwiYSI6ImNpcWI1Z21lajAwMDNpMm5oOGE4ZzFzM3YifQ.DqyC3wn8ChEjcztfbY0l_g';
 
 const layers: { [id: string]: LayerConfigNoId } = {},
   instances: { [id: string]: L.Layer } = {},
