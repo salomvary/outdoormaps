@@ -13,6 +13,7 @@ jobs:
           node-version: '12'
       - name: Verify
         run: |
+          npm run install
           npm run lint
           npm run prettier:check
           npm test
