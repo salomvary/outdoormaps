@@ -148,7 +148,6 @@ layers.strava = {
     'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
   subdomains: ['a', 'b', 'c'],
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
-  detectRetina: true,
   title: 'Strava Heatmap',
   mapType: 'overlay',
   maxNativeZoom: 14,
