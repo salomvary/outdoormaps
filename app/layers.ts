@@ -151,14 +151,6 @@ layers.strava = {
   maxZoom: 21,
 };
 
-layers.forumaps = {
-  url: 'https://tileserver.4umaps.com/{z}/{x}/{y}.png',
-  maxZoom: 15,
-  attribution: '© <a href="http://www.4umaps.eu/">4UMaps.eu</a>',
-  title: '4UMaps.eu',
-  mapType: 'hiking',
-};
-
 layers.lines = {
   url: 'https://{s}.map.turistautak.hu/tiles/lines/{z}/{x}/{y}.png',
   minZoom: 8,
