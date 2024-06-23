@@ -105,16 +105,13 @@ layers.satellite = {
 };
 
 layers.bergfex = {
-  url: 'https://maps.bergfex.at/oek/{folder}/{z}/{x}/{y}.jpg',
+  url: 'https://tiles.bergfex.at/styles/bergfex-oek/{z}/{x}/{y}@2x.jpg',
   minZoom: 4,
-  maxZoom: 16,
+  maxZoom: 15,
   attribution: '© <a href="http://bergfex.com">bergfex.com</a>',
   detectRetina: isEnabled('detectRetina'),
   title: 'bergfex (Austria)',
   mapType: 'hiking',
-  folder: function (data) {
-    return data.z <= 15 ? '512px' : 'standard';
-  },
   bounds: new L.LatLngBounds(
     new L.LatLng(46.3, 9.3), // sw
     new L.LatLng(49, 17.3)
