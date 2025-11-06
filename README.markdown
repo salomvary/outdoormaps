@@ -27,7 +27,7 @@ Map data © their respective owners. Built using
 
 Requirements:
 
-- Recent Node.js (tested with node 6.2.2 npm 3.9.5)
+- Recent Node.js LTS (tested with node 20.11.1)
 
 Setup
 

@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import { isEnabled } from './flags';
 import Flickr from './flickr';
 import 'leaflet-plugins/layer/tile/Bing';
-import 'proj4leaflet';
+import Proj from 'proj4leaflet';
 import { mapboxKey } from './config';
 // import 'os-leaflet';
 
@@ -63,8 +63,7 @@ layers.mapboxoutdoors = {
 };
 
 layers.opencyclemap = {
-  url:
-    'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=2c690bdfe8f740d790d39fe98f2be23f',
+  url: 'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=2c690bdfe8f740d790d39fe98f2be23f',
   subdomains: 'abc',
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: isEnabled('detectRetina'),
@@ -141,8 +140,7 @@ layers.flickr = {
 };
 
 layers.strava = {
-  url:
-    'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
+  url: 'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
   subdomains: ['a', 'b', 'c'],
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
   title: 'Strava Heatmap',
@@ -210,7 +208,7 @@ layers.catalonia = {
   url: 'http://mapcache.icc.cat/map/bases/service?',
   format: 'image/jpeg',
   layers: 'topo',
-  crs: new L.Proj.CRS(
+  crs: new Proj.CRS(
     'EPSG:25831',
     '+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
     { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] }

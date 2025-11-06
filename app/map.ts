@@ -17,9 +17,8 @@ import { MapPlugin, MapPluginConstructor } from './map-plugin';
 // due to rewritten urls
 L.Marker.prototype.options.icon = L.icon({
   iconUrl: '/node_modules/leaflet/dist/images/marker-icon.png'.toString('url'),
-  iconRetinaUrl: '/node_modules/leaflet/dist/images/marker-icon-2x.png'.toString(
-    'url'
-  ),
+  iconRetinaUrl:
+    '/node_modules/leaflet/dist/images/marker-icon-2x.png'.toString('url'),
   shadowUrl: '/node_modules/leaflet/dist/images/marker-shadow.png'.toString(
     'url'
   ),

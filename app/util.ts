@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import fastClick from 'fastclick';
+import attach from 'fastclick';
 
 export default {
   extend: function (dst: any, src: any): any {
@@ -52,5 +52,5 @@ export default {
 
   create: L.DomUtil.create,
 
-  fastClick: fastClick.attach,
+  fastClick: attach,
 };

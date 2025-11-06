@@ -1,6 +1,6 @@
-@import url('/node_modules/add-to-homescreen/dist/style/addtohomescreen.css');
-@import url('/node_modules/leaflet/dist/leaflet.css');
-@import url('/node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css');
+@import url('add-to-homescreen/dist/style/addtohomescreen.css');
+@import url('leaflet/dist/leaflet.css');
+@import url('leaflet-fullscreen/dist/leaflet.fullscreen.css');
 
 * {
   -moz-box-sizing: border-box;
@@ -338,16 +338,6 @@ select {
   background-image: url(directions.svg),
     -webkit-linear-gradient(top, #62c462, #51a351);
   background-image: url(directions.svg),
-    -moz-linear-gradient(top, #62c462, #51a351);
-}
-
-.directions-active-button {
-  background-image: url(directions-active.svg);
-  background-image: url(directions-active.svg),
-    linear-gradient(top, #62c462, #51a351);
-  background-image: url(directions-active.svg),
-    -webkit-linear-gradient(top, #62c462, #51a351);
-  background-image: url(directions-active.svg),
     -moz-linear-gradient(top, #62c462, #51a351);
 }
 
