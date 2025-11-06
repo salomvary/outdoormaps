@@ -5,7 +5,6 @@ import 'add-to-homescreen';
   returningVisitor: true,
 };
 
-// eslint-disable-next-line no-new
 new Map();
 
 // check for application cache updates

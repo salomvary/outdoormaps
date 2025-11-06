@@ -14,7 +14,7 @@ export type NominatimResponse = Array<{
   boundingbox: [number, number, number, number];
   lon: number;
   lat: number;
-  // eslint-disable-next-line camelcase
+
   display_name: string;
 }>;
 

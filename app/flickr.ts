@@ -2,7 +2,6 @@ import * as L from 'leaflet';
 import { get } from './xhr';
 
 interface Photo {
-  // eslint-disable-next-line camelcase
   width_s: number;
   longitude: number;
   latitude: number;
