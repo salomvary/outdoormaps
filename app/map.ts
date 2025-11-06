@@ -17,11 +17,10 @@ import { MapPlugin, MapPluginConstructor } from './map-plugin';
 // due to rewritten urls
 L.Marker.prototype.options.icon = L.icon({
   iconUrl: '/node_modules/leaflet/dist/images/marker-icon.png'.toString('url'),
-  iconRetinaUrl: '/node_modules/leaflet/dist/images/marker-icon-2x.png'.toString(
-    'url'
-  ),
+  iconRetinaUrl:
+    '/node_modules/leaflet/dist/images/marker-icon-2x.png'.toString('url'),
   shadowUrl: '/node_modules/leaflet/dist/images/marker-shadow.png'.toString(
-    'url'
+    'url',
   ),
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -100,7 +99,7 @@ export default class Map {
             return plugin.beforeMap();
           }
         }.bind(this);
-      }, this)
+      }, this),
     )
       // continue initializing when the last one is done
       .then(this.pluginsInitialized.bind(this));
@@ -192,7 +191,7 @@ export default class Map {
     className: string,
     position: L.ControlPosition,
     handler: () => void,
-    context?: any
+    context?: any,
   ) {
     const button = new MapButton({
       className: 'map-button ' + className,

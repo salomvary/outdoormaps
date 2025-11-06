@@ -10,7 +10,7 @@ describe('ButtonGroup', function () {
     expect(subject.el.querySelectorAll('button')).to.have.lengthOf(2);
     expect(subject.el.querySelector('button')).to.have.property(
       'className',
-      'radio-btn'
+      'radio-btn',
     );
   });
 });

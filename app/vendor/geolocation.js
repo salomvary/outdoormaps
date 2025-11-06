@@ -10,7 +10,7 @@ export function getAccurateCurrentPosition(
   geolocationSuccess,
   geolocationError,
   geoprogress,
-  options
+  options,
 ) {
   /**
    * @type {*}
@@ -71,7 +71,7 @@ export function getAccurateCurrentPosition(
   var watchID = navigator.geolocation.watchPosition(
     checkLocation,
     onError,
-    options
+    options,
   );
   var timerID = setTimeout(stopTrying, options.maxWait); // Set a timeout that will abandon the location loop
 }

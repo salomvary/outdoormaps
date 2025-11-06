@@ -124,7 +124,7 @@ export default class Search implements MapPlugin {
   private onSuccess(results: SearchResult[]) {
     this.results = results;
     this.control.setResults(
-      results.length ? results.map(formatResult) : 'No results'
+      results.length ? results.map(formatResult) : 'No results',
     );
   }
 

@@ -14,13 +14,13 @@ export type NominatimResponse = Array<{
   boundingbox: [number, number, number, number];
   lon: number;
   lat: number;
-  // eslint-disable-next-line camelcase
+
   display_name: string;
 }>;
 
 export function nominatim(
   query: string,
-  options: { bounds: L.LatLngBounds }
+  options: { bounds: L.LatLngBounds },
 ): [Promise<SearchResult[]>, AbortSignal] {
   const params = {
     addressdetails: '1',
@@ -40,7 +40,7 @@ export function nominatim(
         ]),
         center: L.latLng([result.lat, result.lon]),
         display_name: result.display_name,
-      }))
+      })),
     ),
     signal,
   ];
@@ -59,7 +59,7 @@ interface MapboxResponse {
 
 export function mapbox(
   query: string,
-  options: { bounds: L.LatLngBounds }
+  options: { bounds: L.LatLngBounds },
 ): [Promise<SearchResult[]>, AbortSignal] {
   const center = options.bounds.getCenter();
   const params = {
@@ -84,7 +84,7 @@ export function mapbox(
           : undefined,
         center: L.latLng([feature.center[1], feature.center[0]]),
         display_name: feature.place_name,
-      }))
+      })),
     ),
     signal,
   ];

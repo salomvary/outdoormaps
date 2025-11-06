@@ -194,7 +194,7 @@ xdescribe('Search Service', function () {
     server.respondWith(
       'GET',
       /.*&q=hello$/,
-      JSON.stringify([{ display_name: 'foo' }, { display_name: 'bar' }])
+      JSON.stringify([{ display_name: 'foo' }, { display_name: 'bar' }]),
     );
     const success = sinon.spy();
     const bounds: LatLngBounds = <any>{

@@ -3,7 +3,7 @@ import 'leaflet-plugins/layer/vector/GPX';
 import { MapPlugin } from './map-plugin';
 
 const DROPBOX_URL = new RegExp(
-  'https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)'
+  'https?://(?:www\\.dropbox\\.com|dl\\.dropboxusercontent\\.com)/s/([^/]+)/([^/]+)',
 );
 
 export default class Tracks implements MapPlugin {
@@ -16,7 +16,7 @@ export default class Tracks implements MapPlugin {
     this.mapAvailable = new Promise(
       function (resolve: () => void) {
         this.resolveMap = resolve;
-      }.bind(this)
+      }.bind(this),
     );
   }
 

@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 import { isEnabled } from './flags';
 import Flickr from './flickr';
 import 'leaflet-plugins/layer/tile/Bing';
-import 'proj4leaflet';
+import Proj from 'proj4leaflet';
 import { mapboxKey } from './config';
 // import 'os-leaflet';
 
@@ -30,7 +30,7 @@ const layers: { [id: string]: LayerConfigNoId } = {},
 
 const Hungary = new L.LatLngBounds(
   new L.LatLng(48.6, 16), // sw
-  new L.LatLng(45.6, 23.2)
+  new L.LatLng(45.6, 23.2),
 ); // ne
 
 layers.mapboxstreets = {
@@ -63,8 +63,7 @@ layers.mapboxoutdoors = {
 };
 
 layers.opencyclemap = {
-  url:
-    'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=2c690bdfe8f740d790d39fe98f2be23f',
+  url: 'https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}@2x.png?apikey=2c690bdfe8f740d790d39fe98f2be23f',
   subdomains: 'abc',
   attribution: 'Map data © OpenStreetMap contributors',
   detectRetina: isEnabled('detectRetina'),
@@ -114,7 +113,7 @@ layers.bergfex = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(46.3, 9.3), // sw
-    new L.LatLng(49, 17.3)
+    new L.LatLng(49, 17.3),
   ), // ne
 };
 
@@ -129,7 +128,7 @@ layers.bgtopovj = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(40, 20), // sw
-    new L.LatLng(44, 29)
+    new L.LatLng(44, 29),
   ), // ne
 };
 
@@ -141,8 +140,7 @@ layers.flickr = {
 };
 
 layers.strava = {
-  url:
-    'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
+  url: 'https://heatmap-external-{s}.strava.com/tiles-auth/ride/blue/{z}/{x}/{y}@2x.png',
   subdomains: ['a', 'b', 'c'],
   attribution: '© <a href="http://labs.strava.com/heatmap">Strava</a>',
   title: 'Strava Heatmap',
@@ -210,10 +208,10 @@ layers.catalonia = {
   url: 'http://mapcache.icc.cat/map/bases/service?',
   format: 'image/jpeg',
   layers: 'topo',
-  crs: new L.Proj.CRS(
+  crs: new Proj.CRS(
     'EPSG:25831',
     '+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-    { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] }
+    { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] },
   ),
   attribution: 'Institut Cartogràfic i Geològic de Catalunya -ICGC',
   detectRetina: isEnabled('detectRetina'),
@@ -221,7 +219,7 @@ layers.catalonia = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(42.9, 0.04),
-    new L.LatLng(40.52, 3.41)
+    new L.LatLng(40.52, 3.41),
   ),
 };
 
@@ -243,7 +241,7 @@ function keys(mapType?: LayerMapType): LayerConfig[] {
   return Object.values(layers as { [id: string]: LayerConfig }).filter(
     function (layer) {
       return !mapType || layer.mapType === mapType;
-    }
+    },
   );
 }
 
@@ -254,16 +252,15 @@ function mapTypeOf(id: string): LayerMapType {
 export default { get, keys, mapTypeOf };
 
 function getLayerOptions(
-  options: LayerConfigNoId
+  options: LayerConfigNoId,
 ): L.TileLayerOptions | L.WMSOptions {
   return Object.keys(options).reduce(function (
     filtered: { [key: string]: any },
-    key: keyof LayerConfig
+    key: keyof LayerConfig,
   ) {
     if (customOptions.indexOf(key) === -1) {
       filtered[key] = options[key];
     }
     return filtered;
-  },
-  {});
+  }, {});
 }

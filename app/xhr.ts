@@ -18,7 +18,7 @@ export function get<T = any>(url: string, options?: GetOptions): Promise<T> {
 
 export function getWithSignal<T>(
   url: string,
-  options?: GetOptions
+  options?: GetOptions,
 ): [Promise<T>, AbortSignal] {
   const [promise, getXhr] = getWithXhr(url, options);
   // expose xhr.abort
@@ -36,7 +36,7 @@ export function getWithSignal<T>(
 
 export function getWithXhr<T = any>(
   url: string,
-  options?: GetOptions
+  options?: GetOptions,
 ): [Promise<T>, () => XMLHttpRequest] {
   options = options || {};
   let xhr: XMLHttpRequest;

@@ -1,5 +1,5 @@
 import * as L from 'leaflet';
-import fastClick from 'fastclick';
+import attach from 'fastclick';
 
 export default {
   extend: function (dst: any, src: any): any {
@@ -22,7 +22,7 @@ export default {
   eachNode: function <T extends Node>(
     nodeList: NodeListOf<T>,
     fn: (node: T) => void,
-    context?: any
+    context?: any,
   ) {
     for (let i = 0; i < nodeList.length; i++) {
       fn.call(context, nodeList[i]);
@@ -45,12 +45,12 @@ export default {
     el: EventTarget,
     event: string,
     func: (e: Event) => void,
-    context?: any
+    context?: any,
   ) {
     el.addEventListener(event, func.bind(context), false);
   },
 
   create: L.DomUtil.create,
 
-  fastClick: fastClick.attach,
+  fastClick: attach,
 };

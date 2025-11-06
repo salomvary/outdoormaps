@@ -67,14 +67,14 @@ export default class Select extends Evented {
       function (button) {
         $.on(button, 'click', onClick, this);
       },
-      this
+      this,
     );
   }
 }
 
 function updateSelectOptions(
   wrapper: Element,
-  values: { [key: string]: string }
+  values: { [key: string]: string },
 ) {
   wrapper.innerHTML = '';
   const options = document.createDocumentFragment();

@@ -5,7 +5,6 @@ import 'add-to-homescreen';
   returningVisitor: true,
 };
 
-// eslint-disable-next-line no-new
 new Map();
 
 // check for application cache updates
@@ -26,7 +25,7 @@ if ('serviceWorker' in navigator) {
               ) {
                 if (
                   window.confirm(
-                    'A new version of Outdoor Maps is available. Load update?'
+                    'A new version of Outdoor Maps is available. Load update?',
                   )
                 ) {
                   window.location.reload();
