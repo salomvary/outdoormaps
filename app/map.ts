@@ -6,7 +6,6 @@ import Fullscreen from './fullscreen';
 import InitialLocation from './initial-location';
 import RecommendLayers from './recommend-layers';
 import Router from './router';
-import Routing from './routing';
 import ShowPosition from './show-position';
 import Search from './search';
 import StateStore, { State } from './state-store';
@@ -40,7 +39,6 @@ const plugins: MapPluginConstructor[] = [
   Search,
   Tracks,
   Router,
-  Routing,
   Fullscreen,
 ];
 
@@ -83,7 +81,6 @@ export default class Map {
   defaults: State = {
     bounds: europeBounds,
     layers: ['mapboxstreets'],
-    routingService: 'mapbox',
   };
 
   constructor() {
