@@ -15,14 +15,14 @@ export default class InitialLocation implements MapPlugin {
             // success
             options.set(
               'center',
-              new L.LatLng(position.coords.latitude, position.coords.longitude)
+              new L.LatLng(position.coords.latitude, position.coords.longitude),
             );
             resolve();
           },
           function () {
             // error
             resolve();
-          }
+          },
         );
       });
     }

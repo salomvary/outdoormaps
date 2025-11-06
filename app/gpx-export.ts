@@ -37,7 +37,7 @@ export default function gpxExport(coordinates: L.LatLng[]) {
     ['<?xml version="1.0" encoding="utf-8"?>', '\n', gpxData],
     {
       type: 'application/gpx+xml;charset=utf-8',
-    }
+    },
   );
   saveAs(blob, 'route.gpx');
 }

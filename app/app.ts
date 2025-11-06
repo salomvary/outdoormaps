@@ -26,7 +26,7 @@ if ('serviceWorker' in navigator) {
               ) {
                 if (
                   window.confirm(
-                    'A new version of Outdoor Maps is available. Load update?'
+                    'A new version of Outdoor Maps is available. Load update?',
                   )
                 ) {
                   window.location.reload();

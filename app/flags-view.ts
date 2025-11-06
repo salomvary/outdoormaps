@@ -22,5 +22,5 @@ form.addEventListener(
       delete localStorage[target.name];
     }
   },
-  false
+  false,
 );

@@ -6,7 +6,7 @@ declare module 'leaflet' {
       public constructor(
         options?:
           | L.ControlOptions
-          | { title?: { false?: string; true?: string } }
+          | { title?: { false?: string; true?: string } },
       );
       toggleFullscreen(): void;
     }

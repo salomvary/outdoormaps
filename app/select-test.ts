@@ -11,7 +11,7 @@ describe('Select', function () {
     expect(subject.el.querySelectorAll('button')).to.have.lengthOf(2);
     expect(subject.el.querySelector('button')).to.have.property(
       'className',
-      'flat-btn'
+      'flat-btn',
     );
   });
 });

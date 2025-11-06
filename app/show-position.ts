@@ -32,7 +32,7 @@ export default class ShowPosition implements MapPlugin {
         'locate',
         'topleft',
         this.showCurrentPosition,
-        this
+        this,
       );
       this.map.on('movestart zoomstart', this.viewChanged.bind(this));
     }
@@ -57,7 +57,7 @@ export default class ShowPosition implements MapPlugin {
         this.positionUpdate.bind(this, false),
         this.positionError.bind(this),
         this.positionUpdate.bind(this, true),
-        { desiredAccuracy: 100, maxWait: 20000 }
+        { desiredAccuracy: 100, maxWait: 20000 },
       );
     }
   }
@@ -83,7 +83,7 @@ export default class ShowPosition implements MapPlugin {
     }
     const center = new L.LatLng(
       position.coords.latitude,
-      position.coords.longitude
+      position.coords.longitude,
     );
     this.showPosition(center);
   }

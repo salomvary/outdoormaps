@@ -88,7 +88,7 @@ export default class Flickr extends L.FeatureGroup {
     // ~15 on mobile screens, ~100 on large desktop screens
     const limit = Math.max(
       10,
-      Math.min(100, Math.round((size.x * size.y) / magic))
+      Math.min(100, Math.round((size.x * size.y) / magic)),
     );
 
     // https://www.flickr.com/services/api/flickr.photos.search.html

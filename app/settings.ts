@@ -51,7 +51,7 @@ export default class Settings implements MapPlugin {
       'layers',
       'topright',
       this.toggleSettings,
-      this
+      this,
     );
   }
 
@@ -101,7 +101,7 @@ export default class Settings implements MapPlugin {
     this.mapTypeButtons = new Select(container.querySelector('.map-type')!).on(
       'change',
       this.setMapType,
-      this
+      this,
     );
 
     // create layer type selection for map types with multiple
@@ -116,7 +116,7 @@ export default class Settings implements MapPlugin {
         function (
           this: Settings,
           layerButtons: { [mapType: string]: ButtonGroup },
-          mapType: LayerMapType
+          mapType: LayerMapType,
         ) {
           layerButtons[mapType] = layerButtonsFor({
             mapType: mapType,
@@ -125,7 +125,7 @@ export default class Settings implements MapPlugin {
           });
           return layerButtons;
         }.bind(this),
-        {}
+        {},
       );
 
     // overlay selection
@@ -172,7 +172,7 @@ function layerButtonsFor(options: {
 }) {
   const values = layersToOptions(Layers.keys(options.mapType));
   const buttons = new ButtonGroup(
-    Object.assign({}, options.options, { values })
+    Object.assign({}, options.options, { values }),
   ).on('change', options.handler);
   options.parent.appendChild(buttons.el);
   return buttons;
@@ -190,7 +190,7 @@ function updateAvailableLayers() {
   if (this.layerButtons[this.mapType]) {
     const disabledLayers = getDisabledLayers.call(
       this,
-      Layers.keys(this.mapType)
+      Layers.keys(this.mapType),
     );
     this.layerButtons[this.mapType].setDisabled(disabledLayers);
   }

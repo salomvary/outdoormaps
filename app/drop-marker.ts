@@ -57,7 +57,7 @@ export default class DropMarker implements MapPlugin {
         layers: this.options.get('layers'),
         center: position,
         zoom: this.map.getZoom(),
-      })
+      }),
     );
   }
 

@@ -130,17 +130,22 @@ select {
   background-image: -webkit-linear-gradient(top, #8ea4c1, #4a6c9b);
   background-image: -moz-linear-gradient(top, #8ea4c1, #4a6c9b);
   border-color: #45505d;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25),
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.25),
     0 1px 0 rgba(255, 255, 255, 0.25);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25),
+  -webkit-box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.25),
     0 1px 0 rgba(255, 255, 255, 0.25);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.25),
+  -moz-box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.25),
     0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .btn.active,
 .btn:active {
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1);
   background-color: #4a6c9b;
   background-image: none;
 }
@@ -296,48 +301,62 @@ select {
 
 .map-button {
   width: 40px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 1px 2px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+  -webkit-box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
+  -moz-box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 1px 2px rgba(0, 0, 0, 0.05);
   background-color: #5bb75b;
-  background-size: 25px 25px, 100%;
+  background-size:
+    25px 25px,
+    100%;
 }
 
 .locate-button {
   background-image: url(arrow2x.png);
   background-image: url(arrow2x.png), linear-gradient(top, #62c462, #51a351);
-  background-image: url(arrow2x.png),
+  background-image:
+    url(arrow2x.png),
     -webkit-linear-gradient(top, #62c462, #51a351);
-  background-image: url(arrow2x.png),
+  background-image:
+    url(arrow2x.png),
     -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .layers-button {
   background-image: url(layers.svg);
   background-image: url(layers.svg), linear-gradient(top, #62c462, #51a351);
-  background-image: url(layers.svg),
+  background-image:
+    url(layers.svg),
     -webkit-linear-gradient(top, #62c462, #51a351);
-  background-image: url(layers.svg), -moz-linear-gradient(top, #62c462, #51a351);
+  background-image:
+    url(layers.svg),
+    -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .busy-button {
   background-image: url(loading.gif);
   background-image: url(loading.gif), linear-gradient(top, #62c462, #51a351);
-  background-image: url(loading.gif),
+  background-image:
+    url(loading.gif),
     -webkit-linear-gradient(top, #62c462, #51a351);
-  background-image: url(loading.gif),
+  background-image:
+    url(loading.gif),
     -moz-linear-gradient(top, #62c462, #51a351);
 }
 
 .directions-button {
   background-image: url(directions.svg);
   background-image: url(directions.svg), linear-gradient(top, #62c462, #51a351);
-  background-image: url(directions.svg),
+  background-image:
+    url(directions.svg),
     -webkit-linear-gradient(top, #62c462, #51a351);
-  background-image: url(directions.svg),
+  background-image:
+    url(directions.svg),
     -moz-linear-gradient(top, #62c462, #51a351);
 }
 

@@ -30,7 +30,7 @@ const layers: { [id: string]: LayerConfigNoId } = {},
 
 const Hungary = new L.LatLngBounds(
   new L.LatLng(48.6, 16), // sw
-  new L.LatLng(45.6, 23.2)
+  new L.LatLng(45.6, 23.2),
 ); // ne
 
 layers.mapboxstreets = {
@@ -113,7 +113,7 @@ layers.bergfex = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(46.3, 9.3), // sw
-    new L.LatLng(49, 17.3)
+    new L.LatLng(49, 17.3),
   ), // ne
 };
 
@@ -128,7 +128,7 @@ layers.bgtopovj = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(40, 20), // sw
-    new L.LatLng(44, 29)
+    new L.LatLng(44, 29),
   ), // ne
 };
 
@@ -211,7 +211,7 @@ layers.catalonia = {
   crs: new Proj.CRS(
     'EPSG:25831',
     '+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-    { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] }
+    { resolutions: [1100, 550, 275, 100, 50, 25, 10, 5, 2, 1, 0.5, 0.25] },
   ),
   attribution: 'Institut Cartogràfic i Geològic de Catalunya -ICGC',
   detectRetina: isEnabled('detectRetina'),
@@ -219,7 +219,7 @@ layers.catalonia = {
   mapType: 'hiking',
   bounds: new L.LatLngBounds(
     new L.LatLng(42.9, 0.04),
-    new L.LatLng(40.52, 3.41)
+    new L.LatLng(40.52, 3.41),
   ),
 };
 
@@ -241,7 +241,7 @@ function keys(mapType?: LayerMapType): LayerConfig[] {
   return Object.values(layers as { [id: string]: LayerConfig }).filter(
     function (layer) {
       return !mapType || layer.mapType === mapType;
-    }
+    },
   );
 }
 
@@ -252,16 +252,15 @@ function mapTypeOf(id: string): LayerMapType {
 export default { get, keys, mapTypeOf };
 
 function getLayerOptions(
-  options: LayerConfigNoId
+  options: LayerConfigNoId,
 ): L.TileLayerOptions | L.WMSOptions {
   return Object.keys(options).reduce(function (
     filtered: { [key: string]: any },
-    key: keyof LayerConfig
+    key: keyof LayerConfig,
   ) {
     if (customOptions.indexOf(key) === -1) {
       filtered[key] = options[key];
     }
     return filtered;
-  },
-  {});
+  }, {});
 }

@@ -22,7 +22,7 @@ export default {
   eachNode: function <T extends Node>(
     nodeList: NodeListOf<T>,
     fn: (node: T) => void,
-    context?: any
+    context?: any,
   ) {
     for (let i = 0; i < nodeList.length; i++) {
       fn.call(context, nodeList[i]);
@@ -45,7 +45,7 @@ export default {
     el: EventTarget,
     event: string,
     func: (e: Event) => void,
-    context?: any
+    context?: any,
   ) {
     el.addEventListener(event, func.bind(context), false);
   },

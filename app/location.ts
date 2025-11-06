@@ -14,7 +14,7 @@ const Location = $.extend(
       window.location.hash = hash;
     },
   },
-  Evented.prototype
+  Evented.prototype,
 );
 
 export default Location;
